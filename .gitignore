@@ -1,0 +1,13 @@
+# OSX
+.DS_Store
+
+# XCode 4
+build/*
+project.xcworkspace
+xcuserdata
+*.swp
+*.pbxuser
+*.perspective
+*.perspectivev3
+*.mode1v3
+*.mode2v3
