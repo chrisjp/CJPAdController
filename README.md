@@ -45,9 +45,11 @@ If your app supports both portrait and landscape orientations, you'll also need 
 ## Other Requirements
 In order to compile, you'll need to have these frameworks included in your project:
 For iAd:
+
   1. `iAd.framework`
   
 For AdMob:
+
   1. `AudioToolbox.framework`
   2. `MessageUI.framework`
   3. `SystemConfiguration.framework`
@@ -58,6 +60,7 @@ NOTE: For AdMob to work ensure you also include the [AdMob SDK](https://develope
 ## Notes
   1. This class has been written for projects using ARC, and as such, no memory management is handled by the class.
   2. If you offer your users an In-App Purchase for removing ads, this class does offer some functionality for you to provide this. Assuming you have your IAP methods all set up, here is an example code snippet of a method you could call after a user successfully buys your IAP:
+
 ```objective-c
 - (void)removeAdvertising
 {
