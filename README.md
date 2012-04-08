@@ -44,6 +44,7 @@ If your app supports both portrait and landscape orientations, you'll also need 
 
 ## Other Requirements
 In order to compile, you'll need to have these frameworks included in your project:
+
 For iAd:
 
   1. `iAd.framework`
@@ -77,6 +78,7 @@ NOTE: For AdMob to work ensure you also include the [AdMob SDK](https://develope
 
 ## To-Do
 Planned features to be added include:
+
 * Add option to specify whether to position the ad at the top or the bottom of the view
 * Find way of handling rotation automatically
 * Add support (modular?) for additional ad networks
