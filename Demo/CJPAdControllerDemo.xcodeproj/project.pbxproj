@@ -24,6 +24,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		83958AFF15D5D4EB003E730B /* GADAdMobExtras.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADAdMobExtras.h; sourceTree = "<group>"; };
+		83958B0015D5D4EB003E730B /* GADAdNetworkExtras.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADAdNetworkExtras.h; sourceTree = "<group>"; };
+		83958B0115D5D4EB003E730B /* GADAdSize.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADAdSize.h; sourceTree = "<group>"; };
 		83B0BCF21530DDEF00DCFBC3 /* AnotherExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnotherExample.h; sourceTree = "<group>"; };
 		83B0BCF31530DDEF00DCFBC3 /* AnotherExample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnotherExample.m; sourceTree = "<group>"; };
 		83DE0BCA152E7C2D00BE495C /* CJPAdControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CJPAdControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,6 +137,9 @@
 		83DE0C0D152E821600BE495C /* AdMob */ = {
 			isa = PBXGroup;
 			children = (
+				83958AFF15D5D4EB003E730B /* GADAdMobExtras.h */,
+				83958B0015D5D4EB003E730B /* GADAdNetworkExtras.h */,
+				83958B0115D5D4EB003E730B /* GADAdSize.h */,
 				83DE0C0E152E821600BE495C /* GADBannerView.h */,
 				83DE0C0F152E821600BE495C /* GADBannerViewDelegate.h */,
 				83DE0C10152E821600BE495C /* GADInterstitial.h */,
@@ -287,6 +293,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/CJPAdControllerDemo/AdMob\"",
 				);
+				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -303,6 +310,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/CJPAdControllerDemo/AdMob\"",
 				);
+				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

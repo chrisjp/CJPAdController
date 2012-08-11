@@ -6,42 +6,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GADAdSize.h"
 #import "GADRequest.h"
 #import "GADRequestError.h"
 #import "GADBannerViewDelegate.h"
 
-#pragma mark -
-#pragma mark Ad Sizes
-
-// iPhone and iPod Touch ad size.
-#define GAD_SIZE_320x50     CGSizeMake(320, 50)
-
-// Medium Rectangle size for the iPad (especially in a UISplitView's left pane).
-#define GAD_SIZE_300x250    CGSizeMake(300, 250)
-
-// Full Banner size for the iPad (especially in a UIPopoverController or in
-// UIModalPresentationFormSheet).
-#define GAD_SIZE_468x60     CGSizeMake(468, 60)
-
-// Leaderboard size for the iPad.
-#define GAD_SIZE_728x90     CGSizeMake(728, 90)
-
-// Skyscraper size for the iPad. Mediation only. AdMob/Google does not offer
-// this size.
-#define GAD_SIZE_120x600    CGSizeMake(120, 600)
-
-#pragma mark -
-#pragma mark Banner Ad View
-
 // The view that displays banner ads.  A minimum implementation to get an ad
 // from within a UIViewController class is:
 //
-//   // Place an ad at the top of the screen of an iPhone/iPod Touch.
-//   CGRect adFrame = CGRectZero;
-//   adFrame.size = GAD_SIZE_320x50;
-//
-//   // Create and setup the ad view.
-//   GADBannerView *adView = [[GADBannerView alloc] initWithFrame:adFrame];
+//   // Create and setup the ad view, specifying the size and origin at {0, 0}.
+//   GADBannerView *adView =
+//       [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
 //   adView.rootViewController = self;
 //   adView.adUnitID = @"ID created when registering my app";
 //
@@ -53,6 +28,18 @@
 //   [adView loadRequest:nil];
 //
 @interface GADBannerView : UIView
+
+#pragma mark Initialization
+
+// Initializes a GADBannerView and sets it to the specified size, and specifies
+// its placement within its superview bounds. If |size| is invalid, an
+// instance of GADBannerView is not created and nil is returned instead.
+- (id)initWithAdSize:(GADAdSize)size origin:(CGPoint)origin;
+
+// Initializes a GADBannerView and sets it to the specified size, and specifies
+// its placement at the top left of its superview. If |size| is invalid, an
+// instance of GADBannerView is not created and nil is returned instead.
+- (id)initWithAdSize:(GADAdSize)size;
 
 #pragma mark Pre-Request
 
@@ -69,6 +56,14 @@
 // Required reference to the current root view controller.  For example the root
 // view controller in tab-based application would be the UITabViewController.
 @property (nonatomic, assign) UIViewController *rootViewController;
+
+// Required to set this banner view to a proper size. Never create your own
+// GADAdSize directly. Use one of the predefined standard ad sizes
+// (such as kGADAdSizeBanner), or create one using the GADAdSizeFromCGSize
+// method. If not using mediation, then changing the adSize after an ad has
+// been shown will cause a new request (for an ad of the new size) to be sent.
+// If using mediation, then a new request may not be sent.
+@property (nonatomic) GADAdSize adSize;
 
 // Optional delegate object that receives state change notifications from this
 // GADBannerView.  Typically this is a UIViewController, however, if you are

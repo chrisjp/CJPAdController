@@ -8,6 +8,8 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <Foundation/Foundation.h>
 
+@protocol GADAdNetworkExtras;
+
 // Constant for getting test ads on the simulator using the testDevices method.
 #define GAD_SIMULATOR_ID @"Simulator"
 
@@ -24,47 +26,27 @@ typedef enum {
 // Creates an autoreleased GADRequest.
 + (GADRequest *)request;
 
-// Passes extra details in ad requests.
-//
-// One case is for Ad Network Mediation. Some Ad Networks may ask for additional
-// information about the ad request. Consult with the individual Ad Network
-// on what to send. Place the information in a dictionary and put that in
-// another dictionary under the key "mediation". An example might be:
-//
-//   additionalParameters = {
-//     mediation: {
-//       MyAdNetwork: {
-//         market_segment: "abc",
-//         some_info: "xyz",
-//         some_num: 1000
-//       },
-//       AdNetworkX: {
-//         key1: "val1",
-//         key2: "val2"
-//       }
-//     }
-//   }
-//
-// To create such a dictionary, do the following:
-//
-//    NSDictionary *myAdNetwork = [NSDictionary dictionaryWithObjectsAndKeys:
-//                                 @"abc", @"market_segment",
-//                                 @"xyz", @"some_info",
-//                                 [NSNumber numberWithInt:1000], @"some_num",
-//                                 nil];
-//    NSDictionary *adNetwokX = [NSDictionary dictionaryWithObjectsAndKeys:
-//                               @"val1", @"key1",
-//                               @"val2", @"key2",
-//                               nil];
-//    NSDictionary *mediation = [NSDictionary dictionaryWithObjectsAndKeys:
-//                               myAdNetwork, @"MyAdNetwork",
-//                               adNetwokX, @"AdNetworkX",
-//                               nil];
-//    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-//                            mediation, @"mediation",
-//                            nil];
-//    gadRequest.additionalParameters = params;
-@property (nonatomic, retain) NSDictionary *additionalParameters;
+#pragma mark Additional Parameters For Ad Networks
+
+// Ad networks may have additional parameters they accept. To pass these
+// parameters to them, create the ad network extras object for that network,
+// fill in the parameters, and register it here. The ad network should have a
+// header defining the interface for the 'extras' object to create. All
+// networks will have access to the basic settings you've set in this GADRequest
+// (gender, birthday, testing mode, etc.). If you register an extras object
+// that is the same class as one you have registered before, the previous
+// extras will be overwritten.
+- (void)registerAdNetworkExtras:(id<GADAdNetworkExtras>)extras;
+
+// Get the network extras defined for an ad network.
+- (id<GADAdNetworkExtras>)adNetworkExtrasFor:(Class<GADAdNetworkExtras>)clazz;
+
+// Unsets the extras for an ad network. |clazz| is the class which represents
+// that network's extras type.
+- (void)removeAdNetworkExtrasFor:(Class<GADAdNetworkExtras>)clazz;
+
+// Extras sent to the mediation server (if using Mediation). For future use.
+@property (nonatomic, retain) NSDictionary *mediationExtras;
 
 #pragma mark Collecting SDK Information
 
@@ -73,14 +55,8 @@ typedef enum {
 
 #pragma mark Testing
 
-// Test ads are returned to these devices. However, since this SDK build does
-// not use uniqueIdentifier, test ads are only returned to the simulator.
-//
-// For example:
-//   request.testDevices = [NSArray arrayWithObjects:
-//       GAD_SIMULATOR_ID,                               // Simulator
-//       nil];
-@property (nonatomic, retain) NSArray *testDevices;
+// Setting this property to YES will return a test ad for this request.
+@property (nonatomic, getter=isTesting) BOOL testing;
 
 #pragma mark User Information
 
@@ -117,7 +93,12 @@ typedef enum {
 #pragma mark -
 #pragma mark Deprecated Methods
 
-// Please use testDevices instead.
-@property (nonatomic, getter=isTesting) BOOL testing;
+// Please use the testing property instead.
+@property (nonatomic, retain) NSArray *testDevices;
+
+// Accesses the additionalParameters for the "GoogleAdmob" ad network. Please
+// use -registerAdNetworkExtras: method above and pass an instance of
+// GADAdMobExtras instead.
+@property (nonatomic, retain) NSDictionary *additionalParameters;
 
 @end
