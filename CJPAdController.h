@@ -10,19 +10,31 @@
 #import <iAd/iAd.h>
 #import "GADBannerView.h"
 
-// Choose which ads you want to publish (iAd / AdMob)
-#define kUseiAd YES
-#define kUseAdMob YES
+// Display iAds?
+static BOOL const kUseiAd = YES;
+
+// Display AdMob ads?
+static BOOL const kUseAdMob = YES;
+
 // Set which ads should be initially displayed and preferred ("iAd" or "AdMob")
-#define kDefaultAds @"iAd"
+static NSString * const kDefaultAds = @"iAd";
+
 // Your AdMob publisher ID
-#define kAdMobID @"a14f255d715fe96"
-// Seconds to wait before displaying ad (set to 0.0 to display instantly)
-#define kWaitTime 2.0
-// Name of UserDefaults key for if ads have been purchased
-#define kAdsPurchasedKey @"adRemovalPurchased"
-// Testing? Setting to YES will NSLog various events
-#define kAdTesting YES
+static NSString * const kAdMobID = @"a14f255d715fe96";
+
+// Use AdMob's "Smart" size banners (will fill full width of device)
+// If set to NO, 320x50 ads will be used for iPhone/iPod and 728x90 for iPad
+static BOOL const kUseAdMobSmartSize = YES;
+
+// Seconds to wait before displaying ad after the view appears (0.0 = instant)
+static float const kWaitTime = 2.0;
+
+// Name of UserDefaults key for if ads have been purchased (you can ignore this if you don't have an IAP to remove ads)
+static NSString * const kAdsPurchasedKey = @"adRemovalPurchased";
+
+// Are you testing? Setting to YES will NSLog various events
+static BOOL const kAdTesting = NO;
+
 
 @interface CJPAdController : NSObject <ADBannerViewDelegate, GADBannerViewDelegate>
 

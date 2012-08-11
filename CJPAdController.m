@@ -151,15 +151,24 @@ static CJPAdController *CJPSharedManager = nil;
     // Create AdMob
     else if([adType isEqualToString:@"AdMob"]){
         // Create a view of the standard size at the bottom of the screen.
-        // AdMob ad sizes don't fill the full width of the device screen apart from iPhone when in portrait view
-        // We need to offset the x position so the ad appears centered - Calculation: (View width - Ad width) / 2
-        // Problem is that getting the width of the bounds doesn't take into account the current orientation
-        // As a workaround, if we're in landscape, we'll simply get the height instead
-        CGRect screen = [[UIScreen mainScreen] bounds];
-        CGFloat screenWidth = inPortrait ? CGRectGetWidth(screen) : CGRectGetHeight(screen);
-        CGSize adMobSize = isIPad ? GAD_SIZE_728x90 : GAD_SIZE_320x50;
-        CGFloat adMobXOffset = (screenWidth-adMobSize.width)/2;
-        self.adMobView = [[GADBannerView alloc] initWithFrame:CGRectMake(adMobXOffset, self.parentViewController.view.frame.size.height - adMobSize.height, adMobSize.width, adMobSize.height)];
+        
+        if (kUseAdMobSmartSize) {
+            GADAdSize adMobSize;
+            if (!inPortrait) adMobSize = kGADAdSizeSmartBannerLandscape;
+            else adMobSize = kGADAdSizeSmartBannerPortrait;
+            self.adMobView = [[GADBannerView alloc] initWithAdSize:adMobSize];
+        }else{
+            // Legacy AdMob ad sizes don't fill the full width of the device screen apart from iPhone when in portrait view
+            // We need to offset the x position so the ad appears centered - Calculation: (View width - Ad width) / 2
+            // Problem is that getting the width of the bounds doesn't take into account the current orientation
+            // As a workaround, if we're in landscape, we'll simply get the height instead
+            CGRect screen = [[UIScreen mainScreen] bounds];
+            CGFloat screenWidth = inPortrait ? CGRectGetWidth(screen) : CGRectGetHeight(screen);
+            GADAdSize adMobSize = isIPad ? kGADAdSizeLeaderboard : kGADAdSizeBanner;
+            CGSize cgAdMobSize = CGSizeFromGADAdSize(adMobSize);
+            CGFloat adMobXOffset = (screenWidth-cgAdMobSize.width)/2;
+            self.adMobView = [[GADBannerView alloc] initWithFrame:CGRectMake(adMobXOffset, self.parentViewController.view.frame.size.height - cgAdMobSize.height, cgAdMobSize.width, cgAdMobSize.height)];
+        }
         
         // Specify the ad's "unit identifier." This is your AdMob Publisher ID.
         self.adMobView.adUnitID = kAdMobID;
@@ -180,7 +189,7 @@ static CJPAdController *CJPSharedManager = nil;
         
         // Request an ad
         GADRequest *adMobRequest = [GADRequest request];
-        // Uncomment the following line if you wish to receive test ads (deprecated)
+        // Uncomment the following line if you wish to receive test ads (simulator only)
         //adMobRequest.testing = YES;
         [self.adMobView loadRequest:adMobRequest];
     }
@@ -212,11 +221,8 @@ static CJPAdController *CJPSharedManager = nil;
 - (void)resizeViewForAdType:(NSString *)adType showOrHide:(NSString *)showHide afterRotation:(BOOL)isAfterRotation
 {
     // We always need to resize the view if handling a rotation
-    if (!isAfterRotation && self.showingiAd && [adType isEqualToString:@"iAd"] && [showHide isEqualToString:@"show"]) {
-        if(kAdTesting) NSLog(@"already showing iAd in this orientation, nothing to do");
-    }
-    else if (!isAfterRotation && self.showingAdMob && [adType isEqualToString:@"AdMob"] && [showHide isEqualToString:@"show"]) {
-        if(kAdTesting) NSLog(@"already showing AdMob in this orientation, nothing to do");
+    if (!isAfterRotation && ((self.showingiAd && [adType isEqualToString:@"iAd"]) || (self.showingAdMob && [adType isEqualToString:@"AdMob"])) && [showHide isEqualToString:@"show"]) {
+        if(kAdTesting) NSLog(@"already showing %@ in this orientation, nothing to do.", adType);
     }
     else {
         if(kAdTesting) NSLog(@"resizing view to %@ %@", showHide, adType);
@@ -224,26 +230,28 @@ static CJPAdController *CJPSharedManager = nil;
         CGRect bannerFrame;
         if([adType isEqualToString:@"iAd"]) bannerFrame = self.iAdView.frame;
         else if([adType isEqualToString:@"AdMob"]) bannerFrame = self.adMobView.frame;
-        
+                
         CGRect parentFrame = self.parentView.frame;
         // If we're bringing a banner on screen...
         if ([showHide isEqualToString:@"show"]) {
             // If the banner is off screen let's move it on
             // Also reduce the height of parentView so it's contents don't go behind the ad view
-            if (bannerFrame.origin.y >= self.containerView.frame.size.height) {
-                bannerFrame.origin.y = self.containerView.frame.size.height-bannerFrame.size.height;
-            }
-            parentFrame.size.height = self.containerView.frame.size.height - bannerFrame.size.height;
+            CGFloat adHeight = bannerFrame.size.height;
+            if([adType isEqualToString:@"AdMob"]) adHeight = CGSizeFromGADAdSize(self.adMobView.adSize).height;
+            bannerFrame.origin.y = self.containerView.frame.size.height-adHeight;   // make sure ad is at the bottom of the view
+            parentFrame.size.height = self.containerView.frame.size.height - adHeight;
             self.parentView.frame = parentFrame;
             
             if([adType isEqualToString:@"iAd"]){
                 self.adMobView.hidden = YES;
                 self.iAdView.hidden = NO;
+                bannerFrame.origin.x = 0; // fixes a bug in iOS 6
                 self.iAdView.frame = bannerFrame;
             }
             else if([adType isEqualToString:@"AdMob"]){
                 self.iAdView.hidden = YES;
                 self.adMobView.hidden = NO;
+                if(kUseAdMobSmartSize) bannerFrame.origin.x = 0; // fixes a bug in iOS 6
                 self.adMobView.frame = bannerFrame;
             }
         }
@@ -286,14 +294,21 @@ static CJPAdController *CJPSharedManager = nil;
         
         // And if we've got an AdMob
         if (self.adMobView != nil){
-            // AdMob doesn't have different orientation sizes - we just need to change the X offset so the ad remains centered
-            CGRect bannerFrame = self.adMobView.frame;
-            CGRect screen = [[UIScreen mainScreen] bounds];
-            CGFloat screenWidth = toPortrait ? CGRectGetWidth(screen) : CGRectGetHeight(screen);
-            CGSize adMobSize = isIPad ? GAD_SIZE_728x90 : GAD_SIZE_320x50;
-            CGFloat adMobXOffset = (screenWidth-adMobSize.width)/2;
-            bannerFrame.origin.x = adMobXOffset;
-            self.adMobView.frame = bannerFrame;
+            if (kUseAdMobSmartSize) {
+                if (toPortrait) self.adMobView.adSize = kGADAdSizeSmartBannerPortrait;
+                else self.adMobView.adSize = kGADAdSizeSmartBannerLandscape;
+            }
+            else{
+                // Legacy AdMob doesn't have different orientation sizes - we just need to change the X offset so the ad remains centered
+                CGRect bannerFrame = self.adMobView.frame;
+                CGRect screen = [[UIScreen mainScreen] bounds];
+                CGFloat screenWidth = toPortrait ? CGRectGetWidth(screen) : CGRectGetHeight(screen);
+                GADAdSize adMobSize = isIPad ? kGADAdSizeLeaderboard : kGADAdSizeBanner;
+                CGSize cgAdMobSize = CGSizeFromGADAdSize(adMobSize);
+                CGFloat adMobXOffset = (screenWidth-cgAdMobSize.width)/2;
+                bannerFrame.origin.x = adMobXOffset;
+                self.adMobView.frame = bannerFrame;
+            }
         }
     }
 }

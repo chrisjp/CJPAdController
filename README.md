@@ -14,19 +14,23 @@ CJPAdController is a singleton class allowing easy implementation of iAds and Go
 
 CJPAdController is intended to be used within a navigation controller, and will display adverts at the bottom of your view. It may work in other scenarios, such as within a TabBarController, however this has not been tested.
 
-Add both `CJPAdController.h` and `CJPAdController.m` to your project. Before going any further, be sure to modify the constants at the top of `CJPAdController.h` - here you'll be able to set various options, including your AdMob Publisher ID. 
+**1.** Add both `CJPAdController.h` and `CJPAdController.m` to your project. 
 
-`#import "CJPAdController.h"` in your view controller, then add the following line of code to the `viewWillAppear` method in your `UIViewController`:
+**2.** Modify the constants at the top of `CJPAdController.h` to suit your needs - here you'll be able to set various options, including your AdMob Publisher ID. The options are fairly self-explanatory and the code is commented.
+
+**3.** Add `#import "CJPAdController.h"` to your view controllers, then add the following line of code to the `viewWillAppear` method in any `UIViewController` you want to display ads in, so it looks something like:
 
 ```objective-c
 - (void)viewWillAppear:(BOOL)animated
 {
+    ...
+    
     // Add ads to our view
     [[CJPAdController sharedManager] addBannerToViewController:self];
 }
 ```
 
-If your app supports both portrait and landscape orientations, you'll also need to add the following lines to the  willRotate and didRotate methods in your `UIViewController`:
+**4.** If your app supports both portrait and landscape orientations, you'll also need to add the following lines to the `willRotate` and `didRotate` methods in your `UIViewController`s:
 
 ```objective-c
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -42,6 +46,8 @@ If your app supports both portrait and landscape orientations, you'll also need 
 }
 ```
 
+**5.** You're almost done! Just check the other requirements below to make sure you've got all the right frameworks included in your project.
+  
 ## Other Requirements
 In order to compile, you'll need to have these frameworks included in your project:
 
@@ -55,7 +61,7 @@ For AdMob:
   2. `MessageUI.framework`
   3. `SystemConfiguration.framework`
   
-NOTE: For AdMob to work ensure you also include the [AdMob SDK](https://developers.google.com/mobile-ads-sdk/download#downloadios) which is a set of header files and a library. CJPAdController should have no problems working with past, present or future versions of the SDK. Version 5.0.8 is included in the demo app in this project.
+NOTE: For AdMob to work ensure you also include the [AdMob SDK](https://developers.google.com/mobile-ads-sdk/download#downloadios) files. Please also read the note on setting [Other Linker Flags](https://developers.google.com/mobile-ads-sdk/docs/) in your project if you intend to use AdMob. You should use SDK version 6 or greater with CJPAdController. Version 6.1.4 is included in the demo app in this project.
 
 
 ## Notes
@@ -86,6 +92,13 @@ Planned features to be added include:
 
 
 ## Changes
+###1.1
+* Fixed a couple of issues in iOS 6
+* Replaced #define's with const's
+* Updated bundled AdMob SDK to version 6.1.4 and replaced some deprecated code
+* Added a configuration option (boolean) to specify whether to use AdMob "[Smart Banners](https://developers.google.com/mobile-ads-sdk/docs/admob/smart-banners)" or not.
+* Updated this readme with information on configuring.
+
 ###1.0
 * Initial release
 
