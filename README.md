@@ -1,4 +1,4 @@
-# CJPAdController 1.0
+# CJPAdController 1.1
 
 CJPAdController is a singleton class allowing easy implementation of iAds and Google AdMob ads in your iOS app. It supports all devices and orientations, and works on iOS 4.2+
 
@@ -61,7 +61,7 @@ For AdMob:
   2. `MessageUI.framework`
   3. `SystemConfiguration.framework`
   
-NOTE: For AdMob to work ensure you also include the [AdMob SDK](https://developers.google.com/mobile-ads-sdk/download#downloadios) files. Please also read the note on setting [Other Linker Flags](https://developers.google.com/mobile-ads-sdk/docs/) in your project if you intend to use AdMob. You should use SDK version 6 or greater with CJPAdController. Version 6.1.4 is included in the demo app in this project.
+NOTE: For AdMob to work ensure you also include the [AdMob SDK](https://developers.google.com/mobile-ads-sdk/download#downloadios) files. Please also read the note on setting [Other Linker Flags](https://developers.google.com/mobile-ads-sdk/docs/) in your project if you intend to use AdMob. You should use SDK version 6.0.0 or greater with CJPAdController. Version 6.1.4 is included in the demo app in this project.
 
 
 ## Notes
