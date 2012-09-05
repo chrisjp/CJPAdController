@@ -21,9 +21,10 @@
     self.window.backgroundColor = [UIColor whiteColor];
     
     RootViewController *rootVC = [[RootViewController alloc] init];
-    self.navController = [[UINavigationController alloc] initWithRootViewController:rootVC];
+    _navController = [[UINavigationController alloc] initWithRootViewController:rootVC];
+    _adController = [[CJPAdController sharedManager] initWithContentViewController:_navController];
     
-    self.window.rootViewController = self.navController;
+    self.window.rootViewController = _adController;
     [self.window makeKeyAndVisible];
     return YES;
 }

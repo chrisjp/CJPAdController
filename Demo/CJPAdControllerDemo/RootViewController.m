@@ -27,12 +27,6 @@
     return self;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    // Add ads to our view
-    [[CJPAdController sharedManager] addBannerToViewController:self];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -47,7 +41,7 @@
     
     // TextView describing basic functionality
     UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 320)];
-    textView.text = @"After a couple of seconds you should see ads appear at the bottom of this view.\n\nYou can rotate your device any way you want; the ad will automatically resize and/or reposition itself.\n\nTap the button below to see it implemented in a UITableView. If you rotate while on the TableView and come back to this view, you'll notice the ad displayed here (if any) will have automatially been rotated to the correct orientation!";
+    textView.text = @"After a couple of seconds you should see ads appear at the bottom of this view.\n\nYou can rotate your device any way you want; the ad will automatically resize and/or reposition itself.\n\nTap the button below to push another view. You'll notice the ad remains in position across views as advised by Apple.\n";
     textView.autoresizingMask =  UIViewAutoresizingFlexibleWidth;
     textView.backgroundColor = [UIColor clearColor];
     textView.editable = NO;
@@ -59,23 +53,43 @@
     textFrame.size.height = textView.contentSize.height;
     textView.frame = textFrame;
     
-    // Button to take us to an alternative example
+    // Button to push another view
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     button.frame = CGRectMake(0, textView.frame.size.height+10, 180, 40);
     button.center = CGPointMake(self.view.frame.size.width/2, button.center.y);
     button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    [button setTitle:@"See Another Example" forState:UIControlStateNormal];
+    [button setTitle:@"Push Another View" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(anotherExample) forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:button];
     
+    // Button to remove ads
+    UIButton *buttonRA = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    buttonRA.frame = CGRectMake(0, textView.frame.size.height+button.frame.size.height+20, 180, 40);
+    buttonRA.center = CGPointMake(self.view.frame.size.width/2, buttonRA.center.y);
+    buttonRA.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    [buttonRA setTitle:@"Remove Ads" forState:UIControlStateNormal];
+    [buttonRA addTarget:self action:@selector(removeAds) forControlEvents:UIControlEventTouchUpInside];
+    [self.scrollView addSubview:buttonRA];
+    
     // Set scrollview content size
-    self.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, button.frame.size.height+button.frame.origin.y+10);
+    self.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, buttonRA.frame.size.height+buttonRA.frame.origin.y+10);
 }
 
 - (void)anotherExample
 {
     AnotherExample *example = [[AnotherExample alloc] init];
     [self.navigationController pushViewController:example animated:YES];
+}
+
+- (void)removeAds
+{
+    [[CJPAdController sharedManager] removeBanner:@"iAd" permanently:YES];
+    [[CJPAdController sharedManager] removeBanner:@"AdMob" permanently:YES];
+    
+    // Or if this was from an in-app purchase, you could simply call the following
+    // which would save a boolean in UserDefaults so the app remembers not to create ads
+    // next time it starts up.
+    //[[CJPAdController sharedManager] removeAllAdsForever];
 }
 
 - (void)viewDidUnload
@@ -87,18 +101,6 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [[CJPAdController sharedManager] rotateAdToInterfaceOrientation:toInterfaceOrientation];
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [[CJPAdController sharedManager] fixAdViewAfterRotation];
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 @end

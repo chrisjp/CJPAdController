@@ -26,7 +26,10 @@ static NSString * const kAdMobID = @"a14f255d715fe96";
 // If set to NO, 320x50 ads will be used for iPhone/iPod and 728x90 for iPad
 static BOOL const kUseAdMobSmartSize = YES;
 
-// Seconds to wait before displaying ad after the view appears (0.0 = instant)
+// Where to position the ad on screen ("top" or "bottom")
+static NSString * const kAdPosition = @"bottom";
+
+// Seconds to wait before displaying ad after the view loads (0.0 = instant)
 static float const kWaitTime = 2.0;
 
 // Name of UserDefaults key for if ads have been purchased (you can ignore this if you don't have an IAP to remove ads)
@@ -36,25 +39,20 @@ static NSString * const kAdsPurchasedKey = @"adRemovalPurchased";
 static BOOL const kAdTesting = YES;
 
 
-@interface CJPAdController : NSObject <ADBannerViewDelegate, GADBannerViewDelegate>
+@interface CJPAdController : UIViewController <ADBannerViewDelegate, GADBannerViewDelegate>
 
 @property (nonatomic, retain) ADBannerView      *iAdView;
 @property (nonatomic, retain) GADBannerView     *adMobView;
+@property (nonatomic, retain) UIViewController  *contentController;
 @property (nonatomic, retain) UIView            *containerView;
-@property (nonatomic, assign) UIView            *parentView;
-@property (nonatomic, assign) UIViewController  *parentViewController;
-@property (nonatomic, assign) UIView            *previousView;
 @property (nonatomic, assign) BOOL              showingiAd;
 @property (nonatomic, assign) BOOL              showingAdMob;
 @property (nonatomic, assign) BOOL              adsRemoved;
 
-
 + (CJPAdController *)sharedManager;
-- (void)addBannerToViewController:(UIViewController *)viewController;
+- (id)initWithContentViewController:(UIViewController *)contentController;
 - (void)createBanner:(NSString *)adType;
 - (void)removeBanner:(NSString *)adType permanently:(BOOL)permanent;
-- (void)resizeViewForAdType:(NSString *)adType showOrHide:(NSString *)showHide afterRotation:(BOOL)isAfterRotation;
-- (void)rotateAdToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
-- (void)fixAdViewAfterRotation;
+- (void)removeAllAdsForever;
 
 @end

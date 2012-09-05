@@ -7,7 +7,6 @@
 //
 
 #import "AnotherExample.h"
-#import "CJPAdController.h"
 
 @interface AnotherExample ()
 
@@ -15,26 +14,11 @@
 
 @implementation AnotherExample
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    // Add ads to our view
-    [[CJPAdController sharedManager] addBannerToViewController:self];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    self.title = @"Another Example";
+    self.title = @"Another View";
 }
 
 - (void)viewDidUnload
@@ -51,13 +35,13 @@
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [[CJPAdController sharedManager] rotateAdToInterfaceOrientation:toInterfaceOrientation];
+    //[[CJPAdController sharedManager] rotateAdToInterfaceOrientation:toInterfaceOrientation];
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    [[CJPAdController sharedManager] fixAdViewAfterRotation];
+    //[[CJPAdController sharedManager] fixAdViewAfterRotation];
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
@@ -73,6 +57,12 @@
 {
     // Return the number of rows in the section.
     return 9;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) return 110.0;
+    return 44.0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -91,15 +81,12 @@
         case 0:
             cell.textLabel.text = @"Just another example";
             break;
-            
         case 1:
             cell.textLabel.text = @"with an ad presented";
             break;
-        
         case 2:
             cell.textLabel.text = @"at the bottom";
             break;
-        
         case 3:
             cell.textLabel.text = @"of the view.";
             break;
@@ -113,12 +100,11 @@
             cell.textLabel.text = @"hidden behind the ads.";
             break;
         case 7:
-            cell.textLabel.text = @"Everything is still visible";
+            cell.textLabel.text = @"Everything is still visible.";
             break;
         case 8:
             cell.textLabel.text = @"Wonderful!";
             break;
-            
         default:
             break;
     }

@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CJPAdController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate> {
+    CJPAdController *_adController;
+}
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UINavigationController *navController;
