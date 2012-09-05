@@ -1,4 +1,4 @@
-# CJPAdController 1.1
+# CJPAdController 1.2
 
 CJPAdController is a singleton class allowing easy implementation of iAds and Google AdMob ads in your iOS app. It supports all devices and orientations, and works on iOS 4.2+
 
@@ -6,43 +6,42 @@ CJPAdController is a singleton class allowing easy implementation of iAds and Go
 * Supports iPhone, iPod touch and iPad, in any orientation
 * Choose whether to show both iAd and AdMob, or just one of them
 * Choose whether iAd or AdMob is your default ads, falling back to the other if your default is unable to load an ad
+* Ability to choose where ads are displayed within a view (top or bottom)
 * Specify a time delay for when to start showing ads in a view
 * Automatically hides from view if there are no ads to display
 * Support for hiding ads from users who have purchased a "Remove Ads" In-App Purchase (assumes you store a boolean value for this in `NSUserDefaults`)
 
 ## Usage
 
-CJPAdController is intended to be used within a navigation controller, and will display adverts at the bottom of your view. It may work in other scenarios, such as within a TabBarController, however this has not been tested.
+CJPAdController is intended to be used within a UINavigationController, and will display adverts at the top or bottom of your view. It may work in other scenarios, such as within a TabBarController, however this has not been tested.
 
 **1.** Add both `CJPAdController.h` and `CJPAdController.m` to your project. 
 
-**2.** Modify the constants at the top of `CJPAdController.h` to suit your needs - here you'll be able to set various options, including your AdMob Publisher ID. The options are fairly self-explanatory and the code is commented.
+**2.** Modify the constants at the top of `CJPAdController.h` to suit your needs - here you'll be able to set various options, including your AdMob Publisher ID, position in view, seconds to wait before showing ads, and more. The options are fairly self-explanatory and the code is commented.
 
-**3.** Add `#import "CJPAdController.h"` to your view controllers, then add the following line of code to the `viewWillAppear` method in any `UIViewController` you want to display ads in, so it looks something like:
+**3.** Add `#import "CJPAdController.h"` to your app delegate header file, then add `CJPAdController *_adController;` in the @interface like so:
 
 ```objective-c
-- (void)viewWillAppear:(BOOL)animated
-{
-    ...
-    
-    // Add ads to our view
-    [[CJPAdController sharedManager] addBannerToViewController:self];
+@interface AppDelegate : UIResponder <UIApplicationDelegate> {
+    CJPAdController *_adController;
 }
 ```
 
-**4.** If your app supports both portrait and landscape orientations, you'll also need to add the following lines to the `willRotate` and `didRotate` methods in your `UIViewController`s:
+**4.** And in your app delegate method file, alloc your `UINavigationController` as usual, then init the adController with your navController set as the root view. The rootViewController of the window should then be set as the adController. Your code should look similar to the following:
 
 ```objective-c
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[CJPAdController sharedManager] rotateAdToInterfaceOrientation:toInterfaceOrientation];
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [[CJPAdController sharedManager] fixAdViewAfterRotation];
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+    
+    RootViewController *rootVC = [[RootViewController alloc] init];
+    _navController = [[UINavigationController alloc] initWithRootViewController:rootVC];
+    _adController = [[CJPAdController sharedManager] initWithContentViewController:_navController];
+    
+    self.window.rootViewController = _adController;
+    [self.window makeKeyAndVisible];
+    return YES;
 }
 ```
 
@@ -66,41 +65,16 @@ NOTE: For AdMob to work ensure you also include the [AdMob SDK](https://develope
 
 ## Notes
   1. This class has been written for projects using ARC, and as such, no memory management is handled by the class.
-  2. If you offer your users an In-App Purchase for removing ads, this class does offer some functionality for you to provide this. Assuming you have your IAP methods all set up, here is an example code snippet of a method you could call after a user successfully buys your IAP:
+  2. If you offer your users an In-App Purchase for removing ads, this class does offer some functionality for you to provide this. Assuming you have your IAP methods all set up, you should call the following method after a user successfully buys your IAP:
 
 ```objective-c
-- (void)removeAdvertising
-{
-    // Remove all ad banners from the view
-	if([CJPAdController sharedManager].iAdView!=nil) [[CJPAdController sharedManager] removeBanner:@"iAd" permanently:YES];
-    if([CJPAdController sharedManager].adMobView!=nil) [[CJPAdController sharedManager] removeBanner:@"AdMob" permanently:YES];
-    
-    // Set adsRemoved to YES, and store in UserDefaults for future use
-    [CJPAdController sharedManager].adsRemoved = YES;
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kAdsPurchasedKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
+[[CJPAdController sharedManager] removeAllAdsForever];
 ```
 
 ## To-Do
 Planned features to be added include:
 
-* Add option to specify whether to position the ad at the top or the bottom of the view
-* Find way of handling rotation automatically
-* Add support (modular?) for additional ad networks
-* Add optional feature for animating transitions
-
-
-## Changes
-###1.1
-* Fixed a couple of issues in iOS 6
-* Replaced #define's with const's
-* Updated bundled AdMob SDK to version 6.1.4 and replaced some deprecated code
-* Added a configuration option (boolean) to specify whether to use AdMob "[Smart Banners](https://developers.google.com/mobile-ads-sdk/docs/admob/smart-banners)" or not.
-* Updated this readme with information on configuring.
-
-###1.0
-* Initial release
+* Add support for additional ad networks
 
 
 ## Licence and Attribution
