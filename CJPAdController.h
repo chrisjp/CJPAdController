@@ -36,7 +36,7 @@ static float const kWaitTime = 2.0;
 static NSString * const kAdsPurchasedKey = @"adRemovalPurchased";
 
 // Are you testing? Setting to YES will NSLog various events
-static BOOL const kAdTesting = YES;
+static BOOL const kAdTesting = NO;
 
 
 @interface CJPAdController : UIViewController <ADBannerViewDelegate, GADBannerViewDelegate>
