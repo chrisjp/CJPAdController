@@ -14,11 +14,14 @@ static CJPAdController *CJPSharedManager = nil;
 
 @synthesize iAdView              = _iAdView;
 @synthesize adMobView            = _adMobView;
+@synthesize contentController    = _contentController;
 @synthesize containerView        = _containerView;
 @synthesize showingiAd           = _showingiAd;
 @synthesize showingAdMob         = _showingAdMob;
 @synthesize adsRemoved           = _adsRemoved;
-@synthesize contentController    = _contentController;
+@synthesize iOS4                 = _iOS4;
+@synthesize kADBannerContentSizeIdentifierLandscape;
+@synthesize kADBannerContentSizeIdentifierPortrait;
 
 #pragma mark -
 #pragma mark Class Methods
@@ -57,11 +60,16 @@ static CJPAdController *CJPSharedManager = nil;
                 // Since iOS 4 does not support view containment, we create a new view that fills the screen
                 // We add our contentController's view as a subview to this, as well as an adview
                 // We then set this new view as the main view.
+                _iOS4 = YES;
                 _containerView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
                 _containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
-                [_containerView addSubview:contentController.view];
+                [_containerView addSubview:_contentController.view];
                 self.view = _containerView;
             }
+            
+            // iOS 4.0/4.1 iAd Support
+            kADBannerContentSizeIdentifierPortrait = &ADBannerContentSizeIdentifierPortrait != nil ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifier320x50;
+            kADBannerContentSizeIdentifierLandscape = &ADBannerContentSizeIdentifierLandscape != nil ? ADBannerContentSizeIdentifierLandscape : ADBannerContentSizeIdentifier480x32;
             
             [self performSelector:@selector(createBanner:) withObject:kDefaultAds afterDelay:kWaitTime];
         }
@@ -81,12 +89,12 @@ static CJPAdController *CJPSharedManager = nil;
     if([adType isEqualToString:@"iAd"]){
         _iAdView = [[ADBannerView alloc] initWithFrame:CGRectZero];
         
-        _iAdView.requiredContentSizeIdentifiers = [NSSet setWithObjects:ADBannerContentSizeIdentifierPortrait, ADBannerContentSizeIdentifierLandscape, nil];
+        _iAdView.requiredContentSizeIdentifiers = [NSSet setWithObjects:kADBannerContentSizeIdentifierPortrait, kADBannerContentSizeIdentifierLandscape, nil];
         
         if (!inPortrait)
-            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
+            _iAdView.currentContentSizeIdentifier = kADBannerContentSizeIdentifierLandscape;
         else
-            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
+            _iAdView.currentContentSizeIdentifier = kADBannerContentSizeIdentifierPortrait;
         
         // Set initial frame to be offscreen
         CGRect bannerFrame = _iAdView.frame;
@@ -188,7 +196,10 @@ static CJPAdController *CJPSharedManager = nil;
             _adMobView = nil;
         }
     }
-
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        [self layoutAds];
+    }];
 }
 
 - (void)removeAllAdsForever
@@ -226,7 +237,7 @@ static CJPAdController *CJPSharedManager = nil;
     // Since we can't use view containment in iOS 4, creating our own container means the 
     // navigationBar does not get resized on rotation because it is not the rootViewController
     // The following code manually resizes the navBar - not applicable on iPad as the navBar remains the same size anyway
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] < 5) {
+    if (_iOS4) {
         NSArray *subs = _contentController.view.subviews;
         UINavigationBar *navbar = nil;
         for (int i=0; i<subs.count; i++) {
@@ -240,6 +251,20 @@ static CJPAdController *CJPSharedManager = nil;
             frame.size.height = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 44. : 32.;
             navbar.frame = frame;
         }
+        
+        if (_showingiAd) _iAdView.hidden = YES;
+        else if (_showingAdMob) _adMobView.hidden = YES;
+    }
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    if (_iOS4) {
+        [UIView animateWithDuration:0.25 animations:^{
+            [self layoutAds];
+            if (_showingiAd) _iAdView.hidden = NO;
+            else if (_showingAdMob) _adMobView.hidden = NO;
+        }];
     }
 }
 
@@ -247,17 +272,18 @@ static CJPAdController *CJPSharedManager = nil;
 {
     // This method is called when an ad is received or removed.
     // It will move the ad on/offscreen as necessary.
+    // It is iOS5 only, but we can manually call it on iOS4.
     
     BOOL isPortrait = UIInterfaceOrientationIsPortrait(self.interfaceOrientation);
     BOOL isPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? YES : NO;
-    
+        
     CGRect contentFrame = self.view.bounds;
     
     if (_iAdView) {
         if (isPortrait) {
-            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
+            _iAdView.currentContentSizeIdentifier = kADBannerContentSizeIdentifierPortrait;
         } else {
-            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
+            _iAdView.currentContentSizeIdentifier = kADBannerContentSizeIdentifierLandscape;
         }
         
         CGRect bannerFrame = _iAdView.frame;
@@ -326,6 +352,13 @@ static CJPAdController *CJPSharedManager = nil;
     _contentController.view.frame = contentFrame;
 }
 
+- (void)layoutAds
+{
+    [self.view setNeedsLayout];
+    [self.view layoutIfNeeded];
+    if(_iOS4) [self viewDidLayoutSubviews];
+}
+
 #pragma mark -
 #pragma mark iAd Delegate Methods
 
@@ -355,8 +388,7 @@ static CJPAdController *CJPSharedManager = nil;
     _showingiAd = YES;
     
     [UIView animateWithDuration:0.25 animations:^{
-        [self.view setNeedsLayout];
-        [self.view layoutIfNeeded];
+        [self layoutAds];
     }];
 }
 
@@ -382,8 +414,7 @@ static CJPAdController *CJPSharedManager = nil;
     }
     
     [UIView animateWithDuration:0.25 animations:^{
-        [self.view setNeedsLayout];
-        [self.view layoutIfNeeded];
+        [self layoutAds];
     }];
 }
 
@@ -421,8 +452,7 @@ static CJPAdController *CJPSharedManager = nil;
     _showingAdMob = YES;
     
     [UIView animateWithDuration:0.25 animations:^{
-        [self.view setNeedsLayout];
-        [self.view layoutIfNeeded];
+        [self layoutAds];
     }];
 }
 
@@ -447,8 +477,7 @@ static CJPAdController *CJPSharedManager = nil;
     }
     
     [UIView animateWithDuration:0.25 animations:^{
-        [self.view setNeedsLayout];
-        [self.view layoutIfNeeded];
+        [self layoutAds];
     }];
 }
 

@@ -1,4 +1,6 @@
 # Changes
+##1.3 - 12th September, 2012
+* Fixed iOS 4 compatibility. Now works on iOS 4.0+ (was 4.2+ before).
 
 ##1.2 - 5th September, 2012
 * Completely rewrote class - now shares a single instance of ADBannerView's across views, as recommended by Apple.
