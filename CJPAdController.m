@@ -41,36 +41,38 @@ static CJPAdController *CJPSharedManager = nil;
     self = [super init];
     if (self != nil) {
         
-        // If the user has removed ads, we don't need to do anything
+        // Ads Removed?
+        _adsRemoved = [[NSUserDefaults standardUserDefaults] boolForKey:kAdsPurchasedKey];
+        
+        _contentController = contentController;
+        
+        // Create a container view to hold both our parent view and the banner view
+        // iOS 5+ can use native view containment
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5) {
+            _containerView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+            [self addChildViewController:_contentController];
+            [_containerView addSubview:_contentController.view];
+            [_contentController didMoveToParentViewController:self];
+            self.view = _containerView;
+        }
+        // iOS 4+ can't
+        else {
+            // iOS 4 Support
+            // Since iOS 4 does not support view containment, we create a new view that fills the screen
+            // We add our contentController's view as a subview to this, as well as an adview
+            // We then set this new view as the main view.
+            _iOS4 = YES;
+            _containerView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+            _containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
+            [_containerView addSubview:_contentController.view];
+            self.view = _containerView;
+        }
+        
+        // iOS 4.0/4.1 iAd Support
+        kADBannerContentSizeIdentifierPortrait = &ADBannerContentSizeIdentifierPortrait != nil ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifier320x50;
+        kADBannerContentSizeIdentifierLandscape = &ADBannerContentSizeIdentifierLandscape != nil ? ADBannerContentSizeIdentifierLandscape : ADBannerContentSizeIdentifier480x32;
+        
         if (!_adsRemoved) {
-            _contentController = contentController;
-            
-            // Create a container view to hold both our parent view and the banner view
-            // iOS 5+ can use native view containment
-            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5) {
-                _containerView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-                [self addChildViewController:_contentController];
-                [_containerView addSubview:_contentController.view];
-                [_contentController didMoveToParentViewController:self];
-                self.view = _containerView;
-            }
-            // iOS 4+ can't
-            else {
-                // iOS 4 Support
-                // Since iOS 4 does not support view containment, we create a new view that fills the screen
-                // We add our contentController's view as a subview to this, as well as an adview
-                // We then set this new view as the main view.
-                _iOS4 = YES;
-                _containerView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-                _containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
-                [_containerView addSubview:_contentController.view];
-                self.view = _containerView;
-            }
-            
-            // iOS 4.0/4.1 iAd Support
-            kADBannerContentSizeIdentifierPortrait = &ADBannerContentSizeIdentifierPortrait != nil ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifier320x50;
-            kADBannerContentSizeIdentifierLandscape = &ADBannerContentSizeIdentifierLandscape != nil ? ADBannerContentSizeIdentifierLandscape : ADBannerContentSizeIdentifier480x32;
-            
             [self performSelector:@selector(createBanner:) withObject:kDefaultAds afterDelay:kWaitTime];
         }
     }
