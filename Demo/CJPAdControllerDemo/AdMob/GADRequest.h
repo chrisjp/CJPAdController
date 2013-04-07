@@ -55,8 +55,8 @@ typedef enum {
 
 #pragma mark Testing
 
-// Setting this property to YES will return a test ad for this request.
-@property (nonatomic, getter=isTesting) BOOL testing;
+// Add the device's identifier into this array for testing purposes.
+@property (nonatomic, retain) NSArray *testDevices;
 
 #pragma mark User Information
 
@@ -93,12 +93,13 @@ typedef enum {
 #pragma mark -
 #pragma mark Deprecated Methods
 
-// Please use the testing property instead.
-@property (nonatomic, retain) NSArray *testDevices;
-
 // Accesses the additionalParameters for the "GoogleAdmob" ad network. Please
 // use -registerAdNetworkExtras: method above and pass an instance of
 // GADAdMobExtras instead.
 @property (nonatomic, retain) NSDictionary *additionalParameters;
+
+// This property has been deprecated with the latest SDK releases. Please use
+// testDevices.
+@property (nonatomic, getter=isTesting) BOOL testing;
 
 @end
