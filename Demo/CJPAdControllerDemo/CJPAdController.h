@@ -1,9 +1,9 @@
 //
 //  CJPAdController.h
-//  ChrisJP
+//  CJPAdController
 //
 //  Created by Chris Phillips on 19/11/2011.
-//  Copyright (c) 2011 ChrisJP. All rights reserved.
+//  Copyright (c) 2011 Chris Phillips. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -49,13 +49,12 @@ static BOOL const kAdTesting = YES;
 @property (nonatomic, assign) BOOL              showingAdMob;
 @property (nonatomic, assign) BOOL              adsRemoved;
 @property (nonatomic, assign) BOOL              iOS4;
-@property (nonatomic, retain) NSString          *kADBannerContentSizeIdentifierPortrait;
-@property (nonatomic, retain) NSString          *kADBannerContentSizeIdentifierLandscape;
 
 + (CJPAdController *)sharedManager;
 - (id)initWithContentViewController:(UIViewController *)contentController;
 - (void)createBanner:(NSString *)adType;
 - (void)removeBanner:(NSString *)adType permanently:(BOOL)permanent;
+- (void)restoreBanner:(NSString *)adType;
 - (void)removeAllAdsForever;
 - (void)layoutAds;
 

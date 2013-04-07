@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8363BCED1711EAC2009A77BB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8363BCEC1711EAC2009A77BB /* Default-568h@2x.png */; };
+		8363BCEF1711EAE3009A77BB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8363BCEE1711EAE3009A77BB /* StoreKit.framework */; };
+		8363BCF11711EAF2009A77BB /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8363BCF01711EAF2009A77BB /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		83B0BCF41530DDEF00DCFBC3 /* AnotherExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B0BCF31530DDEF00DCFBC3 /* AnotherExample.m */; };
 		83DE0BCF152E7C2D00BE495C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83DE0BCE152E7C2D00BE495C /* UIKit.framework */; };
 		83DE0BD1152E7C2D00BE495C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83DE0BD0152E7C2D00BE495C /* Foundation.framework */; };
@@ -24,6 +27,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8363BCEC1711EAC2009A77BB /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
+		8363BCEE1711EAE3009A77BB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		8363BCF01711EAF2009A77BB /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		83958AFF15D5D4EB003E730B /* GADAdMobExtras.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADAdMobExtras.h; sourceTree = "<group>"; };
 		83958B0015D5D4EB003E730B /* GADAdNetworkExtras.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADAdNetworkExtras.h; sourceTree = "<group>"; };
 		83958B0115D5D4EB003E730B /* GADAdSize.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADAdSize.h; sourceTree = "<group>"; };
@@ -61,13 +67,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83DE0C08152E7ED200BE495C /* iAd.framework in Frameworks */,
-				83DE0C06152E7ECC00BE495C /* SystemConfiguration.framework in Frameworks */,
-				83DE0C04152E7EC500BE495C /* MessageUI.framework in Frameworks */,
-				83DE0C02152E7EBF00BE495C /* AudioToolbox.framework in Frameworks */,
 				83DE0BCF152E7C2D00BE495C /* UIKit.framework in Frameworks */,
 				83DE0BD1152E7C2D00BE495C /* Foundation.framework in Frameworks */,
+				83DE0C04152E7EC500BE495C /* MessageUI.framework in Frameworks */,
+				83DE0C06152E7ECC00BE495C /* SystemConfiguration.framework in Frameworks */,
 				83DE0BD3152E7C2D00BE495C /* CoreGraphics.framework in Frameworks */,
+				83DE0C02152E7EBF00BE495C /* AudioToolbox.framework in Frameworks */,
+				83DE0C08152E7ED200BE495C /* iAd.framework in Frameworks */,
+				8363BCEF1711EAE3009A77BB /* StoreKit.framework in Frameworks */,
+				8363BCF11711EAF2009A77BB /* AdSupport.framework in Frameworks */,
 				83DE0C15152E821600BE495C /* libGoogleAdMobAds.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -75,6 +83,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8363BCF21711EC60009A77BB /* CJPAdController */ = {
+			isa = PBXGroup;
+			children = (
+				83DE0BFF152E7E9A00BE495C /* CJPAdController.h */,
+				83DE0C00152E7E9A00BE495C /* CJPAdController.m */,
+			);
+			name = CJPAdController;
+			sourceTree = "<group>";
+		};
+		8363BCF31711EC75009A77BB /* Default Images */ = {
+			isa = PBXGroup;
+			children = (
+				8363BCEC1711EAC2009A77BB /* Default-568h@2x.png */,
+			);
+			name = "Default Images";
+			sourceTree = "<group>";
+		};
 		83DE0BBF152E7C2D00BE495C = {
 			isa = PBXGroup;
 			children = (
@@ -97,11 +122,13 @@
 			children = (
 				83DE0BCE152E7C2D00BE495C /* UIKit.framework */,
 				83DE0BD0152E7C2D00BE495C /* Foundation.framework */,
-				83DE0BD2152E7C2D00BE495C /* CoreGraphics.framework */,
-				83DE0C07152E7ED200BE495C /* iAd.framework */,
-				83DE0C01152E7EBF00BE495C /* AudioToolbox.framework */,
-				83DE0C05152E7ECC00BE495C /* SystemConfiguration.framework */,
 				83DE0C03152E7EC500BE495C /* MessageUI.framework */,
+				83DE0BD2152E7C2D00BE495C /* CoreGraphics.framework */,
+				83DE0C05152E7ECC00BE495C /* SystemConfiguration.framework */,
+				83DE0C01152E7EBF00BE495C /* AudioToolbox.framework */,
+				8363BCEE1711EAE3009A77BB /* StoreKit.framework */,
+				83DE0C07152E7ED200BE495C /* iAd.framework */,
+				8363BCF01711EAF2009A77BB /* AdSupport.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -109,14 +136,14 @@
 		83DE0BD4152E7C2D00BE495C /* CJPAdControllerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				8363BCF31711EC75009A77BB /* Default Images */,
+				8363BCF21711EC60009A77BB /* CJPAdController */,
 				83DE0BDD152E7C2D00BE495C /* AppDelegate.h */,
 				83DE0BDE152E7C2D00BE495C /* AppDelegate.m */,
 				83DE0BFA152E7E2900BE495C /* RootViewController.h */,
 				83DE0BFB152E7E2900BE495C /* RootViewController.m */,
 				83B0BCF21530DDEF00DCFBC3 /* AnotherExample.h */,
 				83B0BCF31530DDEF00DCFBC3 /* AnotherExample.m */,
-				83DE0BFF152E7E9A00BE495C /* CJPAdController.h */,
-				83DE0C00152E7E9A00BE495C /* CJPAdController.m */,
 				83DE0C0D152E821600BE495C /* AdMob */,
 				83DE0BD5152E7C2D00BE495C /* Supporting Files */,
 			);
@@ -203,6 +230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				83DE0BD9152E7C2D00BE495C /* InfoPlist.strings in Resources */,
+				8363BCED1711EAC2009A77BB /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,10 +267,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = (
-					armv6,
-					armv7,
-				);
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -258,7 +283,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -268,10 +293,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = (
-					armv6,
-					armv7,
-				);
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -280,7 +302,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -291,15 +313,16 @@
 		83DE0BE3152E7C2D00BE495C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CJPAdControllerDemo/CJPAdControllerDemo-Prefix.pch";
 				INFOPLIST_FILE = "CJPAdControllerDemo/CJPAdControllerDemo-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/CJPAdControllerDemo/AdMob\"",
 				);
-				OTHER_LDFLAGS = "-all_load";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -308,15 +331,16 @@
 		83DE0BE4152E7C2D00BE495C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CJPAdControllerDemo/CJPAdControllerDemo-Prefix.pch";
 				INFOPLIST_FILE = "CJPAdControllerDemo/CJPAdControllerDemo-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/CJPAdControllerDemo/AdMob\"",
 				);
-				OTHER_LDFLAGS = "-all_load";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
