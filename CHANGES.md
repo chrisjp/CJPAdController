@@ -1,4 +1,11 @@
 # Changes
+##1.4 - 7th April, 2013
+* Updated bundled AdMob library to 6.3.0.
+* iOS 4.3 is now the minimum supported version of iOS. This is due to Apple dropping support for the armv6 architecture.
+* Removed deprecated code that was needed for iOS 4.0/4.1.
+* Added a method to enable you to restore ads to your view after removing them.
+* Updated the demo project to reflect the updated behaviour in removing and restoring ads, also added iPhone 5 support.
+
 ##1.3 - 12th September, 2012
 * Fixed iOS 4 compatibility. Now works on iOS 4.0+ (was 4.2+ before).
 

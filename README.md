@@ -1,6 +1,6 @@
-# CJPAdController 1.3
+# CJPAdController 1.4
 
-CJPAdController is a singleton class allowing easy implementation of iAds and Google AdMob ads in your iOS app. It supports all devices and orientations, and works on iOS 4.0+
+CJPAdController is a singleton class allowing easy implementation of iAds and Google AdMob ads in your iOS app. It supports all devices and orientations, and works on iOS 4.3+
 
 ## Features
 * Supports iPhone, iPod touch and iPad, in any orientation
@@ -11,9 +11,13 @@ CJPAdController is a singleton class allowing easy implementation of iAds and Go
 * Automatically hides from view if there are no ads to display
 * Support for hiding ads from users who have purchased a "Remove Ads" In-App Purchase (assumes you store a boolean value for this in `NSUserDefaults`)
 
+![CJPAdController screenshot](http://i.imgur.com/6PMvwBol.png)
+
 ## Usage
 
 CJPAdController is intended to be used within a UINavigationController, and will display adverts at the top or bottom of your view. It may work in other scenarios, such as within a TabBarController, however this has not been tested.
+
+### Adding to your project
 
 **1.** Add both `CJPAdController.h` and `CJPAdController.m` to your project. 
 
@@ -47,32 +51,52 @@ CJPAdController is intended to be used within a UINavigationController, and will
 
 **5.** You're almost done! Just check the other requirements below to make sure you've got all the right frameworks included in your project.
   
-## Other Requirements
+### Other Requirements
 In order to compile, you'll need to have these frameworks included in your project:
 
 For iAd:
 
   1. `iAd.framework`
+  2. `AdSupport.framework` (Optional)
   
 For AdMob:
 
   1. `AudioToolbox.framework`
   2. `MessageUI.framework`
   3. `SystemConfiguration.framework`
+  4. `CoreGraphics.framework`
+  5. `StoreKit.framework`
+  6. `AdSupport.framework` (Optional)
+
   
-NOTE: For AdMob to work ensure you also include the [AdMob SDK](https://developers.google.com/mobile-ads-sdk/download#downloadios) files. Please also read the note on setting [Other Linker Flags](https://developers.google.com/mobile-ads-sdk/docs/) in your project if you intend to use AdMob. You should use SDK version 6.0.0 or greater with CJPAdController. Version 6.1.4 is included in the demo app in this project.
+**NOTE:** For AdMob to work ensure you also include the [**AdMob SDK**](https://developers.google.com/mobile-ads-sdk/download#downloadios) files, and please also read the note on setting [**Other Linker Flags**](https://developers.google.com/mobile-ads-sdk/docs/) in your project. You should use the latest SDK in your project (at least 6.2.0 or greater). Version 6.3.0 is included in the demo app in this project.
 
 
-## Notes
-  1. This class has been written for projects using ARC, and as such, no memory management is handled by the class.
-  2. If you offer your users an In-App Purchase for removing ads, this class does offer some functionality for you to provide this. Assuming you have your IAP methods all set up, you should call the following method after a user successfully buys your IAP:
+### Programatically hiding, removing, and restoring ads
+There are several ways you can programatically manipulate ads in your view in order to hide, remove, or restore them.
 
+To temporarily hide an ad (temporarily moves it off-screen, will reappear when next request is fired, usually within 1-5 minutes):
+```objective-c
+[[CJPAdController sharedManager] removeBanner:@"iAd" permanently:NO];
+```
+
+To remove an ad from the view indefinitely:
+```objective-c
+[[CJPAdController sharedManager] removeBanner:@"iAd" permanently:YES];
+```
+
+To restore ads to the view after calling the above method (note that if restoreBanner is left empty here, your default ad type will be used):
+```objective-c
+[[CJPAdController sharedManager] restoreBanner:@"iAd"];
+```
+
+To permanently remove ads forever (for example if a user makes an in-app purchase to remove ads, a boolean can be set in `NSUserDefaults` so this user will never be shown ads again):
 ```objective-c
 [[CJPAdController sharedManager] removeAllAdsForever];
 ```
 
 ## To-Do
-Planned features to be added include:
+Possible features to be added include:
 
 * Add support for additional ad networks
 
@@ -81,7 +105,7 @@ Planned features to be added include:
 If you're feeling kind you can provide attribution and a link to [this GitHub project](https://github.com/chrisjp/CJPAdController), but you don't have to.
 
 ### Licence
-Copyright (c) 2011-2012 Chris Phillips
+Copyright (c) 2011-2013 Chris Phillips
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

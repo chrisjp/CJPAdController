@@ -1,9 +1,9 @@
 //
 //  CJPAdController.m
-//  ChrisJP
+//  CJPAdController
 //
 //  Created by Chris Phillips on 19/11/2011.
-//  Copyright (c) 2011 ChrisJP. All rights reserved.
+//  Copyright (c) 2011 Chris Phillips. All rights reserved.
 //
 
 #import "CJPAdController.h"
@@ -20,8 +20,6 @@ static CJPAdController *CJPSharedManager = nil;
 @synthesize showingAdMob         = _showingAdMob;
 @synthesize adsRemoved           = _adsRemoved;
 @synthesize iOS4                 = _iOS4;
-@synthesize kADBannerContentSizeIdentifierLandscape;
-@synthesize kADBannerContentSizeIdentifierPortrait;
 
 #pragma mark -
 #pragma mark Class Methods
@@ -68,10 +66,6 @@ static CJPAdController *CJPSharedManager = nil;
             self.view = _containerView;
         }
         
-        // iOS 4.0/4.1 iAd Support
-        kADBannerContentSizeIdentifierPortrait = &ADBannerContentSizeIdentifierPortrait != nil ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifier320x50;
-        kADBannerContentSizeIdentifierLandscape = &ADBannerContentSizeIdentifierLandscape != nil ? ADBannerContentSizeIdentifierLandscape : ADBannerContentSizeIdentifier480x32;
-        
         if (!_adsRemoved) {
             [self performSelector:@selector(createBanner:) withObject:kDefaultAds afterDelay:kWaitTime];
         }
@@ -91,12 +85,12 @@ static CJPAdController *CJPSharedManager = nil;
     if([adType isEqualToString:@"iAd"]){
         _iAdView = [[ADBannerView alloc] initWithFrame:CGRectZero];
         
-        _iAdView.requiredContentSizeIdentifiers = [NSSet setWithObjects:kADBannerContentSizeIdentifierPortrait, kADBannerContentSizeIdentifierLandscape, nil];
+        _iAdView.requiredContentSizeIdentifiers = [NSSet setWithObjects:ADBannerContentSizeIdentifierPortrait, ADBannerContentSizeIdentifierLandscape, nil];
         
         if (!inPortrait)
-            _iAdView.currentContentSizeIdentifier = kADBannerContentSizeIdentifierLandscape;
+            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
         else
-            _iAdView.currentContentSizeIdentifier = kADBannerContentSizeIdentifierPortrait;
+            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
         
         // Set initial frame to be offscreen
         CGRect bannerFrame = _iAdView.frame;
@@ -150,8 +144,8 @@ static CJPAdController *CJPSharedManager = nil;
         
         // Request an ad
         GADRequest *adMobRequest = [GADRequest request];
-        // Uncomment the following line if you wish to receive test ads (simulator only)
-        //adMobRequest.testing = YES;
+        // Uncomment the following line and add device identifier strings to the array to get test AdMob ads on those devices
+        //adMobRequest.testDevices = [NSArray arrayWithObjects:<#(id), ...#>, nil];
         [_adMobView loadRequest:adMobRequest];
     }
     
@@ -160,8 +154,13 @@ static CJPAdController *CJPSharedManager = nil;
 
 - (void)removeBanner:(NSString *)adType permanently:(BOOL)permanent
 {
-    // Hides the banner from view
-    // If permanent is set to YES we'll additionally set its view to nil and remove it
+    // When `permanently` is NO
+    // This method simply hides the banner from view - the banner will show again when the next ad request is fired...
+    // ... This can be 1-5 minutes for iAd, and 2 minutes for AdMob (this can be changed in your AdMob account)
+    
+    // When `permanently` is YES
+    // This method will set the banner's view to nil and remove the banner completely from the container view
+    // A new banner will not be shown unless you call restoreBanner on it.
     
     // iAd
     if ([adType isEqualToString:@"iAd"]) {
@@ -199,9 +198,25 @@ static CJPAdController *CJPSharedManager = nil;
         }
     }
     
+    if(kAdTesting && permanent) NSLog(@"Permanently removed %@ from view.", adType);
+    
     [UIView animateWithDuration:0.25 animations:^{
         [self layoutAds];
     }];
+}
+
+- (void)restoreBanner:(NSString *)adType
+{
+    // This method restores ads to the view by creating a new banner, intended to be used after removeBanner permanently is called.
+    // NOTE: The boolean _adsRemoved is taken into account.
+    
+    if (!_adsRemoved) {
+        if (adType.length==0) {
+            adType = kDefaultAds;
+        }
+        if(kAdTesting) NSLog(@"Restoring ads to view with new %@.", adType);
+        [self performSelector:@selector(createBanner:) withObject:adType afterDelay:0.0];
+    }
 }
 
 - (void)removeAllAdsForever
@@ -236,7 +251,7 @@ static CJPAdController *CJPSharedManager = nil;
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     // BUG FIX:
-    // Since we can't use view containment in iOS 4, creating our own container means the 
+    // Since we can't use view containment in iOS 4, creating our own container means the
     // navigationBar does not get resized on rotation because it is not the rootViewController
     // The following code manually resizes the navBar - not applicable on iPad as the navBar remains the same size anyway
     if (_iOS4) {
@@ -278,14 +293,14 @@ static CJPAdController *CJPSharedManager = nil;
     
     BOOL isPortrait = UIInterfaceOrientationIsPortrait(self.interfaceOrientation);
     BOOL isPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? YES : NO;
-        
+    
     CGRect contentFrame = self.view.bounds;
     
     if (_iAdView) {
         if (isPortrait) {
-            _iAdView.currentContentSizeIdentifier = kADBannerContentSizeIdentifierPortrait;
+            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
         } else {
-            _iAdView.currentContentSizeIdentifier = kADBannerContentSizeIdentifierLandscape;
+            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
         }
         
         CGRect bannerFrame = _iAdView.frame;
