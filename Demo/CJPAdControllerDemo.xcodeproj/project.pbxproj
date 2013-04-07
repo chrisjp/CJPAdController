@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8363BCED1711EAC2009A77BB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8363BCEC1711EAC2009A77BB /* Default-568h@2x.png */; };
 		8363BCEF1711EAE3009A77BB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8363BCEE1711EAE3009A77BB /* StoreKit.framework */; };
 		8363BCF11711EAF2009A77BB /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8363BCF01711EAF2009A77BB /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		83B0BCF41530DDEF00DCFBC3 /* AnotherExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B0BCF31530DDEF00DCFBC3 /* AnotherExample.m */; };
+		83B95ACC1712155A000AF420 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83B95ACB1712155A000AF420 /* Default-568h@2x.png */; };
 		83DE0BCF152E7C2D00BE495C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83DE0BCE152E7C2D00BE495C /* UIKit.framework */; };
 		83DE0BD1152E7C2D00BE495C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83DE0BD0152E7C2D00BE495C /* Foundation.framework */; };
 		83DE0BD3152E7C2D00BE495C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83DE0BD2152E7C2D00BE495C /* CoreGraphics.framework */; };
@@ -27,7 +27,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8363BCEC1711EAC2009A77BB /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		8363BCEE1711EAE3009A77BB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		8363BCF01711EAF2009A77BB /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		83958AFF15D5D4EB003E730B /* GADAdMobExtras.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADAdMobExtras.h; sourceTree = "<group>"; };
@@ -35,6 +34,7 @@
 		83958B0115D5D4EB003E730B /* GADAdSize.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADAdSize.h; sourceTree = "<group>"; };
 		83B0BCF21530DDEF00DCFBC3 /* AnotherExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnotherExample.h; sourceTree = "<group>"; };
 		83B0BCF31530DDEF00DCFBC3 /* AnotherExample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnotherExample.m; sourceTree = "<group>"; };
+		83B95ACB1712155A000AF420 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		83DE0BCA152E7C2D00BE495C /* CJPAdControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CJPAdControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83DE0BCE152E7C2D00BE495C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		83DE0BD0152E7C2D00BE495C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -95,7 +95,7 @@
 		8363BCF31711EC75009A77BB /* Default Images */ = {
 			isa = PBXGroup;
 			children = (
-				8363BCEC1711EAC2009A77BB /* Default-568h@2x.png */,
+				83B95ACB1712155A000AF420 /* Default-568h@2x.png */,
 			);
 			name = "Default Images";
 			sourceTree = "<group>";
@@ -230,7 +230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				83DE0BD9152E7C2D00BE495C /* InfoPlist.strings in Resources */,
-				8363BCED1711EAC2009A77BB /* Default-568h@2x.png in Resources */,
+				83B95ACC1712155A000AF420 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
