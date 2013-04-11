@@ -13,6 +13,8 @@
 @property (nonatomic, retain) UIScrollView *scrollView;
 
 - (void)anotherExample;
-- (void)removeAds:(BOOL)permanently;
+- (void)removeAdsPermanently;
+- (void)removeAdsTemporarily;
+- (void)restoreAds;
 
 @end
