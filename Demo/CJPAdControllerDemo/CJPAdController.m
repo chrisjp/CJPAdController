@@ -107,6 +107,7 @@ static CJPAdController *CJPSharedManager = nil;
         _iAdView.delegate = self;
         _iAdView.hidden = YES;
         [_containerView addSubview:_iAdView];
+        [_containerView sendSubviewToBack:_iAdView];
     }
     
     // Create AdMob
@@ -148,6 +149,7 @@ static CJPAdController *CJPSharedManager = nil;
         _adMobView.delegate = self;
         _adMobView.hidden = YES;
         [_containerView addSubview:_adMobView];
+        [_containerView sendSubviewToBack:_adMobView];
         
         // Request an ad
         GADRequest *adMobRequest = [GADRequest request];
