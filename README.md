@@ -13,8 +13,9 @@ CJPAdController is a singleton class allowing easy implementation of iAds and Go
 
 ## Screenshots
 
-![CJPAdController screenshot](http://i.imgur.com/6PMvwBom.png) ![CJPAdController screenshot](http://i.imgur.com/hLGgUkZm.png)
-![CJPAdController screenshot](http://i.imgur.com/c0mvCv2m.png) ![CJPAdController screenshot](http://i.imgur.com/MFA5gqkm.png) ![CJPAdController screenshot](http://i.imgur.com/MFXBdskm.png)
+[![CJPAdController screenshot](http://i.imgur.com/6PMvwBom.png)](http://i.imgur.com/6PMvwBo.png) [![CJPAdController screenshot](http://i.imgur.com/hLGgUkZm.png)](http://i.imgur.com/hLGgUkZ.png)
+
+[![CJPAdController screenshot](http://i.imgur.com/c0mvCv2m.png)](http://i.imgur.com/c0mvCv2.png) [![CJPAdController screenshot](http://i.imgur.com/MFA5gqkm.png)](http://i.imgur.com/MFA5gqk.png) [![CJPAdController screenshot](http://i.imgur.com/MFXBdskm.png)](http://i.imgur.com/MFXBdsk.png)
 
 ## Usage
 
