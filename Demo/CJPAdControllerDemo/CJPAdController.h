@@ -29,6 +29,9 @@ static BOOL const kUseAdMobSmartSize = YES;
 // Where to position the ad on screen ("top" or "bottom")
 static NSString * const kAdPosition = @"bottom";
 
+// Show ad above the TabBar when ad position is set to bottom? (only relevant if you use a UITabBarController)
+static BOOL const kAboveTabBar = YES;
+
 // Seconds to wait before displaying ad after the view loads (0.0 = instant)
 static float const kWaitTime = 2.0;
 
@@ -48,6 +51,7 @@ static BOOL const kAdTesting = YES;
 @property (nonatomic, assign) BOOL              showingiAd;
 @property (nonatomic, assign) BOOL              showingAdMob;
 @property (nonatomic, assign) BOOL              adsRemoved;
+@property (nonatomic, assign) BOOL              isTabBar;
 @property (nonatomic, assign) BOOL              iOS4;
 
 + (CJPAdController *)sharedManager;

@@ -61,6 +61,7 @@
     [button setTitle:@"Push Another View" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(anotherExample) forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:button];
+    if ([self.parentViewController.parentViewController isKindOfClass:[UITabBarController class]]) button.hidden = YES;
     
     // Button to remove ads temporarily
     UIButton *buttonRAT = [UIButton buttonWithType:UIButtonTypeRoundedRect];

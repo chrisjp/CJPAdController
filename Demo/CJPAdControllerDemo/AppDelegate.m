@@ -8,11 +8,13 @@
 
 #import "AppDelegate.h"
 #import "RootViewController.h"
+#import "AnotherExample.h"
 
 @implementation AppDelegate
 
 @synthesize window = _window;
 @synthesize navController = _navController;
+@synthesize tabController = _tabController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -20,12 +22,53 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
-    RootViewController *rootVC = [[RootViewController alloc] init];
-    _navController = [[UINavigationController alloc] initWithRootViewController:rootVC];
-    _adController = [[CJPAdController sharedManager] initWithContentViewController:_navController];
+    /*
+          
+     By default this demo app is set up to use a UINavigationController.
+     Change the boolean below to YES if you wish to see it using a UITabBarController instead.
+     
+    */
+    BOOL useTabBar = NO;
     
-    self.window.rootViewController = _adController;
+    if (!useTabBar) {
+        // 1. UINavigationController Example
+        
+        // init the nav controller and the root view controller
+        RootViewController *rootVC = [[RootViewController alloc] init];
+        _navController = [[UINavigationController alloc] initWithRootViewController:rootVC];
+        
+        // init CJPAdController with the nav controller
+        _adController = [[CJPAdController sharedManager] initWithContentViewController:_navController];
+        
+        // set the ad controller as the root view controller
+        self.window.rootViewController = _adController;
+    }
+    else {
+        // 2. UITabBarController Example
+        
+        // init the view controllers
+        UIViewController *viewController1 = [[RootViewController alloc] init];
+        UIViewController *viewController2 = [[AnotherExample alloc] init];
+        
+        // init the navigation
+        UINavigationController *navController1 = [[UINavigationController alloc] initWithRootViewController:viewController1];
+        navController1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"CJPAdController Demo" image:nil tag:666];
+        UINavigationController *navController2 = [[UINavigationController alloc] initWithRootViewController:viewController2];
+        navController2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Another Tab" image:nil tag:667];
+        
+        // init the tab bar controller
+        _tabController = [[UITabBarController alloc] init];
+        _tabController.viewControllers = @[navController1, navController2];
+        
+        // init CJPAdController with the tab bar controller
+        _adController = [[CJPAdController sharedManager] initWithContentViewController:_tabController];
+        
+        // set the ad controller as the root view controller
+        self.window.rootViewController = _adController;
+    }
+    
     [self.window makeKeyAndVisible];
+    
     return YES;
 }
 

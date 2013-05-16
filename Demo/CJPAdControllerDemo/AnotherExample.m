@@ -18,7 +18,10 @@
 {
     [super viewDidLoad];
 
-    self.title = @"Another View";
+    if ([self.parentViewController.parentViewController isKindOfClass:[UITabBarController class]])
+        self.title = @"Another Tab";
+    else
+        self.title = @"A Tableview";
 }
 
 - (void)viewDidUnload
