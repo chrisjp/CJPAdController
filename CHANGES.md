@@ -1,4 +1,9 @@
 # Changes
+
+##1.4.1 - 16th May, 2013
+* Better support for use within apps using a UITabBarController - ads positioned at "bottom" can now be set to appear above or below the TabBar
+ * A very basic TabBar example is included in the demo app (change the `useTabBar` BOOL to YES in AppDelegate.m to see it in action)
+
 ##1.4 - 7th April, 2013
 * Updated bundled AdMob library to 6.3.0.
 * iOS 4.3 is now the minimum supported version of iOS. This is due to Apple dropping support for the armv6 architecture.

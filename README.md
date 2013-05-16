@@ -1,4 +1,4 @@
-# CJPAdController 1.4
+# CJPAdController 1.4.1
 
 CJPAdController is a singleton class allowing easy implementation of iAds and Google AdMob ads in your iOS app. It supports all devices and orientations, and works on iOS 4.3+
 
@@ -11,11 +11,14 @@ CJPAdController is a singleton class allowing easy implementation of iAds and Go
 * Automatically hides from view if there are no ads to display
 * Support for hiding ads from users who have purchased a "Remove Ads" In-App Purchase (assumes you store a boolean value for this in `NSUserDefaults`)
 
-![CJPAdController screenshot](http://i.imgur.com/6PMvwBol.png)
+## Screenshots
+
+![CJPAdController screenshot](http://i.imgur.com/6PMvwBom.png) ![CJPAdController screenshot](http://i.imgur.com/hLGgUkZm.png)
+![CJPAdController screenshot](http://i.imgur.com/c0mvCv2m.png) ![CJPAdController screenshot](http://i.imgur.com/MFA5gqkm.png) ![CJPAdController screenshot](http://i.imgur.com/MFXBdskm.png)
 
 ## Usage
 
-CJPAdController is intended to be used within a UINavigationController, and will display adverts at the top or bottom of your view. It may work in other scenarios, such as within a TabBarController, however this has not been tested.
+CJPAdController will automatically display your ads at the top or bottom of your view. It is designed to be used with either a UINavigationController or UITabBarController. Note that when used with a UITabBarController and display ads at the bottom of the view, you have an extra configuration option to choose whether you want the ads to be appear above or below the tab bar (as seen in the screenshots above).
 
 ### Adding to your project
 
