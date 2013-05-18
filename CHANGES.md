@@ -1,5 +1,8 @@
 # Changes
 
+####1.4.3 - 18th May, 2013
+* Fix bug introduced in 1.4.2 where ads may be untappable when using a UITabBarController
+
 ####1.4.2 - 17th May, 2013
 * Fix for ads sliding up over TabBar (now slide up from underneath it)
  

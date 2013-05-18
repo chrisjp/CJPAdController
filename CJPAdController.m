@@ -106,8 +106,7 @@ static CJPAdController *CJPSharedManager = nil;
         _iAdView.frame = bannerFrame;
         _iAdView.delegate = self;
         _iAdView.hidden = YES;
-        [_containerView addSubview:_iAdView];
-        [_containerView sendSubviewToBack:_iAdView];
+        [_containerView insertSubview:_iAdView atIndex:0];
     }
     
     // Create AdMob
@@ -148,8 +147,7 @@ static CJPAdController *CJPSharedManager = nil;
         _adMobView.rootViewController = self;
         _adMobView.delegate = self;
         _adMobView.hidden = YES;
-        [_containerView addSubview:_adMobView];
-        [_containerView sendSubviewToBack:_adMobView];
+        [_containerView insertSubview:_adMobView atIndex:0];
         
         // Request an ad
         GADRequest *adMobRequest = [GADRequest request];
@@ -183,6 +181,7 @@ static CJPAdController *CJPSharedManager = nil;
         }
         _iAdView.frame = bannerFrame;
         _iAdView.hidden = YES;
+        [_containerView sendSubviewToBack:_iAdView];
         if (permanent) {
             _iAdView.delegate = nil;
             [_iAdView removeFromSuperview];
@@ -202,6 +201,7 @@ static CJPAdController *CJPSharedManager = nil;
         }
         _adMobView.frame = bannerFrame;
         _adMobView.hidden = YES;
+        [_containerView sendSubviewToBack:_adMobView];
         if (permanent) {
             _adMobView.delegate = nil;
             [_adMobView removeFromSuperview];
@@ -429,9 +429,14 @@ static CJPAdController *CJPSharedManager = nil;
     _showingiAd = YES;
     _iAdView.hidden = NO;
     
-    [UIView animateWithDuration:0.25 animations:^{
-        [self layoutAds];
-    }];
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         [self layoutAds];
+                     }
+                     completion:^(BOOL finished){
+                         // Ensure view isn't behind the container and untappable
+                         if (finished) [_containerView bringSubviewToFront:_iAdView];
+                     }];
 }
 
 - (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
@@ -494,9 +499,14 @@ static CJPAdController *CJPSharedManager = nil;
     _showingAdMob = YES;
     _adMobView.hidden = NO;
     
-    [UIView animateWithDuration:0.25 animations:^{
-        [self layoutAds];
-    }];
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         [self layoutAds];
+                     }
+                     completion:^(BOOL finished){
+                         // Ensure view isn't behind the container and untappable
+                         if (finished) [_containerView bringSubviewToFront:_adMobView];
+                     }];
 }
 
 - (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error

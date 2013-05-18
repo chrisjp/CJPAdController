@@ -106,8 +106,7 @@ static CJPAdController *CJPSharedManager = nil;
         _iAdView.frame = bannerFrame;
         _iAdView.delegate = self;
         _iAdView.hidden = YES;
-        [_containerView addSubview:_iAdView];
-        [_containerView sendSubviewToBack:_iAdView];
+        [_containerView insertSubview:_iAdView atIndex:0];
     }
     
     // Create AdMob
@@ -148,8 +147,7 @@ static CJPAdController *CJPSharedManager = nil;
         _adMobView.rootViewController = self;
         _adMobView.delegate = self;
         _adMobView.hidden = YES;
-        [_containerView addSubview:_adMobView];
-        [_containerView sendSubviewToBack:_adMobView];
+        [_containerView insertSubview:_adMobView atIndex:0];
         
         // Request an ad
         GADRequest *adMobRequest = [GADRequest request];
@@ -183,6 +181,7 @@ static CJPAdController *CJPSharedManager = nil;
         }
         _iAdView.frame = bannerFrame;
         _iAdView.hidden = YES;
+        [_containerView sendSubviewToBack:_iAdView];
         if (permanent) {
             _iAdView.delegate = nil;
             [_iAdView removeFromSuperview];
@@ -202,6 +201,7 @@ static CJPAdController *CJPSharedManager = nil;
         }
         _adMobView.frame = bannerFrame;
         _adMobView.hidden = YES;
+        [_containerView sendSubviewToBack:_adMobView];
         if (permanent) {
             _adMobView.delegate = nil;
             [_adMobView removeFromSuperview];
@@ -262,7 +262,7 @@ static CJPAdController *CJPSharedManager = nil;
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     // BUG FIX:
-    // Since we can't use view containment in iOS 4, creating our own container means the 
+    // Since we can't use view containment in iOS 4, creating our own container means the
     // navigationBar does not get resized on rotation because it is not the rootViewController
     // The following code manually resizes the navBar - not applicable on iPad as the navBar remains the same size
     if (_iOS4) {
@@ -306,7 +306,7 @@ static CJPAdController *CJPSharedManager = nil;
     BOOL isPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? YES : NO;
     UIView *tbcView = nil;
     UIView *tbcTabs = nil;
-        
+    
     CGRect contentFrame = self.view.bounds;
     if (_isTabBar && kAboveTabBar && [kAdPosition isEqualToString:@"bottom"]) {
         tbcView = [_contentController.view.subviews objectAtIndex:0];
@@ -429,9 +429,14 @@ static CJPAdController *CJPSharedManager = nil;
     _showingiAd = YES;
     _iAdView.hidden = NO;
     
-    [UIView animateWithDuration:0.25 animations:^{
-        [self layoutAds];
-    }];
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         [self layoutAds];
+                     }
+                     completion:^(BOOL finished){
+                         // Ensure view isn't behind the container and untappable
+                         if (finished) [_containerView bringSubviewToFront:_iAdView];
+                     }];
 }
 
 - (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
@@ -494,9 +499,14 @@ static CJPAdController *CJPSharedManager = nil;
     _showingAdMob = YES;
     _adMobView.hidden = NO;
     
-    [UIView animateWithDuration:0.25 animations:^{
-        [self layoutAds];
-    }];
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         [self layoutAds];
+                     }
+                     completion:^(BOOL finished){
+                         // Ensure view isn't behind the container and untappable
+                         if (finished) [_containerView bringSubviewToFront:_adMobView];
+                     }];
 }
 
 - (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error

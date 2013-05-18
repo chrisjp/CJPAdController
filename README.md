@@ -1,4 +1,4 @@
-# CJPAdController 1.4.2
+# CJPAdController 1.4.3
 
 CJPAdController is a singleton class allowing easy implementation of iAds and Google AdMob ads in your iOS app. It supports all devices and orientations, and works on iOS 4.3+
 
