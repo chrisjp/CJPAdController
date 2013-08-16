@@ -550,4 +550,9 @@ static CJPAdController *CJPSharedManager = nil;
 //
 //}
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return self.contentController.preferredStatusBarStyle;
+}
+
 @end
