@@ -22,6 +22,8 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
+    //[[UIApplication sharedApplication] setStatusBarHidden:YES];
+    
     /*
           
      By default this demo app is set up to use a UINavigationController.

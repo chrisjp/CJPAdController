@@ -20,7 +20,7 @@ static BOOL const kUseAdMob = YES;
 static NSString * const kDefaultAds = @"iAd";
 
 // Your AdMob publisher ID
-static NSString * const kAdMobID = @"a14f255d715fe96";
+static NSString * const kAdMobID = @"YOUR_PUBLISHER_ID";
 
 // Use AdMob's "Smart" size banners (will fill full width of device)
 // If set to NO, 320x50 ads will be used for iPhone/iPod and 728x90 for iPad
@@ -30,7 +30,7 @@ static BOOL const kUseAdMobSmartSize = YES;
 static NSString * const kAdPosition = @"bottom";
 
 // Show ad above the TabBar when ad position is set to bottom? (only relevant if you use a UITabBarController)
-static BOOL const kAboveTabBar = YES;
+static BOOL const kAboveTabBar = NO;
 
 // Seconds to wait before displaying ad after the view loads (0.0 = instant)
 static float const kWaitTime = 2.0;

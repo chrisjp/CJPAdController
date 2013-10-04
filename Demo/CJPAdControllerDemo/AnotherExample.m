@@ -21,7 +21,9 @@
     if ([self.parentViewController.parentViewController isKindOfClass:[UITabBarController class]])
         self.title = @"Another Tab";
     else
-        self.title = @"A Tableview";
+        self.title = @"A UITableView";
+    
+    self.tableView.showsVerticalScrollIndicator = YES;
 }
 
 - (void)viewDidUnload
@@ -38,13 +40,11 @@
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    //[[CJPAdController sharedManager] rotateAdToInterfaceOrientation:toInterfaceOrientation];
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    //[[CJPAdController sharedManager] fixAdViewAfterRotation];
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
