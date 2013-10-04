@@ -68,15 +68,22 @@ static CJPAdController *CJPSharedManager = nil;
             [_containerView addSubview:_contentController.view];
         }
         
-        // Set the container view as this view
-        self.view = _containerView;
+        if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
+            self.edgesForExtendedLayout = UIRectEdgeNone;
+        }
         
         if (!_adsRemoved) {
             [self performSelector:@selector(createBanner:) withObject:kDefaultAds afterDelay:kWaitTime];
         }
+        
+        // Set the container view as this view
+        self.view = _containerView;
     }
     return self;
 }
+
+#pragma mark -
+#pragma mark Banner Create/Destroy
 
 - (void)createBanner:(NSString *)adType
 {
@@ -151,8 +158,8 @@ static CJPAdController *CJPSharedManager = nil;
         
         // Request an ad
         GADRequest *adMobRequest = [GADRequest request];
-        // Uncomment the following line and add device identifier strings to the array to get test AdMob ads on those devices
-        //adMobRequest.testDevices = [NSArray arrayWithObjects:<#(id), ...#>, nil];
+        // Device identifier strings that will receive test AdMob ads
+        adMobRequest.testDevices = [NSArray arrayWithObjects:GAD_SIMULATOR_ID, nil];
         [_adMobView loadRequest:adMobRequest];
     }
     
@@ -304,84 +311,103 @@ static CJPAdController *CJPSharedManager = nil;
     
     BOOL isPortrait = UIInterfaceOrientationIsPortrait(self.interfaceOrientation);
     BOOL isPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? YES : NO;
+    BOOL preiOS7 = [[[UIDevice currentDevice] systemVersion] floatValue] < 7 ? YES : NO;
     UIView *tbcView = nil;
     UIView *tbcTabs = nil;
-    
+    float statusBarHeight = [UIApplication sharedApplication].statusBarHidden ? 0 : 20;
     CGRect contentFrame = self.view.bounds;
+    CGRect bannerFrame;
+    
+    // If we're showing ads in a tab bar above the bar itself, get the individual views so we can insert
+    // the ad between them
     if (_isTabBar && kAboveTabBar && [kAdPosition isEqualToString:@"bottom"]) {
         tbcView = [_contentController.view.subviews objectAtIndex:0];
         tbcTabs = [_contentController.view.subviews objectAtIndex:1];
         contentFrame.size.height -= tbcTabs.bounds.size.height;
     }
     
-    if (_iAdView) {
-        if (isPortrait) {
-            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
-        } else {
-            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
+    // If either an iAd or AdMob view has been created we'll figure out which views need adjusting
+    if (_iAdView || _adMobView) {
+        
+        // iAd specific stuff
+        if (_iAdView) {
+            if (isPortrait) _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
+            else            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
+            
+            bannerFrame = _iAdView.frame;
         }
         
-        CGRect bannerFrame = _iAdView.frame;
-        if (_showingiAd) {
+        // AdMob specific stuff
+        if (_adMobView) {
+            if (kUseAdMobSmartSize) {
+                if (isPortrait) _adMobView.adSize = kGADAdSizeSmartBannerPortrait;
+                else            _adMobView.adSize = kGADAdSizeSmartBannerLandscape;
+                
+                bannerFrame = _adMobView.frame;
+            }
+            else{
+                // Legacy AdMob doesn't have different orientation sizes - we just need to change the X offset so the ad remains centered
+                bannerFrame = _adMobView.frame;
+                CGRect screen = [[UIScreen mainScreen] bounds];
+                CGFloat screenWidth = isPortrait ? CGRectGetWidth(screen) : CGRectGetHeight(screen);
+                GADAdSize adMobSize = isPad ? kGADAdSizeLeaderboard : kGADAdSizeBanner;
+                CGSize cgAdMobSize = CGSizeFromGADAdSize(adMobSize);
+                CGFloat adMobXOffset = (screenWidth-cgAdMobSize.width)/2;
+                bannerFrame.origin.x = adMobXOffset;
+                _adMobView.frame = bannerFrame;
+            }
+        }
+        
+        // Now if we actually have an ad to display
+        if (_showingiAd || _showingAdMob) {
+            if(kAdTesting) NSLog(@"AdView has been created and an ad is ready to be shown");
+            
             if([kAdPosition isEqualToString:@"bottom"]){
-                contentFrame.size.height -= _iAdView.frame.size.height;
+                contentFrame.size.height -= bannerFrame.size.height;
                 bannerFrame.origin.y = contentFrame.size.height;
             }
             else if([kAdPosition isEqualToString:@"top"]){
-                contentFrame.size.height -= _iAdView.frame.size.height;
-                contentFrame.origin.y += _iAdView.frame.size.height;
-                bannerFrame.origin.y = 0;
+                if (preiOS7) {
+                    contentFrame.size.height -= bannerFrame.size.height;
+                    contentFrame.origin.y += bannerFrame.size.height;
+                    bannerFrame.origin.y = 0;
+                }
+                else {
+                    contentFrame.size.height -= (bannerFrame.size.height + statusBarHeight);
+                    contentFrame.origin.y = (bannerFrame.size.height + statusBarHeight);
+                    bannerFrame.origin.y = statusBarHeight;
+                }
             }
-        } else {
+        }
+        // Or if we don't...
+        else {
+            if(kAdTesting) NSLog(@"AdView has been created but there is currently NO ad to be shown");
             if([kAdPosition isEqualToString:@"bottom"]){
                 bannerFrame.origin.y = contentFrame.size.height;
             }
             else if([kAdPosition isEqualToString:@"top"]){
                 bannerFrame.origin.y = 0 - bannerFrame.size.height;
-                contentFrame.origin.y = 0;
+                
+                if (preiOS7){
+                    contentFrame.origin.y = 0;
+                }
+                else {
+                    contentFrame.origin.y = statusBarHeight;
+                }
             }
         }
-        _iAdView.frame = bannerFrame;
+        
+        if (_showingiAd)        _iAdView.frame = bannerFrame;
+        else if (_showingAdMob) _adMobView.frame = bannerFrame;
     }
     
-    if (_adMobView) {
-        if (kUseAdMobSmartSize) {
-            if (isPortrait) _adMobView.adSize = kGADAdSizeSmartBannerPortrait;
-            else _adMobView.adSize = kGADAdSizeSmartBannerLandscape;
-        }
-        else{
-            // Legacy AdMob doesn't have different orientation sizes - we just need to change the X offset so the ad remains centered
-            CGRect bannerFrame = _adMobView.frame;
-            CGRect screen = [[UIScreen mainScreen] bounds];
-            CGFloat screenWidth = isPortrait ? CGRectGetWidth(screen) : CGRectGetHeight(screen);
-            GADAdSize adMobSize = isPad ? kGADAdSizeLeaderboard : kGADAdSizeBanner;
-            CGSize cgAdMobSize = CGSizeFromGADAdSize(adMobSize);
-            CGFloat adMobXOffset = (screenWidth-cgAdMobSize.width)/2;
-            bannerFrame.origin.x = adMobXOffset;
-            _adMobView.frame = bannerFrame;
-        }
-        
-        CGRect bannerFrame = _adMobView.frame;
-        if (_showingAdMob) {
-            if([kAdPosition isEqualToString:@"bottom"]){
-                contentFrame.size.height -= _adMobView.frame.size.height;
-                bannerFrame.origin.y = contentFrame.size.height;
-            }
-            else if([kAdPosition isEqualToString:@"top"]){
-                contentFrame.size.height -= _adMobView.frame.size.height;
-                contentFrame.origin.y += _adMobView.frame.size.height;
-                bannerFrame.origin.y = 0;
-            }
-        } else {
-            if([kAdPosition isEqualToString:@"bottom"]){
-                bannerFrame.origin.y = contentFrame.size.height;
-            }
-            else if([kAdPosition isEqualToString:@"top"]){
-                bannerFrame.origin.y = 0 - bannerFrame.size.height;
-                contentFrame.origin.y = 0;
-            }
-        }
-        _adMobView.frame = bannerFrame;
+    // If we're on iOS 7 and aren't showing any ads yet, or if they have been removed
+    // reset the contentFrame taking into account the height of the status bar
+    // This is only necessary when displaying ads at the top of the view as ads displayed
+    // at the bottom do not interfere with the unified status/nav bar
+    if (!preiOS7 && !_showingiAd && !_showingAdMob && [kAdPosition isEqualToString:@"top"]) {
+        contentFrame.origin.y = statusBarHeight;
+        contentFrame.size.height -= statusBarHeight;
     }
     
     if (_isTabBar && kAboveTabBar && [kAdPosition isEqualToString:@"bottom"]) {
@@ -390,13 +416,35 @@ static CJPAdController *CJPSharedManager = nil;
     else {
         _contentController.view.frame = contentFrame;
     }
-    
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Return the application's statusBarHidden if the UIViewControllerBasedStatusBarAppearance key has not been added to Info.plist
+    // Otherwise return the prefersStatusBarHidden set by the view controller
+    if (![[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"]) {
+        return [UIApplication sharedApplication].statusBarHidden;
+    }
+    else {
+        return _contentController.prefersStatusBarHidden;
+    }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    // Return the application's statusBarStyle if the UIViewControllerBasedStatusBarAppearance key has not been added to Info.plist
+    // Otherwise return the preferredStatusBarStyle set by the view controller
+    if (![[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"]) {
+        return [UIApplication sharedApplication].statusBarStyle;
+    }
+    else {
+        return _contentController.preferredStatusBarStyle;
+    }
 }
 
 - (void)layoutAds
 {
     [self.view setNeedsLayout];
-    [self.view layoutIfNeeded];
     if(_iOS4) [self viewDidLayoutSubviews];
 }
 
@@ -549,10 +597,5 @@ static CJPAdController *CJPSharedManager = nil;
 //{
 //
 //}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return self.contentController.preferredStatusBarStyle;
-}
 
 @end

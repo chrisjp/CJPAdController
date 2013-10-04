@@ -30,7 +30,7 @@ static BOOL const kUseAdMobSmartSize = YES;
 static NSString * const kAdPosition = @"bottom";
 
 // Show ad above the TabBar when ad position is set to bottom? (only relevant if you use a UITabBarController)
-static BOOL const kAboveTabBar = YES;
+static BOOL const kAboveTabBar = NO;
 
 // Seconds to wait before displaying ad after the view loads (0.0 = instant)
 static float const kWaitTime = 2.0;
