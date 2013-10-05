@@ -7,6 +7,7 @@
 //
 
 #import "CJPAdController.h"
+#import "GADAdMobExtras.h"
 
 static CJPAdController *CJPSharedManager = nil;
 
@@ -158,8 +159,19 @@ static CJPAdController *CJPSharedManager = nil;
         
         // Request an ad
         GADRequest *adMobRequest = [GADRequest request];
+        
         // Device identifier strings that will receive test AdMob ads
-        adMobRequest.testDevices = [NSArray arrayWithObjects:GAD_SIMULATOR_ID, @"f370bf4f0c44bf1307e18caf1443ef55", nil];
+        if (kAdTesting) adMobRequest.testDevices = [NSArray arrayWithObjects:GAD_SIMULATOR_ID, nil];
+        
+        // COPPA
+        if ([tag_for_child_directed_treatment isEqualToString:@"0"] || [tag_for_child_directed_treatment isEqualToString:@"1"]) {
+            GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
+            extras.additionalParameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                           tag_for_child_directed_treatment, @"tag_for_child_directed_treatment",
+                                           nil];
+            [adMobRequest registerAdNetworkExtras:extras];
+        }
+        
         [_adMobView loadRequest:adMobRequest];
     }
     
