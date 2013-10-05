@@ -49,7 +49,7 @@ static BOOL const kAdTesting = YES;
  If you do not set tag_for_child_directed_treatment, ad requests will include no indication of how you would like your content treated with respect to COPPA.
  By setting this tag, you certify that this notification is accurate and you are authorized to act on behalf of the owner of the app. You understand that abuse of this setting may result in termination of your Google account.
 */
-static NSString * const tag_for_child_directed_treatment = @"1";
+static NSString * const tag_for_child_directed_treatment = @"";
 
 
 @interface CJPAdController : UIViewController <ADBannerViewDelegate, GADBannerViewDelegate>
