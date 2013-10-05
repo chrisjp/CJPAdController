@@ -21,7 +21,6 @@ static CJPAdController *CJPSharedManager = nil;
 @synthesize showingAdMob         = _showingAdMob;
 @synthesize adsRemoved           = _adsRemoved;
 @synthesize isTabBar             = _isTabBar;
-@synthesize iOS4                 = _iOS4;
 
 #pragma mark -
 #pragma mark Class Methods
@@ -41,6 +40,9 @@ static CJPAdController *CJPSharedManager = nil;
     self = [super init];
     if (self != nil) {
         
+        // Warn user about testing mode
+        if (kAdTesting) NSLog(@"TESTING MODE ENABLED. Remember to set kAdTesting to NO before building for production to avoid spamming logs.");
+        
         // Have ads been removed?
         _adsRemoved = [[NSUserDefaults standardUserDefaults] boolForKey:kAdsPurchasedKey];
         
@@ -51,28 +53,17 @@ static CJPAdController *CJPSharedManager = nil;
         _isTabBar = [_contentController isKindOfClass:[UITabBarController class]] ? YES : NO;
         
         // Create a container view to hold both our parent view and the banner view
-        // iOS 5+ can use native view containment
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5) {
-            _containerView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-            [self addChildViewController:_contentController];
-            [_containerView addSubview:_contentController.view];
-            [_contentController didMoveToParentViewController:self];
-        }
-        else {
-            // iOS 4 Support
-            // Since iOS 4 does not support view containment, we create a new view that fills the screen
-            // We add our contentController's view as a subview to this, as well as an adview
-            // We then set this new view as the main view.
-            _iOS4 = YES;
-            _containerView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-            _containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
-            [_containerView addSubview:_contentController.view];
-        }
-        
+        _containerView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        [self addChildViewController:_contentController];
+        [_containerView addSubview:_contentController.view];
+        [_contentController didMoveToParentViewController:self];
+
+        // iOS 7
         if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
             self.edgesForExtendedLayout = UIRectEdgeNone;
         }
         
+        // Create a banner if the user hasn't purchased ad removal
         if (!_adsRemoved) {
             [self performSelector:@selector(createBanner:) withObject:kDefaultAds afterDelay:kWaitTime];
         }
@@ -278,49 +269,8 @@ static CJPAdController *CJPSharedManager = nil;
     return [_contentController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    // BUG FIX:
-    // Since we can't use view containment in iOS 4, creating our own container means the
-    // navigationBar does not get resized on rotation because it is not the rootViewController
-    // The following code manually resizes the navBar - not applicable on iPad as the navBar remains the same size
-    if (_iOS4) {
-        NSArray *subs = _contentController.view.subviews;
-        UINavigationBar *navbar = nil;
-        for (int i=0; i<subs.count; i++) {
-            if ([[subs objectAtIndex:i] isKindOfClass:[UINavigationBar class]]) {
-                navbar = [subs objectAtIndex:i];
-                break;
-            }
-        }
-        if (navbar && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
-            CGRect frame = navbar.frame;
-            frame.size.height = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 44. : 32.;
-            navbar.frame = frame;
-        }
-        
-        if (_showingiAd) _iAdView.hidden = YES;
-        else if (_showingAdMob) _adMobView.hidden = YES;
-    }
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    if (_iOS4) {
-        [UIView animateWithDuration:0.25 animations:^{
-            [self layoutAds];
-            if (_showingiAd) _iAdView.hidden = NO;
-            else if (_showingAdMob) _adMobView.hidden = NO;
-        }];
-    }
-}
-
 - (void)viewDidLayoutSubviews
 {
-    // This method is called when an ad is received or removed.
-    // It will move the ad on/offscreen as necessary.
-    // It is iOS5+ only, but we can manually call it on iOS4.
-    
     BOOL isPortrait = UIInterfaceOrientationIsPortrait(self.interfaceOrientation);
     BOOL isPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? YES : NO;
     BOOL preiOS7 = [[[UIDevice currentDevice] systemVersion] floatValue] < 7 ? YES : NO;
@@ -457,7 +407,6 @@ static CJPAdController *CJPSharedManager = nil;
 - (void)layoutAds
 {
     [self.view setNeedsLayout];
-    if(_iOS4) [self viewDidLayoutSubviews];
 }
 
 #pragma mark -
@@ -465,8 +414,7 @@ static CJPAdController *CJPSharedManager = nil;
 
 - (void)bannerViewWillLoadAd:(ADBannerView *)banner
 {
-    // Shouldn't need to execute any code before an iAd
-    // is about to be displayed
+    // We don't need to execute any code before an iAd is about to be displayed
 }
 
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner

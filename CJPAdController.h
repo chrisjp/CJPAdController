@@ -62,7 +62,6 @@ static NSString * const tag_for_child_directed_treatment = @"";
 @property (nonatomic, assign) BOOL              showingAdMob;
 @property (nonatomic, assign) BOOL              adsRemoved;
 @property (nonatomic, assign) BOOL              isTabBar;
-@property (nonatomic, assign) BOOL              iOS4;
 
 + (CJPAdController *)sharedManager;
 - (id)initWithContentViewController:(UIViewController *)contentController;
