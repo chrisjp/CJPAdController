@@ -69,6 +69,19 @@
         self.window.rootViewController = _adController;
     }
     
+    
+    // IF YOU ARE USING STORYBOARDS, YOUR CODE SHOULD LOOK SIMILAR TO THE FOLLOWING:
+    /*
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"StoryboardName" bundle:nil];
+    UINavigationController *navController = (UINavigationController*)[storyboard instantiateInitialViewController];
+    
+    // init CJPAdController with the nav controller
+    _adController = [[CJPAdController sharedManager] initWithContentViewController:navController];
+    
+    // set the ad controller as the root view controller
+    self.window.rootViewController = _adController;
+    */
+    
     [self.window makeKeyAndVisible];
     
     return YES;
