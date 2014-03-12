@@ -1,6 +1,6 @@
 //
 //  CJPAdController.m
-//  CJPAdController 1.5
+//  CJPAdController 1.5.1
 //
 //  Created by Chris Phillips on 19/11/2011.
 //  Copyright (c) 2011-2014 Chris Phillips. All rights reserved.
@@ -56,7 +56,7 @@ static CJPAdController *CJPSharedManager = nil;
         [self addChildViewController:_contentController];
         [_containerView addSubview:_contentController.view];
         [_contentController didMoveToParentViewController:self];
-
+        
         // iOS 7
         if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
             self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -255,14 +255,62 @@ static CJPAdController *CJPSharedManager = nil;
 #pragma mark -
 #pragma mark View Methods
 
-- (void)viewDidUnload
+- (void)layoutAds
 {
-    [super viewDidUnload];
+    [self.view setNeedsLayout];
 }
 
+// Returns the currently visible view controller from either the UINavigationController or UITabBarController holding the content
+- (UIViewController*)currentViewController
+{
+    if (_isTabBar) {
+        UITabBarController *tabBarController = (UITabBarController*)_contentController;
+        
+        // If the selected view of the tbc has child views (is a UINavigationController) then we need to get the one at the top
+        if (tabBarController.selectedViewController.childViewControllers.count > 0)
+            return (UIViewController*)[tabBarController.selectedViewController.childViewControllers lastObject];
+        
+        // If it's some other view then we can just return that
+        return tabBarController.selectedViewController;
+    }
+    
+    // Otherwise we must be using a UINavigationController, so just return the top most view controller.
+    return (UIViewController*)[_contentController.childViewControllers lastObject];
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Return the application's statusBarHidden if the UIViewControllerBasedStatusBarAppearance key has not been added to Info.plist
+    // Otherwise return the prefersStatusBarHidden set by the view controller
+    if (![[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"]) {
+        return [UIApplication sharedApplication].statusBarHidden;
+    }
+    else {
+        return [self currentViewController].prefersStatusBarHidden;
+    }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    // Return the application's statusBarStyle if the UIViewControllerBasedStatusBarAppearance key has not been added to Info.plist
+    // Otherwise return the preferredStatusBarStyle set by the view controller
+    if (![[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"]) {
+        return [UIApplication sharedApplication].statusBarStyle;
+    }
+    else {
+        return [self currentViewController].preferredStatusBarStyle;
+    }
+}
+
+- (BOOL)shouldAutorotate
+{
+    return [[self currentViewController] shouldAutorotate];
+}
+
+// for iOS 5
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return [_contentController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+    return [[self currentViewController] shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 - (void)viewDidLayoutSubviews
@@ -374,35 +422,6 @@ static CJPAdController *CJPSharedManager = nil;
     else {
         _contentController.view.frame = contentFrame;
     }
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    // Return the application's statusBarHidden if the UIViewControllerBasedStatusBarAppearance key has not been added to Info.plist
-    // Otherwise return the prefersStatusBarHidden set by the view controller
-    if (![[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"]) {
-        return [UIApplication sharedApplication].statusBarHidden;
-    }
-    else {
-        return _contentController.prefersStatusBarHidden;
-    }
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    // Return the application's statusBarStyle if the UIViewControllerBasedStatusBarAppearance key has not been added to Info.plist
-    // Otherwise return the preferredStatusBarStyle set by the view controller
-    if (![[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"]) {
-        return [UIApplication sharedApplication].statusBarStyle;
-    }
-    else {
-        return _contentController.preferredStatusBarStyle;
-    }
-}
-
-- (void)layoutAds
-{
-    [self.view setNeedsLayout];
 }
 
 #pragma mark -
