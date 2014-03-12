@@ -1,6 +1,6 @@
 //
 //  CJPAdController.h
-//  CJPAdController 1.5
+//  CJPAdController 1.5.1
 //
 //  Created by Chris Phillips on 19/11/2011.
 //  Copyright (c) 2011-2014 Chris Phillips. All rights reserved.
@@ -54,10 +54,10 @@ static NSString * const tagForChildDirectedTreatment = @"";
 
 @interface CJPAdController : UIViewController <ADBannerViewDelegate, GADBannerViewDelegate>
 
-@property (nonatomic, retain) ADBannerView      *iAdView;
-@property (nonatomic, retain) GADBannerView     *adMobView;
-@property (nonatomic, retain) UIViewController  *contentController;
-@property (nonatomic, retain) UIView            *containerView;
+@property (nonatomic, strong) ADBannerView      *iAdView;
+@property (nonatomic, strong) GADBannerView     *adMobView;
+@property (nonatomic, strong) UIViewController  *contentController;
+@property (nonatomic, strong) UIView            *containerView;
 @property (nonatomic, assign) BOOL              showingiAd;
 @property (nonatomic, assign) BOOL              showingAdMob;
 @property (nonatomic, assign) BOOL              adsRemoved;

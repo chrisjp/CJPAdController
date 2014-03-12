@@ -1,5 +1,9 @@
 # Changes
 
+####1.5.1 - 2014-03-12
+* Fixed `shouldAutorotate`, `prefersStatusBarHidden` and `preferredStatusBarStyle` methods not being respected when set in your view controllers. This should reduce the need to modify CJPAdController.m to fix possible rotation and/or status bar issues you may have had.
+* Cleaned up some AdMob code to removed need for GADAdMobExtras.h import.
+
 ####1.5 - 2013-10-05
 * Fixed ads appearing behind status bar in iOS 7. ([#9](https://github.com/chrisjp/CJPAdController/issues/9))
 * Improved iOS 7 support in general (regarding status bar preferences).
@@ -11,7 +15,7 @@
 
 ####1.4.2 - 2013-05-17
 * Fix for ads sliding up over TabBar (now slide up from underneath it).
- 
+
 ####1.4.1 - 2013-05-16
 * Better support for use within apps using a UITabBarController - ads positioned at "bottom" can now be set to appear above or below the TabBar.
  * A very basic TabBar example is included in the demo app (change the `useTabBar` BOOL to YES in AppDelegate.m to see it in action).
@@ -30,7 +34,7 @@
 * Completely rewrote class - now shares a single instance of ADBannerView's across views, as recommended by Apple.
 * Now a subclass of UIViewController - resizing ads when rotating is now done automatically.
 * Added the ability to choose where ads are displayed within a view (top or bottom)
-* Added a method that can be called to remove ads permanently, for example if your user buys an in-app purchase to remove them. 
+* Added a method that can be called to remove ads permanently, for example if your user buys an in-app purchase to remove them.
 
 ####1.1 - 2012-08-10
 * Fixed a couple of issues in iOS 6

@@ -1,4 +1,4 @@
-# CJPAdController 1.5
+# CJPAdController 1.5.1
 
 CJPAdController is a singleton class allowing easy implementation of iAds and Google AdMob ads in your iOS app. It supports all devices and orientations, and works on iOS 5.0+
 
@@ -11,6 +11,9 @@ CJPAdController is a singleton class allowing easy implementation of iAds and Go
 * Automatically hides from view if there are no ads to display
 * Support for hiding ads from users who have purchased a "Remove Ads" In-App Purchase (assumes you store a boolean value for this in `NSUserDefaults`)
 
+## iOS Version Support / Compatibility
+CJPAdController fully supports iOS 6.x and 7.x. It is also compatible with iOS 5.x although it is no longer tested on any devices running it. Technically it is also possible to make the class work with iOS 4.3, but support for this version was officially dropped as of October 2013.
+
 ## Screenshots
 
 [![CJPAdController screenshot](http://i.imgur.com/6PMvwBom.png)](http://i.imgur.com/6PMvwBo.png) [![CJPAdController screenshot](http://i.imgur.com/hLGgUkZm.png)](http://i.imgur.com/hLGgUkZ.png)
@@ -19,15 +22,15 @@ CJPAdController is a singleton class allowing easy implementation of iAds and Go
 
 ## Usage
 
-CJPAdController will automatically display your ads at the top or bottom of your view. It is designed to be used with either a UINavigationController or UITabBarController. Note that when used with a UITabBarController and display ads at the bottom of the view, you have an extra configuration option to choose whether you want the ads to be appear above or below the tab bar (as seen in the screenshots above).
+CJPAdController will automatically display your ads at the top or bottom of your view. It is designed to be used with either a UINavigationController or UITabBarController. Note that when used with a UITabBarController and displaying ads at the bottom of the view, you have an extra configuration option to choose whether you want the ads to be appear above or below the tab bar (as seen in the screenshots above).
 
 ### Adding to your project
 
-**1.** Add both `CJPAdController.h` and `CJPAdController.m` to your project. 
+**1.** Add `CJPAdController.h` and `CJPAdController.m` to your project.
 
-**2.** Modify the constants at the top of `CJPAdController.h` to suit your needs - here you'll be able to set various options, including your AdMob Publisher ID, position in view, seconds to wait before showing ads, and more. The options are fairly self-explanatory and are commented.
+**2.** Modify the constants at the top of `CJPAdController.h` to suit your needs - you'll be able to set various options including your AdMob Publisher ID, position in view, seconds to wait before showing ads, and more. The options are fairly self-explanatory and are commented.
 
-**3.** Add `#import "CJPAdController.h"` to your app delegate header file, then add `CJPAdController *_adController;` in the @interface like so:
+**3.** Add `#import "CJPAdController.h"` to your AppDelegate.h file, then add `CJPAdController *_adController;` in the @interface like so:
 
 ```objective-c
 @interface AppDelegate : UIResponder <UIApplicationDelegate> {
@@ -35,58 +38,60 @@ CJPAdController will automatically display your ads at the top or bottom of your
 }
 ```
 
-**4.** And in your app delegate method file, alloc your `UINavigationController` as usual, then init the adController with your navController set as the root view. The rootViewController of the window should then be set as the adController. Your code should look similar to the following:
+**4.** In your AppDelegate.m file, alloc your `UINavigationController` as usual, then init the adController with your navController set as the root view. The rootViewController of the window should then be set as the adController. Your code should look similar to the following:
 
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    
+
     RootViewController *rootVC = [[RootViewController alloc] init];
     _navController = [[UINavigationController alloc] initWithRootViewController:rootVC];
     _adController = [[CJPAdController sharedManager] initWithContentViewController:_navController];
-    
+
     self.window.rootViewController = _adController;
     [self.window makeKeyAndVisible];
     return YES;
 }
 ```
 
-Or, if you're using Storyboards:
+Or if you're using Storyboards:
 
 ```objective-c
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"StoryboardName" bundle:nil];
     UINavigationController *navController = (UINavigationController*)[storyboard instantiateInitialViewController];
-    
+
     // init CJPAdController with the nav controller
     _adController = [[CJPAdController sharedManager] initWithContentViewController:navController];
-    
+
     // set the ad controller as the root view controller
     self.window.rootViewController = _adController;
 ```
 
 **5.** You're almost done! Just check the other requirements below to make sure you've got all the right frameworks included in your project.
-  
+
 ### Other Requirements
 In order to compile, you'll need to have these frameworks included in your project:
 
 For iAd:
 
   1. `iAd.framework`
-  2. `AdSupport.framework` (Optional)
-  
+  2. `AdSupport.framework` (Must be optionally linked if targeting iOS 5.x)
+
 For AdMob:
 
-  1. `AudioToolbox.framework`
-  2. `MessageUI.framework`
-  3. `SystemConfiguration.framework`
+  1. `AdSupport.framework` (Must be optionally linked if targeting iOS 5.x)
+  2. `AudioToolbox.framework`
+  3. `AVFoundation.framework`
   4. `CoreGraphics.framework`
-  5. `StoreKit.framework`
-  6. `AdSupport.framework` (Optional)
+  5. `CoreTelephony.framework`
+  6. `MessageUI.framework`
+  7. `StoreKit.framework`
+  8. `SystemConfiguration.framework`
 
-  
-**NOTE:** For AdMob to work ensure you also include the [**AdMob SDK**](https://developers.google.com/mobile-ads-sdk/download#downloadios) files, and please also read the note on setting [**Other Linker Flags**](https://developers.google.com/mobile-ads-sdk/docs/) in your project. You should use the latest SDK in your project (at least 6.5.0 or greater). Version 6.5.1 is included in the demo app in this project.
+
+**NOTE:** For AdMob to work ensure you also include the [**AdMob SDK**](https://developers.google.com/mobile-ads-sdk/download#downloadios) files, and please also read the note on setting -ObjC in [**Other Linker Flags**](https://developers.google.com/mobile-ads-sdk/docs/) in your project. You should use the latest SDK in your project (at least 6.5.0 or greater). Version 6.8.0 is included in the demo app in this project.
 
 
 ### Programatically hiding, removing, and restoring ads
@@ -125,7 +130,7 @@ Possible features to be added include:
 If you're feeling kind you can provide attribution and a link to [this GitHub project](https://github.com/chrisjp/CJPAdController), but you don't have to.
 
 ### Licence
-Copyright (c) 2011-2013 Chris Phillips
+Copyright (c) 2011-2014 Chris Phillips
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
