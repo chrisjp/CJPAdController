@@ -1,13 +1,12 @@
 //
 //  CJPAdController.m
-//  CJPAdController
+//  CJPAdController 1.5
 //
 //  Created by Chris Phillips on 19/11/2011.
-//  Copyright (c) 2011 Chris Phillips. All rights reserved.
+//  Copyright (c) 2011-2014 Chris Phillips. All rights reserved.
 //
 
 #import "CJPAdController.h"
-#import "GADAdMobExtras.h"
 
 static CJPAdController *CJPSharedManager = nil;
 
@@ -155,12 +154,9 @@ static CJPAdController *CJPSharedManager = nil;
         if (kAdTesting) adMobRequest.testDevices = [NSArray arrayWithObjects:GAD_SIMULATOR_ID, nil];
         
         // COPPA
-        if ([tag_for_child_directed_treatment isEqualToString:@"0"] || [tag_for_child_directed_treatment isEqualToString:@"1"]) {
-            GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
-            extras.additionalParameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                           tag_for_child_directed_treatment, @"tag_for_child_directed_treatment",
-                                           nil];
-            [adMobRequest registerAdNetworkExtras:extras];
+        if ([tagForChildDirectedTreatment isEqualToString:@"0"] || [tagForChildDirectedTreatment isEqualToString:@"1"]) {
+            BOOL tagForCOPPA = [tagForChildDirectedTreatment isEqualToString:@"1"] ? YES : NO;
+            [adMobRequest tagForChildDirectedTreatment:tagForCOPPA];
         }
         
         [_adMobView loadRequest:adMobRequest];
