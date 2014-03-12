@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		8363BCEF1711EAE3009A77BB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8363BCEE1711EAE3009A77BB /* StoreKit.framework */; };
 		8363BCF11711EAF2009A77BB /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8363BCF01711EAF2009A77BB /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		836AB4FD18D045B1001B1225 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 836AB4FC18D045B1001B1225 /* AVFoundation.framework */; };
+		836AB4FF18D045BA001B1225 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 836AB4FE18D045BA001B1225 /* CoreTelephony.framework */; };
 		83B0BCF41530DDEF00DCFBC3 /* AnotherExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B0BCF31530DDEF00DCFBC3 /* AnotherExample.m */; };
 		83B95ACC1712155A000AF420 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83B95ACB1712155A000AF420 /* Default-568h@2x.png */; };
 		83DE0BCF152E7C2D00BE495C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83DE0BCE152E7C2D00BE495C /* UIKit.framework */; };
@@ -29,6 +31,8 @@
 /* Begin PBXFileReference section */
 		8363BCEE1711EAE3009A77BB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		8363BCF01711EAF2009A77BB /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		836AB4FC18D045B1001B1225 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		836AB4FE18D045BA001B1225 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		83958AFF15D5D4EB003E730B /* GADAdMobExtras.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADAdMobExtras.h; sourceTree = "<group>"; };
 		83958B0015D5D4EB003E730B /* GADAdNetworkExtras.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADAdNetworkExtras.h; sourceTree = "<group>"; };
 		83958B0115D5D4EB003E730B /* GADAdSize.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADAdSize.h; sourceTree = "<group>"; };
@@ -69,13 +73,15 @@
 			files = (
 				83DE0BCF152E7C2D00BE495C /* UIKit.framework in Frameworks */,
 				83DE0BD1152E7C2D00BE495C /* Foundation.framework in Frameworks */,
+				83DE0C08152E7ED200BE495C /* iAd.framework in Frameworks */,
+				8363BCF11711EAF2009A77BB /* AdSupport.framework in Frameworks */,
 				83DE0C04152E7EC500BE495C /* MessageUI.framework in Frameworks */,
 				83DE0C06152E7ECC00BE495C /* SystemConfiguration.framework in Frameworks */,
 				83DE0BD3152E7C2D00BE495C /* CoreGraphics.framework in Frameworks */,
 				83DE0C02152E7EBF00BE495C /* AudioToolbox.framework in Frameworks */,
-				83DE0C08152E7ED200BE495C /* iAd.framework in Frameworks */,
+				836AB4FD18D045B1001B1225 /* AVFoundation.framework in Frameworks */,
+				836AB4FF18D045BA001B1225 /* CoreTelephony.framework in Frameworks */,
 				8363BCEF1711EAE3009A77BB /* StoreKit.framework in Frameworks */,
-				8363BCF11711EAF2009A77BB /* AdSupport.framework in Frameworks */,
 				83DE0C15152E821600BE495C /* libGoogleAdMobAds.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -125,10 +131,12 @@
 				83DE0C03152E7EC500BE495C /* MessageUI.framework */,
 				83DE0BD2152E7C2D00BE495C /* CoreGraphics.framework */,
 				83DE0C05152E7ECC00BE495C /* SystemConfiguration.framework */,
-				83DE0C01152E7EBF00BE495C /* AudioToolbox.framework */,
-				8363BCEE1711EAE3009A77BB /* StoreKit.framework */,
 				83DE0C07152E7ED200BE495C /* iAd.framework */,
 				8363BCF01711EAF2009A77BB /* AdSupport.framework */,
+				83DE0C01152E7EBF00BE495C /* AudioToolbox.framework */,
+				836AB4FC18D045B1001B1225 /* AVFoundation.framework */,
+				836AB4FE18D045BA001B1225 /* CoreTelephony.framework */,
+				8363BCEE1711EAE3009A77BB /* StoreKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -204,7 +212,7 @@
 		83DE0BC1152E7C2D00BE495C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = ChrisJP;
 			};
 			buildConfigurationList = 83DE0BC4152E7C2D00BE495C /* Build configuration list for PBXProject "CJPAdControllerDemo" */;
@@ -285,6 +293,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -312,6 +321,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
