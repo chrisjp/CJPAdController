@@ -261,7 +261,7 @@ static CJPAdController *CJPSharedManager = nil;
 }
 
 // Returns the currently visible view controller from either the UINavigationController or UITabBarController holding the content
-- (UIViewController*)currentViewController
+- (UIViewController *)currentViewController
 {
     if (_isTabBar) {
         UITabBarController *tabBarController = (UITabBarController*)_contentController;
