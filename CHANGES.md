@@ -2,7 +2,7 @@
 
 ####1.5.1 - 2014-03-12
 * Fixed `shouldAutorotate`, `prefersStatusBarHidden` and `preferredStatusBarStyle` methods not being respected when set in your view controllers. This should reduce the need to modify CJPAdController.m to fix possible rotation and/or status bar issues you may have had.
-* Cleaned up some AdMob code to removed need for GADAdMobExtras.h import.
+* Cleaned up some AdMob code to remove need for GADAdMobExtras.h import.
 
 ####1.5 - 2013-10-05
 * Fixed ads appearing behind status bar in iOS 7. ([#9](https://github.com/chrisjp/CJPAdController/issues/9))
