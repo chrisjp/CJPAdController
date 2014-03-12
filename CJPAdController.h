@@ -70,6 +70,6 @@ static NSString * const tagForChildDirectedTreatment = @"";
 - (void)restoreBanner:(NSString *)adType;
 - (void)removeAllAdsForever;
 - (void)layoutAds;
-- (UIViewController *)currentViewController
+- (UIViewController *)currentViewController;
 
 @end
