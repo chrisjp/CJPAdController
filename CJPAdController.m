@@ -1,6 +1,6 @@
 //
 //  CJPAdController.m
-//  CJPAdController 1.5.1
+//  CJPAdController 1.5.2
 //
 //  Created by Chris Phillips on 19/11/2011.
 //  Copyright (c) 2011-2014 Chris Phillips. All rights reserved.
