@@ -438,7 +438,7 @@ static CJPAdController *CJPSharedManager = nil;
     
     if(!_showingiAd){
         // Ensure AdMob is hidden
-        if (_showingAdMob) {
+        if (_showingAdMob || _adMobView!=nil) {
             // If we're preferring iAd then we should remove AdMob rather than simply hiding it
             if ([kDefaultAds isEqualToString:@"iAd"]) {
                 [self removeBanner:@"AdMob" permanently:YES];
@@ -466,21 +466,23 @@ static CJPAdController *CJPSharedManager = nil;
 {
     if(kAdTesting) NSLog(@"Failed to receive iAd. %@", error.localizedDescription);
     
-    // Ensure iAd is hidden
+    // Ensure view is hidden off screen
     if (_iAdView.frame.origin.y>=0 && _iAdView.frame.origin.y < _containerView.frame.size.height){
         [self removeBanner:@"iAd" permanently:NO];
     }
     _showingiAd = NO;
     
     // Create AdMob (if not already created)
-    if(kAdTesting && kUseAdMob) NSLog(@"Trying AdMob instead...");
-    if(_adMobView==nil && kUseAdMob){
-        if(kAdTesting) NSLog(@"adMobView doesn't exist. Creating view.");
-        [self createBanner:@"AdMob"];
-    }
-    else if(kUseAdMob){
-        if(kAdTesting) NSLog(@"adMobView already exists. Requesting new ad.");
-        [_adMobView loadRequest:[GADRequest request]];
+    if (kUseAdMob) {
+        if(kAdTesting) NSLog(@"Trying AdMob instead...");
+        if(_adMobView==nil){
+            if(kAdTesting) NSLog(@"adMobView doesn't exist. Creating view.");
+            [self createBanner:@"AdMob"];
+        }
+        else{
+            if(kAdTesting) NSLog(@"adMobView already exists. Requesting new ad.");
+            [_adMobView loadRequest:[GADRequest request]];
+        }
     }
     
     [UIView animateWithDuration:0.25 animations:^{
@@ -508,7 +510,7 @@ static CJPAdController *CJPSharedManager = nil;
     
     if(!_showingAdMob){
         // Ensure iAd is hidden, then show AdMob
-        if (_showingiAd) {
+        if (_showingiAd || _iAdView!=nil) {
             // If we're preferring AdMob then we should remove iAd rather than simply hiding it
             if ([kDefaultAds isEqualToString:@"AdMob"]) {
                 [self removeBanner:@"iAd" permanently:YES];
@@ -534,7 +536,7 @@ static CJPAdController *CJPSharedManager = nil;
 
 - (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error
 {
-    // Ensure AdMob is hidden
+    // Ensure view is hidden off screen
     if (_adMobView.frame.origin.y>=0 && _adMobView.frame.origin.y < _containerView.frame.size.height){
         [self removeBanner:@"AdMob" permanently:NO];
     }
@@ -543,13 +545,15 @@ static CJPAdController *CJPSharedManager = nil;
     if(kAdTesting) NSLog(@"Failed to receive AdMob. %@", error.localizedDescription);
     
     // Request iAd if we haven't already created one.
-    if (_iAdView==nil && kUseiAd){
-        if(kAdTesting) NSLog(@"iAd view doesn't exist. Creating view...");
-        [self createBanner:@"iAd"];
-    }
-    else{
-        // Nothing to do here...
-        // If iAds are enabled, delegate methods will continue firing and eventually restart the whole process.
+    if (kUseiAd) {
+        if(kAdTesting) NSLog(@"Trying iAd instead...");
+        if(_iAdView==nil){
+            if(kAdTesting) NSLog(@"iAdView doesn't exist. Creating view.");
+            [self createBanner:@"iAd"];
+        }
+        else{
+            if(kAdTesting) NSLog(@"iAdView already exists. Nothing to do. A new ad will appear momentarily.");
+        }
     }
     
     [UIView animateWithDuration:0.25 animations:^{
