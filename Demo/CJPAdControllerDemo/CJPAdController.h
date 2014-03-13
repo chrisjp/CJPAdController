@@ -1,6 +1,6 @@
 //
 //  CJPAdController.h
-//  CJPAdController 1.5.1
+//  CJPAdController 1.5.2
 //
 //  Created by Chris Phillips on 19/11/2011.
 //  Copyright (c) 2011-2014 Chris Phillips. All rights reserved.
@@ -22,18 +22,23 @@ static NSString * const kDefaultAds = @"iAd";
 // Your AdMob publisher ID
 static NSString * const kAdMobID = @"abcdef123456789";
 
-// Use AdMob's "Smart" size banners (will fill full width of device)
-// If set to NO, 320x50 ads will be used for iPhone/iPod and 728x90 for iPad
-static BOOL const kUseAdMobSmartSize = YES;
+// Seconds to wait before displaying ad after the view loads (0.0 = instant)
+static float const kWaitTime = 2.0;
 
 // Where to position the ad on screen ("top" or "bottom")
 static NSString * const kAdPosition = @"bottom";
 
-// Show ad above the TabBar when ad position is set to bottom? (only relevant if you use a UITabBarController)
-static BOOL const kAboveTabBar = NO;
+// Comma-seperated string of device ID's for receiving test AdMob ads
+static NSString * const kAdMobTestDeviceIDs = @"";
 
-// Seconds to wait before displaying ad after the view loads (0.0 = instant)
-static float const kWaitTime = 2.0;
+// Use AdMob's "Smart" size banners (will fill full width of device)
+// If set to NO, 320x50 ads will be used for iPhone/iPod and 728x90 for iPad
+static BOOL const kUseAdMobSmartSize = YES;
+
+// Show ad above the TabBar when ad position is set to bottom? (Only relevant if you're using a UITabBarController)
+// WARNING: This functionality is currently buggy in iOS 7 (content will scroll under the ads). Therefore it is
+// recommended that you leave this set to NO.
+static BOOL const kAboveTabBar = NO;
 
 // Name of UserDefaults key for if ads have been purchased (you can ignore this if you don't have an IAP to remove ads)
 static NSString * const kAdsPurchasedKey = @"adRemovalPurchased";
