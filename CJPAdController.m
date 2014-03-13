@@ -79,24 +79,37 @@ static CJPAdController *CJPSharedManager = nil;
 - (void)createBanner:(NSString *)adType
 {
     
-    BOOL inPortrait = UIInterfaceOrientationIsPortrait(self.interfaceOrientation);
+    BOOL isPortrait = UIInterfaceOrientationIsPortrait(self.interfaceOrientation);
     BOOL isIPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? YES : NO;
     
     if(kAdTesting) NSLog(@"Creating %@", adType);
     
     // Create iAd
     if([adType isEqualToString:@"iAd"]){
-        _iAdView = [[ADBannerView alloc] initWithFrame:CGRectZero];
+        // iOS 6 and above uses a new initializer, which Apple say we should use if available
+        if ([ADBannerView instancesRespondToSelector:@selector(initWithAdType:)]) {
+            _iAdView = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
+        } else {
+            // iOS 5 will need to use the old method
+            _iAdView = [[ADBannerView alloc] init];
+        }
         
+        CGRect bannerFrame = CGRectZero;
+        
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
+        // If configured to support iOS 5, then we need to set the currentContentSizeIdentifier in order to resize the banner properly.
         _iAdView.requiredContentSizeIdentifiers = [NSSet setWithObjects:ADBannerContentSizeIdentifierPortrait, ADBannerContentSizeIdentifierLandscape, nil];
         
-        if (!inPortrait)
-            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
-        else
-            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
+        if (isPortrait) _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
+        else            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
+#else
+        // If configured to support iOS >= 6.0 only, then we want to avoid currentContentSizeIdentifier as it is deprecated.
+        // Fortunately all we need to do is ask the banner for a size that fits into the layout area we are using.
+        // At this point in this method contentFrame=self.view.bounds, so we'll use that size for the layout.
+        bannerFrame.size = [_iAdView sizeThatFits:self.view.bounds.size];
+#endif
         
         // Set initial frame to be offscreen
-        CGRect bannerFrame = _iAdView.frame;
         if([kAdPosition isEqualToString:@"bottom"])
             bannerFrame.origin.y = [[UIScreen mainScreen] bounds].size.height;
         else if([kAdPosition isEqualToString:@"top"])
@@ -111,7 +124,7 @@ static CJPAdController *CJPSharedManager = nil;
     else if([adType isEqualToString:@"AdMob"]){
         GADAdSize adMobSize;
         if (kUseAdMobSmartSize) {
-            if (!inPortrait)
+            if (!isPortrait)
                 adMobSize = kGADAdSizeSmartBannerLandscape;
             else
                 adMobSize = kGADAdSizeSmartBannerPortrait;
@@ -122,7 +135,7 @@ static CJPAdController *CJPSharedManager = nil;
             // Problem is that getting the width of the bounds doesn't take into account the current orientation
             // As a workaround, if we're in landscape, we'll simply get the height instead
             CGRect screen = [[UIScreen mainScreen] bounds];
-            CGFloat screenWidth = inPortrait ? CGRectGetWidth(screen) : CGRectGetHeight(screen);
+            CGFloat screenWidth = isPortrait ? CGRectGetWidth(screen) : CGRectGetHeight(screen);
             adMobSize = isIPad ? kGADAdSizeLeaderboard : kGADAdSizeBanner;
             CGSize cgAdMobSize = CGSizeFromGADAdSize(adMobSize);
             CGFloat adMobXOffset = (screenWidth-cgAdMobSize.width)/2;
@@ -225,6 +238,7 @@ static CJPAdController *CJPSharedManager = nil;
     }
     
     if(kAdTesting && permanent) NSLog(@"Permanently removed %@ from view.", adType);
+    if(kAdTesting && !permanent) NSLog(@"Temporarily hidden %@ off screen.", adType);
     
     [UIView animateWithDuration:0.25 animations:^{
         [self layoutAds];
@@ -316,11 +330,13 @@ static CJPAdController *CJPSharedManager = nil;
     return [[self currentViewController] shouldAutorotate];
 }
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
 // for iOS 5
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return [[self currentViewController] shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
+#endif
 
 - (void)viewDidLayoutSubviews
 {
@@ -331,7 +347,8 @@ static CJPAdController *CJPSharedManager = nil;
     UIView *tbcTabs = nil;
     float statusBarHeight = [UIApplication sharedApplication].statusBarHidden ? 0 : 20;
     CGRect contentFrame = self.view.bounds;
-    CGRect bannerFrame;
+    CGRect bannerFrame = CGRectZero;
+    NSString *adType = @"";
     
     // If we're showing ads in a tab bar above the bar itself, get the individual views so we can insert
     // the ad between them
@@ -343,17 +360,26 @@ static CJPAdController *CJPSharedManager = nil;
     
     // If either an iAd or AdMob view has been created we'll figure out which views need adjusting
     if (_iAdView || _adMobView) {
-        
         // iAd specific stuff
         if (_iAdView) {
+            adType = @"iAd";
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
+            // If configured to support iOS 5, then we need to set the currentContentSizeIdentifier in order to resize the banner properly.
             if (isPortrait) _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
             else            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
             
             bannerFrame = _iAdView.frame;
+#else
+            // If configured to support iOS >= 6.0 only, then we want to avoid currentContentSizeIdentifier as it is deprecated.
+            // Fortunately all we need to do is ask the banner for a size that fits into the layout area we are using.
+            // At this point in this method contentFrame=self.view.bounds, so we'll use that size for the layout.
+            bannerFrame.size = [_iAdView sizeThatFits:contentFrame.size];
+#endif
         }
         
         // AdMob specific stuff
         if (_adMobView) {
+            adType = @"AdMob";
             if (kUseAdMobSmartSize) {
                 if (isPortrait) _adMobView.adSize = kGADAdSizeSmartBannerPortrait;
                 else            _adMobView.adSize = kGADAdSizeSmartBannerLandscape;
@@ -372,10 +398,10 @@ static CJPAdController *CJPSharedManager = nil;
                 _adMobView.frame = bannerFrame;
             }
         }
-        
+
         // Now if we actually have an ad to display
         if (_showingiAd || _showingAdMob) {
-            if(kAdTesting) NSLog(@"AdView has been created and an ad is ready to be shown");
+            if(kAdTesting) NSLog(@"%@View exists and ad is being shown.", adType);
             
             if([kAdPosition isEqualToString:@"bottom"]){
                 contentFrame.size.height -= bannerFrame.size.height;
@@ -396,7 +422,7 @@ static CJPAdController *CJPSharedManager = nil;
         }
         // Or if we don't...
         else {
-            if(kAdTesting) NSLog(@"AdView has been created but there is currently NO ad to be shown");
+            if(kAdTesting) NSLog(@"%@View exists but there is currently NO ad to be shown.", adType);
             if([kAdPosition isEqualToString:@"bottom"]){
                 bannerFrame.origin.y = contentFrame.size.height;
             }
@@ -415,7 +441,7 @@ static CJPAdController *CJPSharedManager = nil;
         if (_showingiAd)        _iAdView.frame = bannerFrame;
         else if (_showingAdMob) _adMobView.frame = bannerFrame;
     }
-    
+
     // If we're on iOS 7 and aren't showing any ads yet, or if they have been removed
     // reset the contentFrame taking into account the height of the status bar
     // This is only necessary when displaying ads at the top of the view as ads displayed
