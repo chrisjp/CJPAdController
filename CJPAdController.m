@@ -151,7 +151,16 @@ static CJPAdController *CJPSharedManager = nil;
         GADRequest *adMobRequest = [GADRequest request];
         
         // Device identifier strings that will receive test AdMob ads
-        if (kAdTesting) adMobRequest.testDevices = [NSArray arrayWithObjects:GAD_SIMULATOR_ID, nil];
+        if (kAdTesting) {
+            NSArray *testDevices = [kAdMobTestDeviceIDs length]>0 ? [kAdMobTestDeviceIDs componentsSeparatedByString:@","] : nil;
+            // Add Simulator to test device array
+            if (testDevices!=nil) {
+                NSMutableArray *testDevicesM = [testDevices mutableCopy];
+                [testDevicesM addObject:GAD_SIMULATOR_ID];
+                testDevices = [testDevicesM copy];
+            }
+            adMobRequest.testDevices = testDevices!=nil ? testDevices : @[GAD_SIMULATOR_ID];
+        }
         
         // COPPA
         if ([tagForChildDirectedTreatment isEqualToString:@"0"] || [tagForChildDirectedTreatment isEqualToString:@"1"]) {
