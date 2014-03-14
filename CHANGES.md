@@ -3,7 +3,7 @@
 ####1.5.2 - 2014-03-13
 * Fixed all Xcode warnings about methods deprecated since iOS 6. Achieved by using the newer iAd sizing methods introduced in iOS 6. The older iOS 5 methods have been kept in conditionally and will only be used if you target < iOS 6.
 * Fixed a rare UI bug that could occur on iPads if you were displaying ads at the top of your views and a certain chain of events happened. Could cause a 24px gap after an AdMob ad was replaced with an iAd.
-* In the header file you can now specify a comma-separated string of device ID's that should receive test ads for AdMob, so you no longer need to edit the .m file to do add these.
+* In the header file you can now specify a comma-separated string of device ID's that should receive test ads for AdMob, so you no longer need to edit the .m file to add these.
 
 ####1.5.1 - 2014-03-12
 * Fixed `shouldAutorotate`, `prefersStatusBarHidden` and `preferredStatusBarStyle` methods not being respected when set in your view controllers. This should reduce the need to modify CJPAdController.m to fix possible rotation and/or status bar issues you may have had.
