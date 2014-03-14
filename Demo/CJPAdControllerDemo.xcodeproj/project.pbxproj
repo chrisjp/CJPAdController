@@ -152,7 +152,7 @@
 				83DE0BFB152E7E2900BE495C /* RootViewController.m */,
 				83B0BCF21530DDEF00DCFBC3 /* AnotherExample.h */,
 				83B0BCF31530DDEF00DCFBC3 /* AnotherExample.m */,
-				83DE0C0D152E821600BE495C /* AdMob */,
+				83DE0C0D152E821600BE495C /* GoogleAdMobAdsSdk */,
 				83DE0BD5152E7C2D00BE495C /* Supporting Files */,
 			);
 			path = CJPAdControllerDemo;
@@ -169,7 +169,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		83DE0C0D152E821600BE495C /* AdMob */ = {
+		83DE0C0D152E821600BE495C /* GoogleAdMobAdsSdk */ = {
 			isa = PBXGroup;
 			children = (
 				83958AFF15D5D4EB003E730B /* GADAdMobExtras.h */,
@@ -183,7 +183,8 @@
 				83DE0C13152E821600BE495C /* GADRequestError.h */,
 				83DE0C14152E821600BE495C /* libGoogleAdMobAds.a */,
 			);
-			path = AdMob;
+			name = GoogleAdMobAdsSdk;
+			path = ../../GoogleAdMobAdsSdk;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -344,7 +345,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/CJPAdControllerDemo/AdMob\"",
+					"\"$(SRCROOT)/../GoogleAdMobAdsSdk\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -361,7 +362,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/CJPAdControllerDemo/AdMob\"",
+					"\"$(SRCROOT)/../GoogleAdMobAdsSdk\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
