@@ -313,6 +313,11 @@ static CJPAdController *CJPSharedManager = nil;
     }
 }
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return [[self currentViewController] supportedInterfaceOrientations];
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     // Return the application's statusBarStyle if the UIViewControllerBasedStatusBarAppearance key has not been added to Info.plist
