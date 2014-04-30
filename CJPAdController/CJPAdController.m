@@ -210,7 +210,7 @@ static CJPAdController *CJPSharedManager = nil;
         _iAdView.frame = bannerFrame;
         _iAdView.hidden = YES;
         [_containerView sendSubviewToBack:_iAdView];
-        if (permanent) {
+        if (permanent && _iAdView.bannerViewActionInProgress==NO) {
             _iAdView.delegate = nil;
             [_iAdView removeFromSuperview];
             _iAdView = nil;
@@ -532,13 +532,12 @@ static CJPAdController *CJPSharedManager = nil;
 
 - (BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave
 {
-    //[[NSNotificationCenter defaultCenter] postNotificationName:BannerViewActionWillBegin object:self];
     return YES;
 }
 
 - (void)bannerViewActionDidFinish:(ADBannerView *)banner
 {
-    //[[NSNotificationCenter defaultCenter] postNotificationName:BannerViewActionDidFinish object:self];
+    // nothing to do here
 }
 
 #pragma mark -
