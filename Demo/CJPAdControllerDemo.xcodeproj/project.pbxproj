@@ -29,6 +29,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		835306D81972FEE5004F471C /* GADModules.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADModules.h; sourceTree = "<group>"; };
+		835306D91972FEEF004F471C /* GADInAppPurchase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADInAppPurchase.h; sourceTree = "<group>"; };
+		835306DA1972FEEF004F471C /* GADInAppPurchaseDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADInAppPurchaseDelegate.h; sourceTree = "<group>"; };
 		8363BCEE1711EAE3009A77BB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		8363BCF01711EAF2009A77BB /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		836AB4FC18D045B1001B1225 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -152,7 +155,7 @@
 				83DE0BFB152E7E2900BE495C /* RootViewController.m */,
 				83B0BCF21530DDEF00DCFBC3 /* AnotherExample.h */,
 				83B0BCF31530DDEF00DCFBC3 /* AnotherExample.m */,
-				83DE0C0D152E821600BE495C /* GoogleAdMobAdsSdk */,
+				83DE0C0D152E821600BE495C /* GoogleMobileAdsSdk */,
 				83DE0BD5152E7C2D00BE495C /* Supporting Files */,
 			);
 			path = CJPAdControllerDemo;
@@ -169,7 +172,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		83DE0C0D152E821600BE495C /* GoogleAdMobAdsSdk */ = {
+		83DE0C0D152E821600BE495C /* GoogleMobileAdsSdk */ = {
 			isa = PBXGroup;
 			children = (
 				83958AFF15D5D4EB003E730B /* GADAdMobExtras.h */,
@@ -177,14 +180,17 @@
 				83958B0115D5D4EB003E730B /* GADAdSize.h */,
 				83DE0C0E152E821600BE495C /* GADBannerView.h */,
 				83DE0C0F152E821600BE495C /* GADBannerViewDelegate.h */,
+				835306D91972FEEF004F471C /* GADInAppPurchase.h */,
+				835306DA1972FEEF004F471C /* GADInAppPurchaseDelegate.h */,
 				83DE0C10152E821600BE495C /* GADInterstitial.h */,
 				83DE0C11152E821600BE495C /* GADInterstitialDelegate.h */,
+				835306D81972FEE5004F471C /* GADModules.h */,
 				83DE0C12152E821600BE495C /* GADRequest.h */,
 				83DE0C13152E821600BE495C /* GADRequestError.h */,
 				83DE0C14152E821600BE495C /* libGoogleAdMobAds.a */,
 			);
-			name = GoogleAdMobAdsSdk;
-			path = ../../GoogleAdMobAdsSdk;
+			name = GoogleMobileAdsSdk;
+			path = ../../GoogleMobileAdsSdk;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -345,7 +351,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../GoogleAdMobAdsSdk\"",
+					"\"$(SRCROOT)/../GoogleMobileAdsSdk\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -362,7 +368,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../GoogleAdMobAdsSdk\"",
+					"\"$(SRCROOT)/../GoogleMobileAdsSdk\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
