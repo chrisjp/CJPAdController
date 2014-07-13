@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "RootViewController.h"
 #import "AnotherExample.h"
+#import "CJPAdController.h"
 
 @implementation AppDelegate
 
@@ -32,6 +33,32 @@
     */
     BOOL useTabBar = NO;
     
+    
+    /* 
+     
+     STEP 1: Configure CJPAdController
+     
+     In this example, CJPAdController will use both iAd and AdMob - iAd will be preferred as it is first in the array
+     Ads will be positioned at the bottom of the view - this is the default behaviour so is redundant in this example
+     Ads will be requested after a 2 second delay after launch
+     
+     Obviously you will need to provide an actual ad unit ID for AdMob
+     "Smart Size" banners will be used (this is YES by default so it's redundant in this example, but included for the sake of completeness
+     testDeviceIDs should be replaced with the actual UDID's of any devices you are wanting to receive test ads on. The Simulator will automatically be added to this array.
+    */
+    [CJPAdController sharedInstance].adNetworks = @[@(CJPAdNetworkiAd), @(CJPAdNetworkAdMob)];
+    [CJPAdController sharedInstance].adPosition = CJPAdPositionBottom;
+    [CJPAdController sharedInstance].initialDelay = 2.0;
+    // AdMob specific
+    [CJPAdController sharedInstance].adMobUnitID = @"ca-app-pub-1234567890987654/1234567890";
+    [CJPAdController sharedInstance].useAdMobSmartSize = YES;
+    [CJPAdController sharedInstance].testDeviceIDs = @[@"this0is3a2fake8UUID",@"and501sth1s0ne"];
+
+    /* 
+     
+     STEP 2: Tell CJPAdController to start serving ads
+    
+    */
     if (!useTabBar) {
         // 1. UINavigationController Example
         
@@ -39,11 +66,8 @@
         RootViewController *rootVC = [[RootViewController alloc] init];
         _navController = [[UINavigationController alloc] initWithRootViewController:rootVC];
         
-        // init CJPAdController with the nav controller
-        _adController = [[CJPAdController sharedManager] initWithContentViewController:_navController];
-        
-        // set the ad controller as the root view controller
-        self.window.rootViewController = _adController;
+        // Start CJPAdController serving ads in the nav controller
+        [[CJPAdController sharedInstance] startWithViewController:_navController];
     }
     else {
         // 2. UITabBarController Example
@@ -62,24 +86,28 @@
         _tabController = [[UITabBarController alloc] init];
         _tabController.viewControllers = @[navController1, navController2];
         
-        // init CJPAdController with the tab bar controller
-        _adController = [[CJPAdController sharedManager] initWithContentViewController:_tabController];
-        
-        // set the ad controller as the root view controller
-        self.window.rootViewController = _adController;
+        // Start CJPAdController serving ads in the nav controller
+        [[CJPAdController sharedInstance] startWithViewController:_tabController];
     }
     
+    /* 
+     
+     STEP 3: Set CJPAdController as the root view controller
+     
+    */
+    self.window.rootViewController = [CJPAdController sharedInstance];
     
-    // IF YOU ARE USING STORYBOARDS, YOUR CODE SHOULD LOOK SIMILAR TO THE FOLLOWING:
+    
+    // NOTE: IF YOU ARE USING STORYBOARDS, YOUR CODE SHOULD LOOK SIMILAR TO THE FOLLOWING:
     /*
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"StoryboardName" bundle:nil];
     UINavigationController *navController = (UINavigationController*)[storyboard instantiateInitialViewController];
     
-    // init CJPAdController with the nav controller
-    _adController = [[CJPAdController sharedManager] initWithContentViewController:navController];
+     // Start CJPAdController serving ads in the nav controller
+     [[CJPAdController sharedInstance] startWithViewController:_navController];
     
     // set the ad controller as the root view controller
-    self.window.rootViewController = _adController;
+    self.window.rootViewController = [CJPAdController sharedInstance]
     */
     
     [self.window makeKeyAndVisible];

@@ -10,11 +10,4 @@
 
 @interface RootViewController : UIViewController <UIScrollViewDelegate>
 
-@property (nonatomic, retain) UIScrollView *scrollView;
-
-- (void)anotherExample;
-- (void)removeAdsPermanently;
-- (void)removeAdsTemporarily;
-- (void)restoreAds;
-
 @end

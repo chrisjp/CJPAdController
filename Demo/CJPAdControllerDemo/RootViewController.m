@@ -12,20 +12,16 @@
 
 @interface RootViewController ()
 
+@property (nonatomic, retain) UIScrollView *scrollView;
+
+- (void)anotherExample;
+- (void)removeAdsPermanently;
+- (void)removeAdsTemporarily;
+- (void)restoreAds;
+
 @end
 
 @implementation RootViewController
-
-@synthesize scrollView = _scrollView;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -106,31 +102,25 @@
 
 - (void)removeAdsPermanently
 {
-    [[CJPAdController sharedManager] removeBanner:@"iAd" permanently:YES];
-    [[CJPAdController sharedManager] removeBanner:@"AdMob" permanently:YES];
+    // In production, you might call this when someone makes an IAP to remove ads for example. In such a case, you'll want to set andRemember to NO so that it is remembered across future app launches.
+    [[CJPAdController sharedInstance] removeAdsAndMakePermanent:YES andRemember:NO];
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ads Removed" message:@"Ads will NOT show again until restored." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ads Removed" message:@"Ads will NOT show again until restored." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
-    
-    // Or if this was from an in-app purchase, you could simply call the following
-    // which would save a boolean in UserDefaults so the app remembers not to create ads
-    // next time it starts up.
-    //[[CJPAdController sharedManager] removeAllAdsForever];
 }
 
 - (void)removeAdsTemporarily
 {
-    [[CJPAdController sharedManager] removeBanner:@"iAd" permanently:NO];
-    [[CJPAdController sharedManager] removeBanner:@"AdMob" permanently:NO];
+    [[CJPAdController sharedInstance] removeAds];
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ads Removed" message:@"Ads will be hidden off-screen until the next ad request fires (usually within 1-5 minutes)." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ads Removed" message:@"Ads will be hidden off-screen until the next ad request fires (usually within 1-5 minutes)." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
 }
 
 - (void)restoreAds
 {
     // NOTE: restoreBanner's parameter can be left blank - if you're using multiple ad networks and have presumably removed any and all instances from your view before calling this, this will then create a new banner of your default ad type.
-    [[CJPAdController sharedManager] restoreBanner:@""];
+    [[CJPAdController sharedInstance] restartAds];
 }
 
 - (BOOL)shouldAutorotate
