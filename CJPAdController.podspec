@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'CJPAdController'
-  s.version = '1.5.2'
+  s.version = '1.6'
   s.summary = 'A simple, easy way to add iAd and AdMob ads to a view controller.'
   s.description = <<-DESC
 CJPAdController is a singleton class allowing easy implementation of iAd and AdMob ads in your iOS app. It supports all devices and orientations.
