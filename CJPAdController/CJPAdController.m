@@ -81,18 +81,13 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     
     // Is this being used in a tabBarController?
     _isTabBar = [_contentController isKindOfClass:[UITabBarController class]] ? YES : NO;
-    _isNavController =  [_contentController isKindOfClass:[UINavigationController class]] ? YES : NO;
+    _isNavController = [_contentController isKindOfClass:[UINavigationController class]] ? YES : NO;
     
     // Create a container view to hold our parent view and the banner view
     _containerView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self addChildViewController:_contentController];
     [_containerView addSubview:_contentController.view];
     [_contentController didMoveToParentViewController:self];
-    
-    // iOS 7+
-    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
     
     // Set the container view as this view
     self.view = _containerView;
@@ -113,12 +108,13 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     BOOL isIPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? YES : NO;
     
     // Create iAd
-    if(adType == CJPAdNetworkiAd){
+    if (adType == CJPAdNetworkiAd) {
         CJPLog(@"Creating iAd");
         // iOS 6 and above uses a new initializer, which Apple say we should use if available
         if ([ADBannerView instancesRespondToSelector:@selector(initWithAdType:)]) {
             _iAdView = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
-        } else {
+        }
+        else {
             // iOS 5 will need to use the old method
             _iAdView = [[ADBannerView alloc] init];
         }
@@ -128,9 +124,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
         // If configured to support iOS 5, then we need to set the currentContentSizeIdentifier in order to resize the banner properly.
         _iAdView.requiredContentSizeIdentifiers = [NSSet setWithObjects:ADBannerContentSizeIdentifierPortrait, ADBannerContentSizeIdentifierLandscape, nil];
-        
-        if (isPortrait) _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
-        else            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
+        _iAdView.currentContentSizeIdentifier = isPortrait ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifierLandscape;
 #else
         // If configured to support iOS >= 6.0 only, then we want to avoid currentContentSizeIdentifier as it is deprecated.
         // Fortunately all we need to do is ask the banner for a size that fits into the layout area we are using.
@@ -139,9 +133,9 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
 #endif
         
         // Set initial frame to be offscreen
-        if(_adPosition==CJPAdPositionBottom)
+        if (_adPosition==CJPAdPositionBottom)
             bannerFrame.origin.y = [[UIScreen mainScreen] bounds].size.height;
-        else if(_adPosition==CJPAdPositionTop)
+        else if (_adPosition==CJPAdPositionTop)
             bannerFrame.origin.y = 0 - _iAdView.frame.size.height;
         _iAdView.frame = bannerFrame;
         _iAdView.delegate = self;
@@ -151,16 +145,14 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     }
     
     // Create AdMob
-    else if(adType == CJPAdNetworkAdMob){
+    else if (adType == CJPAdNetworkAdMob) {
         CJPLog(@"Creating AdMob");
         GADAdSize adMobSize;
         if (_useAdMobSmartSize) {
-            if (!isPortrait)
-                adMobSize = kGADAdSizeSmartBannerLandscape;
-            else
-                adMobSize = kGADAdSizeSmartBannerPortrait;
+            adMobSize = isPortrait ? kGADAdSizeSmartBannerPortrait : kGADAdSizeSmartBannerLandscape;
             _adMobView = [[GADBannerView alloc] initWithAdSize:adMobSize];
-        }else{
+        }
+        else {
             // Legacy AdMob ad sizes don't fill the full width of the device screen apart from iPhone when in portrait view
             // We need to offset the x position so the ad appears centered - Calculation: (View width - Ad width) / 2
             // Problem is that getting the width of the bounds doesn't take into account the current orientation
@@ -178,10 +170,12 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
         
         // Set initial frame to be off screen
         CGRect bannerFrame = _adMobView.frame;
-        if(_adPosition==CJPAdPositionBottom)
+        if (_adPosition==CJPAdPositionBottom) {
             bannerFrame.origin.y = [[UIScreen mainScreen] bounds].size.height;
-        else if(_adPosition==CJPAdPositionTop)
+        }
+        else if (_adPosition==CJPAdPositionTop) {
             bannerFrame.origin.y = 0 - _adMobView.frame.size.height;
+        }
         _adMobView.frame = bannerFrame;
         
         // Let the runtime know which UIViewController to restore after taking
@@ -230,10 +224,10 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     if (adType == CJPAdNetworkiAd) {
         _showingiAd = NO;
         CGRect bannerFrame = _iAdView.frame;
-        if(_adPosition==CJPAdPositionBottom){
+        if (_adPosition==CJPAdPositionBottom) {
             bannerFrame.origin.y = [[UIScreen mainScreen] bounds].size.height;
         }
-        else if(_adPosition==CJPAdPositionTop){
+        else if (_adPosition==CJPAdPositionTop) {
             bannerFrame.origin.y = 0 - _iAdView.frame.size.height;
         }
         _iAdView.frame = bannerFrame;
@@ -254,10 +248,10 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     if (adType == CJPAdNetworkAdMob) {
         _showingAdMob = NO;
         CGRect bannerFrame = _adMobView.frame;
-        if(_adPosition==CJPAdPositionBottom){
+        if (_adPosition==CJPAdPositionBottom) {
             bannerFrame.origin.y = [[UIScreen mainScreen] bounds].size.height;
         }
-        else if(_adPosition==CJPAdPositionTop){
+        else if (_adPosition==CJPAdPositionTop) {
             bannerFrame.origin.y = 0 - _adMobView.frame.size.height;
         }
         _adMobView.frame = bannerFrame;
@@ -284,8 +278,8 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
 - (void)removeAdsAndMakePermanent:(BOOL)permanent andRemember:(BOOL)remember
 {
     // Remove all ad banners from the view
-    if(_iAdView!=nil) [self removeBanner:@(CJPAdNetworkiAd) permanently:permanent];
-    if(_adMobView!=nil) [self removeBanner:@(CJPAdNetworkAdMob) permanently:permanent];
+    if (_iAdView!=nil) [self removeBanner:@(CJPAdNetworkiAd) permanently:permanent];
+    if (_adMobView!=nil) [self removeBanner:@(CJPAdNetworkAdMob) permanently:permanent];
     
     // Set adsRemoved to YES, and store in NSUserDefaults for future reference if remember and permanent both true
     if (permanent && remember) {
@@ -334,19 +328,20 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
         UITabBarController *tabBarController = (UITabBarController*)_contentController;
         
         // If the selected view of the tbc has child views (is a UINavigationController) then we need to get the one at the top
-        if (tabBarController.selectedViewController.childViewControllers.count > 0)
+        if (tabBarController.selectedViewController.childViewControllers.count > 0) {
             return (UIViewController*)[tabBarController.selectedViewController.childViewControllers lastObject];
+        }
         
         // If it's some other view then we can just return that
         return tabBarController.selectedViewController;
     }
     
-    // Otherwise we must be using a UINavigationController, so just return the top most view controller.
+    // If we're using a UINavigationController return the top most view controller.
     if (_isNavController) {
         return (UIViewController*)[_contentController.childViewControllers lastObject];
     }
-
-    // Or we might be using a custom UIViewController, so we just return it
+    
+    // Otherwise we must be using a custom UIViewController, so we just return it
     return _contentController;
 }
 
@@ -414,9 +409,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
             adType = CJPAdNetworkiAd;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
             // If configured to support iOS 5, then we need to set the currentContentSizeIdentifier in order to resize the banner properly.
-            if (isPortrait) _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
-            else            _iAdView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
-            
+            _iAdView.currentContentSizeIdentifier = isPortrait ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifierLandscape;
             bannerFrame = _iAdView.frame;
 #else
             // If configured to support iOS >= 6.0 only, then we want to avoid currentContentSizeIdentifier as it is deprecated.
@@ -430,12 +423,10 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
         if (_adMobView) {
             adType = CJPAdNetworkAdMob;
             if (_useAdMobSmartSize) {
-                if (isPortrait) _adMobView.adSize = kGADAdSizeSmartBannerPortrait;
-                else            _adMobView.adSize = kGADAdSizeSmartBannerLandscape;
-                
+                _adMobView.adSize = isPortrait ? kGADAdSizeSmartBannerPortrait : kGADAdSizeSmartBannerLandscape;
                 bannerFrame = _adMobView.frame;
             }
-            else{
+            else {
                 // Legacy AdMob doesn't have different orientation sizes - we just need to change the X offset so the ad remains centered
                 bannerFrame = _adMobView.frame;
                 CGRect screen = [[UIScreen mainScreen] bounds];
@@ -447,18 +438,18 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
                 _adMobView.frame = bannerFrame;
             }
         }
-
+        
         // Now if we actually have an ad to display
         if (_showingiAd || _showingAdMob) {
             CJPLog(@"AdView exists and ad is being shown.");
             
-            if(_adPosition==CJPAdPositionBottom){
+            if (_adPosition==CJPAdPositionBottom) {
                 if (_isTabBar || _isNavController) {
                     contentFrame.size.height -= bannerFrame.size.height;
                 }
                 bannerFrame.origin.y = contentFrame.size.height;
             }
-            else if(_adPosition==CJPAdPositionTop){
+            else if (_adPosition==CJPAdPositionTop) {
                 if (preiOS7) {
                     if (_isTabBar || _isNavController) {
                         contentFrame.size.height -= bannerFrame.size.height;
@@ -478,19 +469,14 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
         // Or if we don't...
         else {
             CJPLog(@"AdView exists but there is currently no ad to be shown. Waiting for new ad...");
-            if(_adPosition==CJPAdPositionBottom){
+            if (_adPosition==CJPAdPositionBottom) {
                 bannerFrame.origin.y = contentFrame.size.height;
             }
-            else if(_adPosition==CJPAdPositionTop){
+            else if (_adPosition==CJPAdPositionTop) {
                 bannerFrame.origin.y = 0 - bannerFrame.size.height;
                 
                 if (_isTabBar || _isNavController) {
-                    if (preiOS7){
-                        contentFrame.origin.y = 0;
-                    }
-                    else {
-                        contentFrame.origin.y = statusBarHeight;
-                    }
+                    contentFrame.origin.y = !preiOS7 ? statusBarHeight : 0;
                 }
             }
         }
@@ -498,8 +484,8 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
         if (_showingiAd)        _iAdView.frame = bannerFrame;
         else if (_showingAdMob) _adMobView.frame = bannerFrame;
     }
-
-    // If we're on iOS 7 and aren't showing any ads yet, or if they have been removed
+    
+    // If we're on iOS 7 or above and aren't showing any ads yet, or if they have been removed
     // reset the contentFrame taking into account the height of the status bar
     // This is only necessary when displaying ads at the top of the view as ads displayed
     // at the bottom do not interfere with the unified status/nav bar
@@ -528,7 +514,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
 {
     CJPLog(@"New iAd received.");
     
-    if(!_showingiAd){
+    if (!_showingiAd) {
         // Ensure AdMob is hidden
         if (_showingAdMob || _adMobView!=nil) {
             // If we're preferring iAd then we should remove AdMob rather than simply hiding it
@@ -559,7 +545,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     CJPLog(@"Failed to receive iAd. %@", error.localizedDescription);
     
     // Ensure view is hidden off screen
-    if (_iAdView.frame.origin.y>=0 && _iAdView.frame.origin.y < _containerView.frame.size.height){
+    if (_iAdView.frame.origin.y>=0 && _iAdView.frame.origin.y < _containerView.frame.size.height) {
         [self removeBanner:@(CJPAdNetworkiAd) permanently:NO];
     }
     _showingiAd = NO;
@@ -567,11 +553,11 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     // Create AdMob (if not already created)
     if ([_adNetworks containsObject:@(CJPAdNetworkAdMob)]) {
         CJPLog(@"Trying AdMob instead...");
-        if(_adMobView==nil){
+        if (_adMobView==nil) {
             CJPLog(@"adMobView doesn't exist. Creating view.");
             [self createBanner:@(CJPAdNetworkAdMob)];
         }
-        else{
+        else {
             CJPLog(@"adMobView already exists. Requesting new ad.");
             [_adMobView loadRequest:[GADRequest request]];
         }
@@ -601,7 +587,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
 {
     CJPLog(@"New AdMob ad received.");
     
-    if(!_showingAdMob){
+    if (!_showingAdMob) {
         // Ensure iAd is hidden, then show AdMob
         if (_showingiAd || _iAdView!=nil) {
             // If we're preferring AdMob then we should remove iAd rather than simply hiding it
@@ -630,7 +616,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
 - (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error
 {
     // Ensure view is hidden off screen
-    if (_adMobView.frame.origin.y>=0 && _adMobView.frame.origin.y < _containerView.frame.size.height){
+    if (_adMobView.frame.origin.y>=0 && _adMobView.frame.origin.y < _containerView.frame.size.height) {
         [self removeBanner:@(CJPAdNetworkAdMob) permanently:NO];
     }
     _showingAdMob = NO;
@@ -640,11 +626,11 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     // Request iAd if we haven't already created one.
     if ([_adNetworks containsObject:@(CJPAdNetworkiAd)]) {
         CJPLog(@"Trying iAd instead...");
-        if(_iAdView==nil){
+        if (_iAdView==nil) {
             CJPLog(@"iAdView doesn't exist. Creating view.");
             [self createBanner:@(CJPAdNetworkiAd)];
         }
-        else{
+        else {
             CJPLog(@"iAdView already exists. Nothing to do. A new ad will appear momentarily.");
         }
     }
