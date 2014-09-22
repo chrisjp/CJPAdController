@@ -453,7 +453,9 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
             CJPLog(@"AdView exists and ad is being shown.");
             
             if(_adPosition==CJPAdPositionBottom){
-                contentFrame.size.height -= bannerFrame.size.height;
+                if (_isTabBar || _isNavController) {
+                    contentFrame.size.height -= bannerFrame.size.height;
+                }
                 bannerFrame.origin.y = contentFrame.size.height;
             }
             else if(_adPosition==CJPAdPositionTop){
