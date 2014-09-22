@@ -27,6 +27,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
 @property (nonatomic, assign) BOOL showingiAd;
 @property (nonatomic, assign) BOOL showingAdMob;
 @property (nonatomic, assign) BOOL isTabBar;
+@property (nonatomic, assign) BOOL isNavController;
 
 - (void)createBanner:(NSNumber *)adID;
 - (void)removeBanner:(NSNumber *)adID permanently:(BOOL)permanent;
@@ -80,6 +81,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     
     // Is this being used in a tabBarController?
     _isTabBar = [_contentController isKindOfClass:[UITabBarController class]] ? YES : NO;
+    _isNavController =  [_contentController isKindOfClass:[UINavigationController class]] ? YES : NO;
     
     // Create a container view to hold our parent view and the banner view
     _containerView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -340,7 +342,12 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     }
     
     // Otherwise we must be using a UINavigationController, so just return the top most view controller.
-    return (UIViewController*)[_contentController.childViewControllers lastObject];
+    if (_isNavController) {
+        return (UIViewController*)[_contentController.childViewControllers lastObject];
+    }
+
+    // Or we might be using a custom UIViewController, so we just return it
+    return _contentController;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -446,18 +453,24 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
             CJPLog(@"AdView exists and ad is being shown.");
             
             if(_adPosition==CJPAdPositionBottom){
-                contentFrame.size.height -= bannerFrame.size.height;
+                if (_isTabBar || _isNavController) {
+                    contentFrame.size.height -= bannerFrame.size.height;
+                }
                 bannerFrame.origin.y = contentFrame.size.height;
             }
             else if(_adPosition==CJPAdPositionTop){
                 if (preiOS7) {
-                    contentFrame.size.height -= bannerFrame.size.height;
-                    contentFrame.origin.y += bannerFrame.size.height;
+                    if (_isTabBar || _isNavController) {
+                        contentFrame.size.height -= bannerFrame.size.height;
+                        contentFrame.origin.y += bannerFrame.size.height;
+                    }
                     bannerFrame.origin.y = 0;
                 }
                 else {
-                    contentFrame.size.height -= (bannerFrame.size.height + statusBarHeight);
-                    contentFrame.origin.y = (bannerFrame.size.height + statusBarHeight);
+                    if (_isTabBar || _isNavController) {
+                        contentFrame.size.height -= (bannerFrame.size.height + statusBarHeight);
+                        contentFrame.origin.y = (bannerFrame.size.height + statusBarHeight);
+                    }
                     bannerFrame.origin.y = statusBarHeight;
                 }
             }
@@ -471,11 +484,13 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
             else if(_adPosition==CJPAdPositionTop){
                 bannerFrame.origin.y = 0 - bannerFrame.size.height;
                 
-                if (preiOS7){
-                    contentFrame.origin.y = 0;
-                }
-                else {
-                    contentFrame.origin.y = statusBarHeight;
+                if (_isTabBar || _isNavController) {
+                    if (preiOS7){
+                        contentFrame.origin.y = 0;
+                    }
+                    else {
+                        contentFrame.origin.y = statusBarHeight;
+                    }
                 }
             }
         }
