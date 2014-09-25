@@ -44,10 +44,11 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
 + (CJPAdController *)sharedInstance
 {
     static CJPAdController *sharedInstance = nil;
-    if (sharedInstance == nil)
-    {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         sharedInstance = [[self alloc] init];
-    }
+    });
+
     return sharedInstance;
 }
 
