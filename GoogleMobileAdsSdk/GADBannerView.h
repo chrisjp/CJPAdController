@@ -36,14 +36,12 @@
 #pragma mark Initialization
 
 /// Initializes a GADBannerView and sets it to the specified size, and specifies its placement
-/// within its superview bounds. If |size| is invalid, an instance of GADBannerView is not created
-/// and nil is returned instead.
-- (id)initWithAdSize:(GADAdSize)size origin:(CGPoint)origin;
+/// within its superview bounds. Returns nil if |adSize| is an invalid ad size.
+- (instancetype)initWithAdSize:(GADAdSize)adSize origin:(CGPoint)origin;
 
 /// Initializes a GADBannerView and sets it to the specified size, and specifies its placement at
-/// the top left of its superview. If |size| is invalid, an instance of GADBannerView is not created
-/// and nil is returned instead.
-- (id)initWithAdSize:(GADAdSize)size;
+/// the top left of its superview. Returns nil if |adSize| is an invalid ad size.
+- (instancetype)initWithAdSize:(GADAdSize)adSize;
 
 #pragma mark Pre-Request
 
@@ -115,14 +113,15 @@
 
 #pragma mark Mediation
 
-/// The underlying ad view of the mediated ad network. You may use this to find out the actual
-/// size of the ad and adjust GADBannerView to fit the underlying ad view.
-@property(nonatomic, readonly, weak) UIView *mediatedAdView;
-
 /// The ad network class name that fetched the current ad. Returns nil while the latest ad request
 /// is in progress or if the latest ad request failed. For both standard and mediated Google AdMob
 /// ads, this method returns @"GADMAdapterGoogleAdMobAds". For ads fetched via mediation custom
 /// events, this method returns @"GADMAdapterCustomEvents".
 @property(nonatomic, readonly, weak) NSString *adNetworkClassName;
+
+/// The underlying ad view of the mediated ad network. You may use this to find out the actual
+/// size of the ad and adjust GADBannerView to fit the underlying ad view.
+@property(nonatomic, readonly, weak) UIView *mediatedAdView
+    __attribute__((deprecated("Use adNetworkClassName.")));
 
 @end

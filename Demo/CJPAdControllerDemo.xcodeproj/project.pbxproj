@@ -13,6 +13,8 @@
 		836AB4FF18D045BA001B1225 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 836AB4FE18D045BA001B1225 /* CoreTelephony.framework */; };
 		83B0BCF41530DDEF00DCFBC3 /* AnotherExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B0BCF31530DDEF00DCFBC3 /* AnotherExample.m */; };
 		83B95ACC1712155A000AF420 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83B95ACB1712155A000AF420 /* Default-568h@2x.png */; };
+		83BB66E119D5DB5300FF6E81 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BB66E019D5DB5300FF6E81 /* EventKit.framework */; };
+		83BB66E319D5DB5A00FF6E81 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BB66E219D5DB5A00FF6E81 /* EventKitUI.framework */; };
 		83DE0BCF152E7C2D00BE495C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83DE0BCE152E7C2D00BE495C /* UIKit.framework */; };
 		83DE0BD1152E7C2D00BE495C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83DE0BD0152E7C2D00BE495C /* Foundation.framework */; };
 		83DE0BD3152E7C2D00BE495C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83DE0BD2152E7C2D00BE495C /* CoreGraphics.framework */; };
@@ -42,6 +44,8 @@
 		83B0BCF21530DDEF00DCFBC3 /* AnotherExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnotherExample.h; sourceTree = "<group>"; };
 		83B0BCF31530DDEF00DCFBC3 /* AnotherExample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnotherExample.m; sourceTree = "<group>"; };
 		83B95ACB1712155A000AF420 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		83BB66E019D5DB5300FF6E81 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		83BB66E219D5DB5A00FF6E81 /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		83DE0BCA152E7C2D00BE495C /* CJPAdControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CJPAdControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83DE0BCE152E7C2D00BE495C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		83DE0BD0152E7C2D00BE495C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -84,6 +88,8 @@
 				83DE0C02152E7EBF00BE495C /* AudioToolbox.framework in Frameworks */,
 				836AB4FD18D045B1001B1225 /* AVFoundation.framework in Frameworks */,
 				836AB4FF18D045BA001B1225 /* CoreTelephony.framework in Frameworks */,
+				83BB66E119D5DB5300FF6E81 /* EventKit.framework in Frameworks */,
+				83BB66E319D5DB5A00FF6E81 /* EventKitUI.framework in Frameworks */,
 				8363BCEF1711EAE3009A77BB /* StoreKit.framework in Frameworks */,
 				83DE0C15152E821600BE495C /* libGoogleAdMobAds.a in Frameworks */,
 			);
@@ -139,6 +145,8 @@
 				83DE0C01152E7EBF00BE495C /* AudioToolbox.framework */,
 				836AB4FC18D045B1001B1225 /* AVFoundation.framework */,
 				836AB4FE18D045BA001B1225 /* CoreTelephony.framework */,
+				83BB66E019D5DB5300FF6E81 /* EventKit.framework */,
+				83BB66E219D5DB5A00FF6E81 /* EventKitUI.framework */,
 				8363BCEE1711EAE3009A77BB /* StoreKit.framework */,
 			);
 			name = Frameworks;
