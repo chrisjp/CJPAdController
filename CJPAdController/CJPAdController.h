@@ -1,6 +1,6 @@
 //
 //  CJPAdController.h
-//  CJPAdController 1.6
+//  CJPAdController 1.6.1
 //
 //  Created by Chris Phillips on 19/11/2011.
 //  Copyright (c) 2011-2014 Midnight Labs. All rights reserved.
@@ -9,18 +9,18 @@
 #import <iAd/iAd.h>
 #import "GADBannerView.h"
 
-// Testing things? Uncomment the line below and various events will be NSLog'd.
+// Testing things? Uncomment the line below and various events will be logged.
 //#define DEBUG_CJPADCONTROLLER
 
 
 typedef NS_ENUM(NSInteger, CJPAdNetwork) {
-    CJPAdNetworkiAd = 1,
-    CJPAdNetworkAdMob
+    CJPAdNetworkiAd = 1,        ///< iAd
+    CJPAdNetworkAdMob           ///< AdMob
 };
 
 typedef NS_ENUM(NSInteger, CJPAdPosition) {
-    CJPAdPositionBottom = 1,
-    CJPAdPositionTop
+    CJPAdPositionBottom = 1,    ///< Ads positioned at the bottom of your view controller.
+    CJPAdPositionTop            ///< Ads positioned at the top of your view controller.
 };
 
 
@@ -80,6 +80,14 @@ typedef NS_ENUM(NSInteger, CJPAdPosition) {
 @property (nonatomic, assign) BOOL aboveTabBar;
 
 
+/* OTHER SETTINGS */
+
+// This will be set automatically based on a NSUserDefaults boolean.
+// It will always be NO unless you have called [[CJPAdController sharedInstance] removeAdsAndMakePermanent:YES andRemember:YES];
+// This property is here simply for convenience, allowing you to manually set it to YES from your app delegate if you wish to use your app without ads while testing for example.
+@property (nonatomic, assign) BOOL adsRemoved;
+
+
 /* ADMOB SPECIFIC SETTINGS */
 
 // AdMob Unit ID for the banner you want to display. This will be a long string containing your Google publisher ID following by an identifier for the banner
@@ -104,12 +112,32 @@ typedef NS_ENUM(NSInteger, CJPAdPosition) {
  */
 @property (nonatomic, strong) NSString *tagForChildDirectedTreatment;
 
+// Targeting
+/*
+ Before using any of the following properties or methods, please read this page: https://developers.google.com/mobile-ads-sdk/docs/admob/ios/banner#targeting
+ AdMob allows you to target the ads shown to your users, based on their gender, age and/or location.
+ Google stresses that you should only use this demographic data if your app already makes use of it.
+ i.e. don't collect this data from your user's solely for the pupose of showing targeted ads to them.
+ 
+ GADRequest.h is also commented with notes on using this kind of data
+ 
+ If you do not wish to show targeted ads to your users, you can just ignore all this and don't set any of these values in your app delegate.
+*/
 
-/* OTHER SETTINGS */
+// Gender: one of kGADGenderMale or kGADGenderFemale. If the user has not specified their gender this doesn't need to be set as it will make no difference.
+@property (nonatomic, assign) GADGender adMobGender;
 
-// This will be set automatically based on a NSUserDefaults boolean.
-// It will always be NO unless you have called [[CJPAdController sharedInstance] removeAdsAndMakePermanent:YES andRemember:YES];
-// This property is here simply for convenience, allowing you to manually set it to YES from your app delegate if you wish to use your app without ads while testing for example.
-@property (nonatomic, assign) BOOL adsRemoved;
+// Location description: If you don't use CoreLocation, or only have a rough location (city, country) provide it as a string.
+// Google says: It can be any free-form text such as @"Champs-Elysees Paris" or @"94041 US".
+@property (nonatomic, strong) NSString *adMobLocationDescription;
+
+// Location: If you use CoreLocation, you should provide the user's location with this method instead of the description above.
+// There is no need to provide both. If you do, this method will take precedence.
+- (void)setLocationWithLatitude:(CGFloat)latitude
+                      longitude:(CGFloat)longitude
+                       accuracy:(CGFloat)accuracyInMeters;
+
+// Birthday: month number, day number, and year the user was born in
+- (void)setBirthdayWithMonth:(NSInteger)m day:(NSInteger)d year:(NSInteger)y;
 
 @end

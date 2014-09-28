@@ -1,6 +1,6 @@
 //
 //  CJPAdController.m
-//  CJPAdController 1.6
+//  CJPAdController 1.6.1
 //
 //  Created by Chris Phillips on 19/11/2011.
 //  Copyright (c) 2011-2014 Midnight Labs. All rights reserved.
@@ -28,6 +28,8 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
 @property (nonatomic, assign) BOOL showingAdMob;
 @property (nonatomic, assign) BOOL isTabBar;
 @property (nonatomic, assign) BOOL isNavController;
+@property (nonatomic, strong) NSDictionary *adMobUserBirthday;
+@property (nonatomic, strong) NSDictionary *adMobUserLocation;
 
 - (void)createBanner:(NSNumber *)adID;
 - (void)removeBanner:(NSNumber *)adID permanently:(BOOL)permanent;
@@ -48,7 +50,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     dispatch_once(&onceToken, ^{
         sharedInstance = [[self alloc] init];
     });
-
+    
     return sharedInstance;
 }
 
@@ -62,7 +64,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
         // Set defaults
         _adPosition = CJPAdPositionBottom;
         _adNetworks = @[@(CJPAdNetworkiAd), @(CJPAdNetworkAdMob)];
-        _preferredAds = (CJPAdNetwork)[[_adNetworks objectAtIndex:0] intValue];
+        _preferredAds = CJPAdNetworkiAd;
         _initialDelay = 0.0;
         _useAdMobSmartSize = YES;
     }
@@ -142,7 +144,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
         _iAdView.delegate = self;
         _iAdView.hidden = YES;
         [_containerView insertSubview:_iAdView atIndex:0];
-        CJPLog(@"Added iAd to view.");
+        CJPLog(@"Added iAd to view and requested ad.");
     }
     
     // Create AdMob
@@ -198,14 +200,51 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
         }
         adMobRequest.testDevices = _testDeviceIDs!=nil ? _testDeviceIDs : @[GAD_SIMULATOR_ID];
         
-        // COPPA
+        /*
+         COPPA
+         
+         If this app has been tagged as being aimed at children (1), or not for children (0), send the value with the ad request
+         Ignore if the tag has not been set
+         */
+        //
         if ([_tagForChildDirectedTreatment isEqualToString:@"0"] || [_tagForChildDirectedTreatment isEqualToString:@"1"]) {
             BOOL tagForCOPPA = [_tagForChildDirectedTreatment isEqualToString:@"1"] ? YES : NO;
             [adMobRequest tagForChildDirectedTreatment:tagForCOPPA];
+            CJPLog(@"COPPA has been set to %i", tagForCOPPA);
         }
         
+        /*
+         Targeting
+         
+         We only send this information with our request if they have been explicitly set
+         */
+        
+        // Gender
+        if (_adMobGender != kGADGenderUnknown) {
+            adMobRequest.gender = _adMobGender;
+            CJPLog(@"AdMob targeting: Gender has been set to %i", (int)_adMobGender);
+        }
+        
+        // Birthday
+        if (_adMobUserBirthday != nil) {
+            [adMobRequest setBirthdayWithMonth:[[_adMobUserBirthday objectForKey:@"month"] integerValue] day:[[_adMobUserBirthday objectForKey:@"day"] integerValue] year:[[_adMobUserBirthday objectForKey:@"year"] integerValue]];
+            CJPLog(@"AdMob targeting: Birthday has been set to %@", _adMobUserBirthday);
+        }
+        
+        // Location
+        if (_adMobUserLocation != nil) {
+            [adMobRequest setLocationWithLatitude:[[_adMobUserLocation objectForKey:@"latitude"] floatValue] longitude:[[_adMobUserLocation objectForKey:@"longitude"] floatValue] accuracy:[[_adMobUserLocation objectForKey:@"accuracy"] floatValue]];
+            CJPLog(@"AdMob targeting: Location has been set to %@", _adMobUserLocation);
+        }
+        else if (_adMobLocationDescription != nil) {
+            [adMobRequest setLocationWithDescription:_adMobLocationDescription];
+            CJPLog(@"AdMob targeting: Location has been set to \"%@\"", _adMobLocationDescription);
+        }
+        
+        
+        // Now we can load the requested ad
         [_adMobView loadRequest:adMobRequest];
-        CJPLog(@"Added AdMob to view.");
+        CJPLog(@"Added AdMob to view and requested ad.");
     }
 }
 
@@ -666,5 +705,26 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
 //{
 //
 //}
+
+#pragma mark -
+#pragma mark AdMob Targeting
+
+- (void)setLocationWithLatitude:(CGFloat)latitude longitude:(CGFloat)longitude accuracy:(CGFloat)accuracyInMeters
+{
+    _adMobUserLocation = @{
+                           @"latitude" : [NSNumber numberWithFloat:latitude],
+                           @"longitude" : [NSNumber numberWithFloat:longitude],
+                           @"accuracy" : [NSNumber numberWithFloat:accuracyInMeters]
+                           };
+}
+
+- (void)setBirthdayWithMonth:(NSInteger)m day:(NSInteger)d year:(NSInteger)y
+{
+    _adMobUserBirthday = @{
+                           @"year" : [NSNumber numberWithInteger:y],
+                           @"month" : [NSNumber numberWithInteger:m],
+                           @"day" : [NSNumber numberWithInteger:d]
+                           };
+}
 
 @end
