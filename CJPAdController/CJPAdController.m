@@ -375,6 +375,16 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     return [[self currentViewController] shouldAutorotate];
 }
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return [self currentViewController].supportedInterfaceOrientations;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return [self currentViewController].preferredInterfaceOrientationForPresentation;
+}
+
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
 // for iOS 5
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
