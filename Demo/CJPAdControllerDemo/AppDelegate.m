@@ -53,8 +53,18 @@
     [CJPAdController sharedInstance].adMobUnitID = @"ca-app-pub-1234567890987654/1234567890";
     [CJPAdController sharedInstance].useAdMobSmartSize = YES;
     [CJPAdController sharedInstance].testDeviceIDs = @[@"this0is3a2fake8UUID",@"and501sth1s0ne"];
+    
+    // AdMob targeting (don't set these unless your app already has this information from your users and you want to use it to target ads to them)
+    // [CJPAdController sharedInstance].adMobGender = kGADGenderMale;
+    // [[CJPAdController sharedInstance] setBirthdayWithMonth:4 day:1 year:1985];
+    // [[CJPAdController sharedInstance] setLocationWithLatitude:51.507351 longitude:-0.127758 accuracy:10.0];      // You should get real values from CoreLocation. Use the string property below if you want to target geographically but don't use CoreLocation. Don't use both this method and the string below.
+    // [CJPAdController sharedInstance].adMobLocationDescription = @"London, UK";   // Only use this if you aren't using the CoreLocation method above for a more accurate location.
 
-    /* 
+    // AdMob COPPA compliance
+    // As with the targeting above, it is not necessary to set this unless you specifically want to declare your app as being directed to children (@"1") or not to children (@"0")
+    // [CJPAdController sharedInstance].tagForChildDirectedTreatment = @"0";
+    
+    /*
      
      STEP 2: Tell CJPAdController to start serving ads
     
