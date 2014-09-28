@@ -1,4 +1,4 @@
-# CJPAdController 1.6
+# CJPAdController 1.6.1
 
 CJPAdController is a singleton class allowing easy implementation of iAds and Google AdMob ads in your iOS app. It supports all devices and orientations, and works on iOS 5.0+
 
@@ -28,7 +28,7 @@ CJPAdController supports versions of iOS >= 6.x. It is compatible with iOS 5.x t
 
 ### Method 2 - Old School
 
-**1.** Drop the `CJPAdController` and `GoogleMobileAdsSdk` folders into your project. NOTE: You may wish to check if there is a newer [**AdMob SDK**](https://developers.google.com/mobile-ads-sdk/download#downloadios) available. NOTE 2: You don't need to include any of the "Add-ons" bundled with the SDK.
+**1.** Drop the `CJPAdController` and `GoogleMobileAdsSdk` folders into your project. NOTE: You may wish to check if there is a newer [**AdMob SDK**](https://developers.google.com/mobile-ads-sdk/download#downloadios) available, at least version 6.12.0 is recommended. NOTE 2: You don't need to include any of the "Add-ons" bundled with the SDK.
 
 **2.** Add the following frameworks to your project:
 
@@ -46,6 +46,8 @@ For AdMob:
   5. `MessageUI.framework`
   6. `StoreKit.framework`
   7. `SystemConfiguration.framework`
+  8. `EventKit.framework`
+  9. `EventKitUI.framework`
 
 **3.** For AdMob to work you'll need to add `-ObjC` to the **Other Linker Flags** in your project ([**read this guide**](https://developers.google.com/mobile-ads-sdk/docs/) if you don't know how to do this).
 
@@ -103,6 +105,7 @@ By default, ads will be requested as soon as your app is launched. You can delay
 
 ## More
 There are a number of AdMob specific options that can also be configured, as well as a number of general methods for hiding, removing, restoring ads etc.
+AdMob ads may also be targeted based on your users' age, gender and location. Please read the comments in the header file before using any of these.
 You can see an example of these in the demo project, furthermore, the header file is well commented with information on what each method does and how you might want to use them both in testing or in production.
 
 

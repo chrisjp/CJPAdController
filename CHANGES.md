@@ -1,5 +1,11 @@
 # Changes
 
+####1.6.1 - 2014-09-28
+* Now thread safe. (Thanks @numen31337 - [#17](https://github.com/chrisjp/CJPAdController/pull/17))
+* Support for AdMob Targeting. You can now (optionally) choose to target AdMob ads based on your users' gender, age, and location. Please read the comments in the header file before using any of these.
+* Delegate methods for the view controller's `supportedInterfaceOrientations` and `preferredInterfaceOrientationForPresentation`, the former of which had accidentally been removed in a previous commit.
+* Limited support for use within custom view controllers used by OpenGL games. (Thanks @pyrosphere - [#16](https://github.com/chrisjp/CJPAdController/pull/16))
+
 ####1.6 - 2014-07-13
 * Rewrote the class such that you can now configure CJPAdController via your app delegate, this means you no longer have to edit the header file which should make upgrading to future versions and using CocoaPods much smoother.
 * Now respects `supportedInterfaceOrientations` if you've overridden this method in your view controllers.
