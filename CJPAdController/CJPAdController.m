@@ -317,6 +317,11 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
 
 - (void)removeAdsAndMakePermanent:(BOOL)permanent andRemember:(BOOL)remember
 {
+    // Make sure any performSelector requests are canceled...
+    // Fixes a bug where if a long initial delay is given, a user could remove ads after the perform request is sent but
+    // before the delay ends, leading to ads created when they shouldn't be
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
     // Remove all ad banners from the view
     if (_iAdView!=nil) [self removeBanner:@(CJPAdNetworkiAd) permanently:permanent];
     if (_adMobView!=nil) [self removeBanner:@(CJPAdNetworkAdMob) permanently:permanent];
