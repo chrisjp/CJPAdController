@@ -1,5 +1,9 @@
 # Changes
 
+####1.6.2 - 2015-01-16
+* Fixed bug where if a long initialDelay time was given, a user may have the opportunity to remove ads before the delay has passed, resulting in an ad being show after the delay passes when it shouldn't be. (Thanks @pawelkata - [#21](https://github.com/chrisjp/CJPAdController/issues/21))
+* Added a property to override `isNavController`. If you use a custom view controller that isn't a subclass of UINavigationController or UITabBarController you may need to set this to YES to ensure CJPAdController behaves correctly in your implementation. ([#20](https://github.com/chrisjp/CJPAdController/issues/20))
+
 ####1.6.1 - 2014-09-28
 * Now thread safe. (Thanks @numen31337 - [#17](https://github.com/chrisjp/CJPAdController/pull/17))
 * Support for AdMob Targeting. You can now (optionally) choose to target AdMob ads based on your users' gender, age, and location. Please read the comments in the header file before using any of these.

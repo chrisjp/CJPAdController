@@ -1,4 +1,4 @@
-# CJPAdController 1.6.1
+# CJPAdController 1.6.2
 
 CJPAdController is a singleton class allowing easy implementation of iAds and Google AdMob ads in your iOS app. It supports all devices and orientations, and works on iOS 5.0+
 
@@ -101,6 +101,13 @@ By default, ads will be requested as soon as your app is launched. You can delay
 
 ```objective-c
 [CJPAdController sharedInstance].initialDelay = 2.0;
+```
+
+### Use within custom view controllers
+If you are trying to implement CJPAdController in a custom view controller that isn't a subclass of UINavigationController or UITabBarController, you may see issues causing ads to display incorrectly or not at all. In this case it is possible to override the `isNavController` property which some users have had success with.
+
+```objective-c
+[CJPAdController sharedInstance].overrideIsNavController = YES;
 ```
 
 ## More
