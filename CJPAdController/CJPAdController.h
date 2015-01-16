@@ -1,6 +1,6 @@
 //
 //  CJPAdController.h
-//  CJPAdController 1.6.1
+//  CJPAdController 1.6.2
 //
 //  Created by Chris Phillips on 19/11/2011.
 //  Copyright (c) 2011-2014 Midnight Labs. All rights reserved.
@@ -73,6 +73,10 @@ typedef NS_ENUM(NSInteger, CJPAdPosition) {
 
 // Set how many seconds we should wait before attempting to show an ad after the app is launched (default: 0.0)
 @property (nonatomic, assign) NSTimeInterval initialDelay;
+
+// NOTE: Set to YES if you are using a custom view controller (not subclassing a Navigation or TabBar controller) and are having display issues
+// Otherwise this property is safe to ignore.
+@property (nonatomic, assign) BOOL overrideIsNavController;
 
 // Set to YES if you want ads to appear ABOVE the tab bar rather than below it
 // only takes affect if position is set to CJPAdPositionBottom and you are using a UITabBarController

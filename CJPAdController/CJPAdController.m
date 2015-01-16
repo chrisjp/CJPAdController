@@ -1,6 +1,6 @@
 //
 //  CJPAdController.m
-//  CJPAdController 1.6.1
+//  CJPAdController 1.6.2
 //
 //  Created by Chris Phillips on 19/11/2011.
 //  Copyright (c) 2011-2014 Midnight Labs. All rights reserved.
@@ -82,9 +82,17 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
 {
     _contentController = contentController;
     
-    // Is this being used in a tabBarController?
+    // Is this being used in a UITabBarController or a UINavigationController?
     _isTabBar = [_contentController isKindOfClass:[UITabBarController class]] ? YES : NO;
     _isNavController = [_contentController isKindOfClass:[UINavigationController class]] ? YES : NO;
+    
+    // NOTE: If using a custom view controller both of the above will be NO, but we may want to force CJPAdController to act as if it were working with a UINavigationController
+    // the overrideIsNavController property can be set to YES to achieve this.
+    if (_overrideIsNavController) {
+        CJPLog(@"isNavController being overridden.");
+        _isNavController = YES;
+        _isTabBar = NO;
+    }
     
     // Create a container view to hold our parent view and the banner view
     _containerView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
