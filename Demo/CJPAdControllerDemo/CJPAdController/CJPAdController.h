@@ -6,8 +6,8 @@
 //  Copyright (c) 2011-2015 Midnight Labs. All rights reserved.
 //
 
-#import <iAd/iAd.h>
-#import <GoogleMobileAds/GoogleMobileAds.h>
+@import iAd;
+@import GoogleMobileAds;
 
 // Testing things? Uncomment the line below and various events will be logged.
 #define DEBUG_CJPADCONTROLLER
