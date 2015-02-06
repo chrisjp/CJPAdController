@@ -1,41 +1,41 @@
-# CJPAdController 1.6.3
+# CJPAdController 1.7
 
-CJPAdController is a singleton class allowing easy implementation of iAds and Google AdMob ads in your iOS app. It supports all devices and orientations, and works on iOS 5.0+
+CJPAdController is a singleton class allowing easy implementation of iAd and Google AdMob ads in your iOS app. It supports all devices and orientations, and works on iOS 6.0+
 
 ## Features
-* Supports iPhone, iPod touch and iPad in any orientation
 * Choose whether to show both iAd and AdMob, or just one of them
 * Choose whether iAd or AdMob is your default ads, falling back to the other if your default is unable to load an ad
-* Ability to choose where ads are displayed within a view (top or bottom)
+* Choose to display ads at either the top of bottom of your views
 * Specify a time delay for when to start showing ads in a view
 * Automatically hides from view if there are no ads to display
 * Support for hiding ads from users who have purchased a "Remove Ads" In-App Purchase (assumes you store a boolean value for this in `NSUserDefaults`)
 
-## iOS Version Support / Compatibility
-CJPAdController supports versions of iOS >= 6.x. It is compatible with iOS 5.x too and should work just fine, but do bear in mind I can no longer test on any devices running iOS 5.
+## OS/Device Compatibility
+* Works on iOS >= 6.x (use v1.6.3 if you need to support iOS 5.x)
+* Works on all iPhone and iPad screen sizes in both portrait and landscape orientations
 
 ## Screenshots
 
-[![CJPAdController screenshot](http://i.imgur.com/6PMvwBom.png)](http://i.imgur.com/6PMvwBo.png) [![CJPAdController screenshot](http://i.imgur.com/hLGgUkZm.png)](http://i.imgur.com/hLGgUkZ.png)
+[![CJPAdController screenshot](http://i.imgur.com/dxUHvLKm.png)](http://i.imgur.com/dxUHvLK.png) [![CJPAdController screenshot](http://i.imgur.com/rvdpr2Zm.png)](http://i.imgur.com/rvdpr2Z.png)
 
-[![CJPAdController screenshot](http://i.imgur.com/c0mvCv2m.png)](http://i.imgur.com/c0mvCv2.png) [![CJPAdController screenshot](http://i.imgur.com/MFXBdskm.png)](http://i.imgur.com/MFXBdsk.png)
+[![CJPAdController screenshot](http://i.imgur.com/mEYQbhBm.png)](http://i.imgur.com/mEYQbhB.png) [![CJPAdController screenshot](http://i.imgur.com/GtEU5Qum.png)](http://i.imgur.com/GtEU5Qu.png)
 
 ## Adding to your project
 
 ### Method 1 - CocoaPods
 
-[CocoaPods](http://cocoapods.org) is the simplest way to get started. Just add `pod 'CJPAdController'` to your podfile and run `pod install`.
+[CocoaPods](http://cocoapods.org) is the simplest way to get started. Just add `pod 'CJPAdController'` to your Podfile and run `pod install`.
 
 ### Method 2 - Old School
 
-**1.** Drop the `CJPAdController` and `GoogleMobileAdsSdk` folders into your project. NOTE: You may wish to check if there is a newer [**AdMob SDK**](https://developers.google.com/mobile-ads-sdk/download#downloadios) available, at least version 6.12.0 is recommended. NOTE 2: You don't need to include any of the "Add-ons" bundled with the SDK.
+**1.** Drop the `CJPAdController` and `GoogleMobileAdsSdk` folders into your project. NOTE: You may wish to check if there is a newer [**AdMob SDK**](https://developers.google.com/mobile-ads-sdk/download#downloadios) available, you'll need at least version 7.0.0.
 
-**2.** Add the following frameworks to your project:
+**2.** If you're working on a new project you shouldn't need to do anything else. If it's an older project then depending on its settings you may need to manually link all the required frameworks, if so, make sure the following frameworks are linked to your project:
 
 For iAd:
 
   1. `iAd.framework`
-  2. `AdSupport.framework` (Weak link if targeting iOS 5.x)
+  2. `AdSupport.framework`
 
 For AdMob:
 
@@ -48,8 +48,6 @@ For AdMob:
   7. `SystemConfiguration.framework`
   8. `EventKit.framework`
   9. `EventKitUI.framework`
-
-**3.** For AdMob to work you'll need to add `-ObjC` to the **Other Linker Flags** in your project ([**read this guide**](https://developers.google.com/mobile-ads-sdk/docs/) if you don't know how to do this).
 
 ## Usage
 
@@ -121,7 +119,7 @@ If you're feeling kind you can provide attribution and a link to [this GitHub pr
 
 
 ### Licence
-Copyright (c) 2011-2014 Chris Phillips
+Copyright (c) 2011-2015 Chris Phillips
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

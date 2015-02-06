@@ -1,5 +1,12 @@
 # Changes
 
+####1.7 - 2015-02-06
+* Updated to work with the new AdMob framework (7.0.0) which is now the minimum required.
+* Dropped support for iOS 5 as a result of the above requirement (stick with v1.6.3 if you still need this)
+* Method for AdMob targeting based on age has changed, if you use this you will need to provide an NSDate object now.
+* AdMob framework no longer requires you to add the `-ObjC` linker flag to your project settings. And depending on your project setup you may not need to manually link all the required frameworks either.
+* Updated demo project to fix iOS 8 issues and generally modernise it, should now work properly when testing on any device type.
+
 ####1.6.3 - 2015-02-05
 * Just a minor change to the podspec file. AdMob starting at version 7.0.0 is now distributed as a framework. The current podspec for CJPAdController now explicitly states to use the v6.12.2 library. This will be needed for the class to work as it is, and will also be needed for anyone still wanting to support iOS 5 in their apps. CJPAdController v1.7 will be modified to use the new AdMob framework.
 * **This is the last release of CJPAdController to support iOS 5.x**
