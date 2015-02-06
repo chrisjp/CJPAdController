@@ -1,5 +1,9 @@
 # Changes
 
+####1.6.3 - 2015-02-05
+* Just a minor change to the podspec file. AdMob starting at version 7.0.0 is now distributed as a framework. The current podspec for CJPAdController now explicitly states to use the v6.12.2 library. This will be needed for the class to work as it is, and will also be needed for anyone still wanting to support iOS 5 in their apps. CJPAdController v1.7 will be modified to use the new AdMob framework.
+* **This is the last release of CJPAdController to support iOS 5.x**
+
 ####1.6.2 - 2015-01-16
 * Fixed bug where if a long initialDelay time was given, a user may have the opportunity to remove ads before the delay has passed, resulting in an ad being show after the delay passes when it shouldn't be. (Thanks @pawelkata - [#21](https://github.com/chrisjp/CJPAdController/issues/21))
 * Added a property to override `isNavController`. If you use a custom view controller that isn't a subclass of UINavigationController or UITabBarController you may need to set this to YES to ensure CJPAdController behaves correctly in your implementation. ([#20](https://github.com/chrisjp/CJPAdController/issues/20))

@@ -1,6 +1,6 @@
 //
 //  CJPAdController.h
-//  CJPAdController 1.6.2
+//  CJPAdController 1.6.3
 //
 //  Created by Chris Phillips on 19/11/2011.
 //  Copyright (c) 2011-2014 Midnight Labs. All rights reserved.
