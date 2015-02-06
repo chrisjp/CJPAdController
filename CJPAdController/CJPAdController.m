@@ -1,9 +1,9 @@
 //
 //  CJPAdController.m
-//  CJPAdController 1.6.3
+//  CJPAdController 1.7
 //
 //  Created by Chris Phillips on 19/11/2011.
-//  Copyright (c) 2011-2014 Midnight Labs. All rights reserved.
+//  Copyright (c) 2011-2015 Midnight Labs. All rights reserved.
 //
 
 #import "CJPAdController.h"
@@ -28,7 +28,6 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
 @property (nonatomic, assign) BOOL showingAdMob;
 @property (nonatomic, assign) BOOL isTabBar;
 @property (nonatomic, assign) BOOL isNavController;
-@property (nonatomic, strong) NSDictionary *adMobUserBirthday;
 @property (nonatomic, strong) NSDictionary *adMobUserLocation;
 
 - (void)createBanner:(NSNumber *)adID;
@@ -121,27 +120,15 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     // Create iAd
     if (adType == CJPAdNetworkiAd) {
         CJPLog(@"Creating iAd");
-        // iOS 6 and above uses a new initializer, which Apple say we should use if available
-        if ([ADBannerView instancesRespondToSelector:@selector(initWithAdType:)]) {
-            _iAdView = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
-        }
-        else {
-            // iOS 5 will need to use the old method
-            _iAdView = [[ADBannerView alloc] init];
-        }
+        
+        _iAdView = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
         
         CGRect bannerFrame = CGRectZero;
         
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
-        // If configured to support iOS 5, then we need to set the currentContentSizeIdentifier in order to resize the banner properly.
-        _iAdView.requiredContentSizeIdentifiers = [NSSet setWithObjects:ADBannerContentSizeIdentifierPortrait, ADBannerContentSizeIdentifierLandscape, nil];
-        _iAdView.currentContentSizeIdentifier = isPortrait ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifierLandscape;
-#else
         // If configured to support iOS >= 6.0 only, then we want to avoid currentContentSizeIdentifier as it is deprecated.
         // Fortunately all we need to do is ask the banner for a size that fits into the layout area we are using.
         // At this point in this method contentFrame=self.view.bounds, so we'll use that size for the layout.
         bannerFrame.size = [_iAdView sizeThatFits:self.view.bounds.size];
-#endif
         
         // Set initial frame to be offscreen
         if (_adPosition==CJPAdPositionBottom)
@@ -200,13 +187,9 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
         GADRequest *adMobRequest = [GADRequest request];
         
         // Device identifier strings that will receive test AdMob ads
-        // Add Simulator to array of test devices
         if (_testDeviceIDs!=nil) {
-            NSMutableArray *testDevicesM = [_testDeviceIDs mutableCopy];
-            [testDevicesM addObject:GAD_SIMULATOR_ID];
-            _testDeviceIDs = [testDevicesM copy];
+            adMobRequest.testDevices = _testDeviceIDs;
         }
-        adMobRequest.testDevices = _testDeviceIDs!=nil ? _testDeviceIDs : @[GAD_SIMULATOR_ID];
         
         /*
          COPPA
@@ -234,9 +217,9 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
         }
         
         // Birthday
-        if (_adMobUserBirthday != nil) {
-            [adMobRequest setBirthdayWithMonth:[[_adMobUserBirthday objectForKey:@"month"] integerValue] day:[[_adMobUserBirthday objectForKey:@"day"] integerValue] year:[[_adMobUserBirthday objectForKey:@"year"] integerValue]];
-            CJPLog(@"AdMob targeting: Birthday has been set to %@", _adMobUserBirthday);
+        if (_adMobBirthday != nil) {
+            adMobRequest.birthday = _adMobBirthday;
+            CJPLog(@"AdMob targeting: Birthday has been set.");
         }
         
         // Location
@@ -279,7 +262,6 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
             bannerFrame.origin.y = 0 - _iAdView.frame.size.height;
         }
         _iAdView.frame = bannerFrame;
-        _iAdView.hidden = YES;
         [_containerView sendSubviewToBack:_iAdView];
         if (permanent && _iAdView.bannerViewActionInProgress==NO) {
             _iAdView.delegate = nil;
@@ -303,7 +285,6 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
             bannerFrame.origin.y = 0 - _adMobView.frame.size.height;
         }
         _adMobView.frame = bannerFrame;
-        _adMobView.hidden = YES;
         [_containerView sendSubviewToBack:_adMobView];
         if (permanent) {
             _adMobView.delegate = nil;
@@ -437,14 +418,6 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     return [self currentViewController].preferredInterfaceOrientationForPresentation;
 }
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
-// for iOS 5
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [[self currentViewController] shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-#endif
-
 - (void)viewDidLayoutSubviews
 {
     BOOL isPortrait = UIInterfaceOrientationIsPortrait(self.interfaceOrientation);
@@ -470,16 +443,11 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
         // iAd specific stuff
         if (_iAdView) {
             adType = CJPAdNetworkiAd;
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
-            // If configured to support iOS 5, then we need to set the currentContentSizeIdentifier in order to resize the banner properly.
-            _iAdView.currentContentSizeIdentifier = isPortrait ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifierLandscape;
-            bannerFrame = _iAdView.frame;
-#else
+
             // If configured to support iOS >= 6.0 only, then we want to avoid currentContentSizeIdentifier as it is deprecated.
             // Fortunately all we need to do is ask the banner for a size that fits into the layout area we are using.
             // At this point in this method contentFrame=self.view.bounds, so we'll use that size for the layout.
             bannerFrame.size = [_iAdView sizeThatFits:contentFrame.size];
-#endif
         }
         
         // AdMob specific stuff
@@ -728,15 +696,6 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
                            @"latitude" : [NSNumber numberWithFloat:latitude],
                            @"longitude" : [NSNumber numberWithFloat:longitude],
                            @"accuracy" : [NSNumber numberWithFloat:accuracyInMeters]
-                           };
-}
-
-- (void)setBirthdayWithMonth:(NSInteger)m day:(NSInteger)d year:(NSInteger)y
-{
-    _adMobUserBirthday = @{
-                           @"year" : [NSNumber numberWithInteger:y],
-                           @"month" : [NSNumber numberWithInteger:m],
-                           @"day" : [NSNumber numberWithInteger:d]
                            };
 }
 
