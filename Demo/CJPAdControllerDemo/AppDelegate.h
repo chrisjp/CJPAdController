@@ -2,8 +2,8 @@
 //  AppDelegate.h
 //  CJPAdControllerDemo
 //
-//  Created by Chris Phillips on 19/11/2011.
-//  Copyright (c) 2011 ChrisJP. All rights reserved.
+//  Created by Chris Phillips on 06/02/2015.
+//  Copyright (c) 2015 Midnight Labs. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -15,3 +15,4 @@
 @property (strong, nonatomic) UITabBarController *tabController;
 
 @end
+
