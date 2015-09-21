@@ -16,7 +16,7 @@
 		8383436E1A845E1C00098483 /* CJPAdControllerDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8383436D1A845E1C00098483 /* CJPAdControllerDemoTests.m */; };
 		838343791A8460D400098483 /* AnotherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 838343781A8460D400098483 /* AnotherViewController.m */; };
 		8383437D1A84617100098483 /* CJPAdController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8383437C1A84617100098483 /* CJPAdController.m */; };
-		838343811A84618900098483 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8383437F1A84618900098483 /* GoogleMobileAds.framework */; };
+		839C13131BB09A1900E4F0F5 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 839C13121BB09A1900E4F0F5 /* GoogleMobileAds.framework */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,7 +47,7 @@
 		838343781A8460D400098483 /* AnotherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnotherViewController.m; sourceTree = "<group>"; };
 		8383437B1A84617100098483 /* CJPAdController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJPAdController.h; sourceTree = "<group>"; };
 		8383437C1A84617100098483 /* CJPAdController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJPAdController.m; sourceTree = "<group>"; };
-		8383437F1A84618900098483 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMobileAds.framework; sourceTree = "<group>"; };
+		839C13121BB09A1900E4F0F5 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = ../../GoogleMobileAdsSdk/GoogleMobileAds.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				838343811A84618900098483 /* GoogleMobileAds.framework in Frameworks */,
+				839C13131BB09A1900E4F0F5 /* GoogleMobileAds.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,10 +97,10 @@
 				838343771A8460D400098483 /* AnotherViewController.h */,
 				838343781A8460D400098483 /* AnotherViewController.m */,
 				8383437A1A84617100098483 /* CJPAdController */,
-				8383437E1A84618900098483 /* GoogleMobileAdsSdk */,
+				839C13121BB09A1900E4F0F5 /* GoogleMobileAds.framework */,
 				8383435B1A845E1C00098483 /* Main.storyboard */,
-				8383435E1A845E1C00098483 /* Images.xcassets */,
 				838343601A845E1C00098483 /* LaunchScreen.xib */,
+				8383435E1A845E1C00098483 /* Images.xcassets */,
 				838343511A845E1C00098483 /* Supporting Files */,
 			);
 			path = CJPAdControllerDemo;
@@ -139,14 +139,6 @@
 				8383437C1A84617100098483 /* CJPAdController.m */,
 			);
 			path = CJPAdController;
-			sourceTree = "<group>";
-		};
-		8383437E1A84618900098483 /* GoogleMobileAdsSdk */ = {
-			isa = PBXGroup;
-			children = (
-				8383437F1A84618900098483 /* GoogleMobileAds.framework */,
-			);
-			path = GoogleMobileAdsSdk;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -380,7 +372,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/CJPAdControllerDemo/GoogleMobileAdsSdk",
+					../GoogleMobileAdsSdk,
 				);
 				INFOPLIST_FILE = CJPAdControllerDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -395,7 +387,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/CJPAdControllerDemo/GoogleMobileAdsSdk",
+					../GoogleMobileAdsSdk,
 				);
 				INFOPLIST_FILE = CJPAdControllerDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
