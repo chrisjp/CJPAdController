@@ -8,6 +8,7 @@ framework module GoogleMobileAds {
   link framework "AudioToolbox"
   link framework "AVFoundation"
   link framework "CoreGraphics"
+  link framework "CoreMedia"
   link framework "CoreTelephony"
   link framework "EventKit"
   link framework "EventKitUI"
