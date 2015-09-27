@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'CJPAdController'
-  s.version = '1.7'
+  s.version = '1.7.1'
   s.summary = 'A simple, easy way to add iAd and AdMob ads to a view controller.'
   s.description = <<-DESC
 CJPAdController is a singleton class allowing easy implementation of iAd and AdMob ads in your iOS app. It supports all devices and orientations.
@@ -23,7 +23,10 @@ CJPAdController is a singleton class allowing easy implementation of iAd and AdM
   s.source_files = 'CJPAdController/*.{h,m}'
   s.frameworks = 'iAd', 'AdSupport'
   s.requires_arc = true
-  s.dependency 'Google-Mobile-Ads-SDK', '~> 7.0'
-  s.xcconfig = { 'FRAMEWORK_SEARCH_PATHS' => '$(PODS_ROOT)/Google-Mobile-Ads-SDK/**' }
+  s.dependency 'Google-Mobile-Ads-SDK', '~> 7.5'
+  s.pod_target_xcconfig = {
+      'FRAMEWORK_SEARCH_PATHS' => '$(PODS_ROOT)/Google-Mobile-Ads-SDK/**',
+      'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => '1'
+  }
 
 end
