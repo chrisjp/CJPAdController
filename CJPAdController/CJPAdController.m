@@ -1,6 +1,6 @@
 //
 //  CJPAdController.m
-//  CJPAdController 1.7
+//  CJPAdController 1.7.1
 //
 //  Created by Chris Phillips on 19/11/2011.
 //  Copyright (c) 2011-2015 Midnight Labs. All rights reserved.

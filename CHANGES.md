@@ -1,5 +1,10 @@
 # Changes
 
+####1.7.1 - 2015-09-27
+* Removed support for deprecated AdMob location set by string (you should use lon/lat coordinates instead)
+* `supportedInterfaceOrientations` return type changed to `UIInterfaceOrientationMask`
+* Demo project updated to use Storyboards as it seems to be the most common thing to do
+
 ####1.7 - 2015-02-06
 * Updated to work with the new AdMob framework (7.0.0) which is now the minimum required.
 * Dropped support for iOS 5 as a result of the above requirement (stick with v1.6.3 if you still need this)
