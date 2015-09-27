@@ -35,8 +35,8 @@
 
 /// When you need to show a landing page or any other modal view, such as when a user clicks or when
 /// your Ads SDK needs to show an interstitial, use this method to obtain a UIViewController that
-/// you can use to show your modal view. Call the -presentModalViewController:animated: method of
-/// the returned UIViewController .
+/// you can use to show your modal view. Call the -presentViewController:animated:completion: method
+/// of the returned UIViewController .
 - (UIViewController *)viewControllerForPresentingModalView;
 
 /// Returns value of childDirectedTreatment supplied by the publisher. Returns nil if the publisher
@@ -72,47 +72,58 @@
 
 #pragma mark - Adapter Callbacks
 
-/// Adapter calls this when it receives an ad view.
-/// \param view pass along the ad network's own view.
-- (void)adapter:(id<GADMAdNetworkAdapter>)adapter didReceiveAdView:(UIView *)view;
-
-/// Adapter calls this when there's an error getting an ad view.
-/// \param error pass along any error object sent from the ad network's SDK, nil if not available.
+/// Tells the connector that the adapter failed to receive an ad.
 - (void)adapter:(id<GADMAdNetworkAdapter>)adapter didFailAd:(NSError *)error;
 
-/// Adapter calls this when it receives an interstitial ad.
-/// \param interstitial pass along ad network's interstitial object, or nil if not available.
+/// Tells the connector that the adapter received a banner ad.
+- (void)adapter:(id<GADMAdNetworkAdapter>)adapter didReceiveAdView:(UIView *)view;
+
+/// Tells the connector that the adapter received an interstitial.
 - (void)adapterDidReceiveInterstitial:(id<GADMAdNetworkAdapter>)adapter;
 
-/// Adapter calls this when it fails to receive an interstital ad.
-/// \param error pass along any error object sent from the ad network's SDK, nil if not available.
-- (void)adapter:(id<GADMAdNetworkAdapter>)adapter didFailInterstitial:(NSError *)error;
+/// Tells the connector that the adapter has received a mediated native ad. |mediatedNativeAd| is
+/// used by the Google Mobile Ads SDK for constructing a native ad object.
+- (void)adapter:(id<GADMAdNetworkAdapter>)adapter
+    didReceiveMediatedNativeAd:(id<GADMediatedNativeAd>)mediatedNativeAd;
 
-/// Adapter calls this when the user "clicks" to initiate an action.
+#pragma mark Ad events
+
+// Adapter should call as many of these as possible, during the lifecycle of the loaded banner or
+// interstitial ad.
+
+/// Tells the connector that the adapter recorded a user click.
 - (void)adapterDidGetAdClick:(id<GADMAdNetworkAdapter>)adapter;
+/// Tells the connector that the adapter will leave the application because of a user action.
+- (void)adapterWillLeaveApplication:(id<GADMAdNetworkAdapter>)adapter;
 
-/// Adapter should call as many of these as possible, when the user taps an ad and a full-screen
-/// modal appears.
+// Adapter should call as many of these as possible, during the lifecycle of the loaded banner ad.
+
+/// Tells the connector that the adapter will present a full screen modal.
 - (void)adapterWillPresentFullScreenModal:(id<GADMAdNetworkAdapter>)adapter;
+/// Tells the connector that the adapter will dismiss a full screen modal.
 - (void)adapterWillDismissFullScreenModal:(id<GADMAdNetworkAdapter>)adapter;
+/// Tells the connector that the adapter dismissed a full screen modal.
 - (void)adapterDidDismissFullScreenModal:(id<GADMAdNetworkAdapter>)adapter;
 
-/// Adapter should call as many of these as possible, during the lifecycle of the returned
-/// interstitial.
-- (void)adapterWillPresentInterstitial:(id<GADMAdNetworkAdapter>)adapter;
-- (void)adapterWillDismissInterstitial:(id<GADMAdNetworkAdapter>)adapter;
-- (void)adapterDidDismissInterstitial:(id<GADMAdNetworkAdapter>)adapter;
+// Adapter should call these methods during the lifecycle of the loaded interstitial ad.
 
-/// Adapter should call this method, when a user action will result in App switching
-- (void)adapterWillLeaveApplication:(id<GADMAdNetworkAdapter>)adapter;
+/// Tells the connector that the adapter will present an interstitial.
+- (void)adapterWillPresentInterstitial:(id<GADMAdNetworkAdapter>)adapter;
+/// Tells the connector that the adapter will dismiss an interstitial.
+- (void)adapterWillDismissInterstitial:(id<GADMAdNetworkAdapter>)adapter;
+/// Tells the connector that the adapter did dismiss an interstitial.
+- (void)adapterDidDismissInterstitial:(id<GADMAdNetworkAdapter>)adapter;
 
 #pragma mark Deprecated
 
 - (void)adapter:(id<GADMAdNetworkAdapter>)adapter
     didReceiveInterstitial:(NSObject *)interstitial
-    __attribute__((deprecated("Use adapterDidReceiveInterstitial:.")));
+    GAD_DEPRECATED_MSG_ATTRIBUTE("Use adapterDidReceiveInterstitial:.");
 
 - (void)adapter:(id<GADMAdNetworkAdapter>)adapter
-    clickDidOccurInBanner:(UIView *)view __attribute__((deprecated("Use adapterDidGetAdClick:.")));
+    clickDidOccurInBanner:(UIView *)view GAD_DEPRECATED_MSG_ATTRIBUTE("Use adapterDidGetAdClick:.");
+
+- (void)adapter:(id<GADMAdNetworkAdapter>)adapter
+    didFailInterstitial:(NSError *)error GAD_DEPRECATED_MSG_ATTRIBUTE("Use adapter:didFailAd:");
 
 @end
