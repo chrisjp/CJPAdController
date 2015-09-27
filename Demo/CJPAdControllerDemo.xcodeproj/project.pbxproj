@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		831B3EA21BB83B5D00C195CF /* TabController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 831B3EA01BB83B5D00C195CF /* TabController.storyboard */; settings = {ASSET_TAGS = (); }; };
 		838343541A845E1C00098483 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 838343531A845E1C00098483 /* main.m */; };
 		838343571A845E1C00098483 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 838343561A845E1C00098483 /* AppDelegate.m */; };
-		8383435A1A845E1C00098483 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 838343591A845E1C00098483 /* ViewController.m */; };
-		8383435D1A845E1C00098483 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8383435B1A845E1C00098483 /* Main.storyboard */; };
+		8383435A1A845E1C00098483 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 838343591A845E1C00098483 /* RootViewController.m */; };
+		8383435D1A845E1C00098483 /* NavController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8383435B1A845E1C00098483 /* NavController.storyboard */; };
 		8383435F1A845E1C00098483 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8383435E1A845E1C00098483 /* Images.xcassets */; };
 		838343621A845E1C00098483 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 838343601A845E1C00098483 /* LaunchScreen.xib */; };
 		8383436E1A845E1C00098483 /* CJPAdControllerDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8383436D1A845E1C00098483 /* CJPAdControllerDemoTests.m */; };
@@ -30,14 +31,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		831B3EA11BB83B5D00C195CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/TabController.storyboard; sourceTree = "<group>"; };
 		8383434E1A845E1C00098483 /* CJPAdControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CJPAdControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		838343521A845E1C00098483 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		838343531A845E1C00098483 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		838343551A845E1C00098483 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		838343561A845E1C00098483 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		838343581A845E1C00098483 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		838343591A845E1C00098483 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		8383435C1A845E1C00098483 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		838343581A845E1C00098483 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		838343591A845E1C00098483 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		8383435C1A845E1C00098483 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/NavController.storyboard; sourceTree = "<group>"; };
 		8383435E1A845E1C00098483 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		838343611A845E1C00098483 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		838343671A845E1C00098483 /* CJPAdControllerDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CJPAdControllerDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -92,13 +94,14 @@
 			children = (
 				838343551A845E1C00098483 /* AppDelegate.h */,
 				838343561A845E1C00098483 /* AppDelegate.m */,
-				838343581A845E1C00098483 /* ViewController.h */,
-				838343591A845E1C00098483 /* ViewController.m */,
+				838343581A845E1C00098483 /* RootViewController.h */,
+				838343591A845E1C00098483 /* RootViewController.m */,
 				838343771A8460D400098483 /* AnotherViewController.h */,
 				838343781A8460D400098483 /* AnotherViewController.m */,
 				8383437A1A84617100098483 /* CJPAdController */,
 				839C13121BB09A1900E4F0F5 /* GoogleMobileAds.framework */,
-				8383435B1A845E1C00098483 /* Main.storyboard */,
+				8383435B1A845E1C00098483 /* NavController.storyboard */,
+				831B3EA01BB83B5D00C195CF /* TabController.storyboard */,
 				838343601A845E1C00098483 /* LaunchScreen.xib */,
 				8383435E1A845E1C00098483 /* Images.xcassets */,
 				838343511A845E1C00098483 /* Supporting Files */,
@@ -221,8 +224,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8383435D1A845E1C00098483 /* Main.storyboard in Resources */,
+				8383435D1A845E1C00098483 /* NavController.storyboard in Resources */,
 				838343621A845E1C00098483 /* LaunchScreen.xib in Resources */,
+				831B3EA21BB83B5D00C195CF /* TabController.storyboard in Resources */,
 				8383435F1A845E1C00098483 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -242,7 +246,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8383437D1A84617100098483 /* CJPAdController.m in Sources */,
-				8383435A1A845E1C00098483 /* ViewController.m in Sources */,
+				8383435A1A845E1C00098483 /* RootViewController.m in Sources */,
 				838343571A845E1C00098483 /* AppDelegate.m in Sources */,
 				838343791A8460D400098483 /* AnotherViewController.m in Sources */,
 				838343541A845E1C00098483 /* main.m in Sources */,
@@ -268,12 +272,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		8383435B1A845E1C00098483 /* Main.storyboard */ = {
+		831B3EA01BB83B5D00C195CF /* TabController.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				831B3EA11BB83B5D00C195CF /* Base */,
+			);
+			name = TabController.storyboard;
+			sourceTree = "<group>";
+		};
+		8383435B1A845E1C00098483 /* NavController.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				8383435C1A845E1C00098483 /* Base */,
 			);
-			name = Main.storyboard;
+			name = NavController.storyboard;
 			sourceTree = "<group>";
 		};
 		838343601A845E1C00098483 /* LaunchScreen.xib */ = {

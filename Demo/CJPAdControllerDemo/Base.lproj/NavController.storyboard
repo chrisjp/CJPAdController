@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GR3-O1-Plo">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="TVN-U0-e6P">
+            <objects>
+                <navigationController id="GR3-O1-Plo" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Ot-Qc-Yxy">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="UpU-XW-lxM" kind="relationship" relationship="rootViewController" id="oJ7-xO-jru"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ekK-Se-RPR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-376" y="-67"/>
+        </scene>
+        <!--Root View Controller-->
+        <scene sceneID="uyg-qy-BNH">
+            <objects>
+                <viewController id="UpU-XW-lxM" customClass="RootViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ie6-CJ-pF3"/>
+                        <viewControllerLayoutGuide type="bottom" id="Nv1-xe-dES"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jzv-1m-9Rd">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="car-Qo-POD">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1fJ-89-1w8" userLabel="contentView">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="330"/>
+                                        <subviews>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lid-XQ-Lta">
+                                                <rect key="frame" x="8" y="8" width="584" height="150"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="150" id="JhQ-qz-CDG"/>
+                                                </constraints>
+                                                <string key="text">After a couple of seconds you should see ads appear at the bottom of this view. You can rotate your device any way you want; the ad will automatically resize and/or reposition itself.  Tap the button below to push another view. You'll notice the ad remains in position across views as advised by Apple.</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                    <rect key="frame" x="8" y="8" width="384" height="154"/>
+                                                </variation>
+                                            </textView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lym-Ff-QS2">
+                                                <rect key="frame" x="225" y="166" width="150" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="150" id="djO-xL-SJo"/>
+                                                </constraints>
+                                                <state key="normal" title="Push Another View"/>
+                                                <connections>
+                                                    <segue destination="3M7-pE-LfK" kind="show" id="4vD-V4-JEu"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pcj-eE-YGF">
+                                                <rect key="frame" x="210" y="204" width="180" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="180" id="Cd9-WT-rU8"/>
+                                                </constraints>
+                                                <state key="normal" title="Remove Ads Temporarily"/>
+                                                <connections>
+                                                    <action selector="removeAdsTemporarily:" destination="UpU-XW-lxM" eventType="touchUpInside" id="qmW-6c-Ca5"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iD6-bL-PhA">
+                                                <rect key="frame" x="210" y="242" width="180" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="180" id="QdC-Hr-6Wu"/>
+                                                </constraints>
+                                                <state key="normal" title="Remove Ads Permanently"/>
+                                                <connections>
+                                                    <action selector="removeAdsPermanently:" destination="UpU-XW-lxM" eventType="touchUpInside" id="2QL-wE-JDs"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JP3-iw-v9O">
+                                                <rect key="frame" x="210" y="280" width="180" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="180" id="nKd-Qh-PIR"/>
+                                                </constraints>
+                                                <state key="normal" title="Restore Ads"/>
+                                                <connections>
+                                                    <action selector="restoreAds:" destination="UpU-XW-lxM" eventType="touchUpInside" id="0Ug-c8-Jex"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="Lid-XQ-Lta" firstAttribute="top" secondItem="1fJ-89-1w8" secondAttribute="top" constant="8" id="7UW-ww-DWl"/>
+                                            <constraint firstItem="Lid-XQ-Lta" firstAttribute="leading" secondItem="1fJ-89-1w8" secondAttribute="leading" constant="8" id="8ll-7r-oFu"/>
+                                            <constraint firstAttribute="height" constant="330" id="9xN-AD-OSB"/>
+                                            <constraint firstItem="JP3-iw-v9O" firstAttribute="centerX" secondItem="1fJ-89-1w8" secondAttribute="centerX" id="BAx-ed-53d"/>
+                                            <constraint firstItem="pcj-eE-YGF" firstAttribute="centerX" secondItem="1fJ-89-1w8" secondAttribute="centerX" id="H83-ng-9gb"/>
+                                            <constraint firstItem="lym-Ff-QS2" firstAttribute="centerX" secondItem="1fJ-89-1w8" secondAttribute="centerX" id="Pbo-pY-gBr"/>
+                                            <constraint firstItem="iD6-bL-PhA" firstAttribute="top" secondItem="pcj-eE-YGF" secondAttribute="bottom" constant="8" id="TII-30-DBc"/>
+                                            <constraint firstItem="JP3-iw-v9O" firstAttribute="top" secondItem="iD6-bL-PhA" secondAttribute="bottom" constant="8" id="V23-2l-FsO"/>
+                                            <constraint firstAttribute="trailing" secondItem="Lid-XQ-Lta" secondAttribute="trailing" constant="8" id="Y4S-Sl-7Af"/>
+                                            <constraint firstItem="iD6-bL-PhA" firstAttribute="centerX" secondItem="1fJ-89-1w8" secondAttribute="centerX" id="ZiY-Lh-BJh"/>
+                                            <constraint firstItem="pcj-eE-YGF" firstAttribute="top" secondItem="lym-Ff-QS2" secondAttribute="bottom" constant="8" id="abF-sS-D1c"/>
+                                            <constraint firstItem="lym-Ff-QS2" firstAttribute="top" secondItem="Lid-XQ-Lta" secondAttribute="bottom" constant="8" id="upD-Z9-7Ea"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="1fJ-89-1w8" firstAttribute="top" secondItem="car-Qo-POD" secondAttribute="top" id="6yf-I5-anT"/>
+                                    <constraint firstAttribute="bottom" secondItem="1fJ-89-1w8" secondAttribute="bottom" id="Jls-aS-TXD"/>
+                                    <constraint firstItem="1fJ-89-1w8" firstAttribute="leading" secondItem="car-Qo-POD" secondAttribute="leading" id="Kph-ao-9nF"/>
+                                    <constraint firstItem="1fJ-89-1w8" firstAttribute="centerX" secondItem="car-Qo-POD" secondAttribute="centerX" id="O69-OW-3jf"/>
+                                    <constraint firstAttribute="trailing" secondItem="1fJ-89-1w8" secondAttribute="trailing" id="jcR-ox-I2O"/>
+                                </constraints>
+                                <variation key="heightClass=compact" ambiguous="YES">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
+                                </variation>
+                                <variation key="heightClass=compact-widthClass=compact" ambiguous="YES">
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="400"/>
+                                </variation>
+                                <variation key="heightClass=compact-widthClass=regular" ambiguous="YES">
+                                    <rect key="frame" x="0.0" y="0.0" width="800" height="400"/>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular" ambiguous="YES">
+                                    <rect key="frame" x="0.0" y="0.0" width="800" height="800"/>
+                                </variation>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="car-Qo-POD" secondAttribute="trailing" id="6Yi-xy-NCH"/>
+                            <constraint firstItem="car-Qo-POD" firstAttribute="leading" secondItem="jzv-1m-9Rd" secondAttribute="leading" id="CLS-EM-OaF"/>
+                            <constraint firstItem="Nv1-xe-dES" firstAttribute="top" secondItem="car-Qo-POD" secondAttribute="bottom" id="O1p-as-HoG"/>
+                            <constraint firstItem="car-Qo-POD" firstAttribute="top" secondItem="jzv-1m-9Rd" secondAttribute="top" id="nAC-4x-Yy0"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
+                    <navigationItem key="navigationItem" id="IQL-0q-D5g"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <connections>
+                        <outlet property="btnPush" destination="lym-Ff-QS2" id="NQn-1f-2OU"/>
+                        <outlet property="btnRemovePerm" destination="iD6-bL-PhA" id="B0g-Oh-JDC"/>
+                        <outlet property="btnRemoveTemp" destination="pcj-eE-YGF" id="6ZE-5O-cGv"/>
+                        <outlet property="btnRestore" destination="JP3-iw-v9O" id="NKX-9X-xAh"/>
+                        <outlet property="scrollView" destination="car-Qo-POD" id="frp-nl-2lc"/>
+                        <outlet property="textView" destination="Lid-XQ-Lta" id="Xj5-nq-nca"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uut-08-c4n" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="480" y="-68"/>
+        </scene>
+        <!--Another View Controller-->
+        <scene sceneID="Fje-I7-Cme">
+            <objects>
+                <tableViewController id="3M7-pE-LfK" customClass="AnotherViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="FfM-HY-R6R">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AnotherViewCell" id="6WM-xG-kuG">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6WM-xG-kuG" id="oSa-67-9Cy">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="3M7-pE-LfK" id="cD2-0Z-Bbx"/>
+                            <outlet property="delegate" destination="3M7-pE-LfK" id="TiF-Wh-AAx"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="y2H-ag-BoT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1276" y="-67"/>
+        </scene>
+    </scenes>
+</document>

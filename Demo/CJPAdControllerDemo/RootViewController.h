@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  RootViewController.h
 //  CJPAdControllerDemo
 //
 //  Created by Chris Phillips on 06/02/2015.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface RootViewController : UIViewController
 
 @end
-

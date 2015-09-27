@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "ViewController.h"
+#import "RootViewController.h"
 #import "AnotherViewController.h"
 #import "CJPAdController.h"
 
@@ -25,13 +25,10 @@
     // Override point for customization after application launch.
     
     /*
-     
      By default this demo app is set up to use a UINavigationController.
      Change the boolean below to YES if you wish to see it using a UITabBarController instead.
-     
      */
     BOOL useTabBar = NO;
-    
     
     /*
      
@@ -48,6 +45,7 @@
     [CJPAdController sharedInstance].adNetworks = @[@(CJPAdNetworkiAd), @(CJPAdNetworkAdMob)];
     [CJPAdController sharedInstance].adPosition = CJPAdPositionBottom;
     [CJPAdController sharedInstance].initialDelay = 2.0;
+    //[CJPAdController sharedInstance].overrideIsNavController = YES;
     // AdMob specific
     [CJPAdController sharedInstance].adMobUnitID = @"ca-app-pub-1234567890987654/1234567890";
     [CJPAdController sharedInstance].useAdMobSmartSize = YES;
@@ -57,7 +55,6 @@
     // [CJPAdController sharedInstance].adMobGender = kGADGenderMale;
     // [CJPAdController sharedInstance].adMobBirthday = [NSDate date]; // should be an actual birthdate, not the current date
     // [[CJPAdController sharedInstance] setLocationWithLatitude:51.507351 longitude:-0.127758 accuracy:10.0];      // You should get real values from CoreLocation. Use the string property below if you want to target geographically but don't use CoreLocation. Don't use both this method and the string below.
-    // [CJPAdController sharedInstance].adMobLocationDescription = @"London, UK";   // Only use this if you aren't using the CoreLocation method above for a more accurate location.
     
     // AdMob COPPA compliance
     // As with the targeting above, it is not necessary to set this unless you specifically want to declare your app as being directed to children (@"1") or not to children (@"0")
@@ -71,9 +68,8 @@
     if (!useTabBar) {
         // 1. UINavigationController Example
         
-        // init the nav controller and the root view controller
-        ViewController *rootVC = [[ViewController alloc] init];
-        _navController = [[UINavigationController alloc] initWithRootViewController:rootVC];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"NavController" bundle:nil];
+        _navController = (UINavigationController*)[storyboard instantiateInitialViewController];
         
         // Start CJPAdController serving ads in the nav controller
         [[CJPAdController sharedInstance] startWithViewController:_navController];
@@ -81,21 +77,10 @@
     else {
         // 2. UITabBarController Example
         
-        // init the view controllers
-        UIViewController *viewController1 = [[ViewController alloc] init];
-        UIViewController *viewController2 = [[AnotherViewController alloc] init];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"TabController" bundle:nil];
+        _tabController = (UITabBarController*)[storyboard instantiateInitialViewController];
         
-        // init the navigation
-        UINavigationController *navController1 = [[UINavigationController alloc] initWithRootViewController:viewController1];
-        navController1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"CJPAdController Demo" image:nil tag:666];
-        UINavigationController *navController2 = [[UINavigationController alloc] initWithRootViewController:viewController2];
-        navController2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Another Tab" image:nil tag:667];
-        
-        // init the tab bar controller
-        _tabController = [[UITabBarController alloc] init];
-        _tabController.viewControllers = @[navController1, navController2];
-        
-        // Start CJPAdController serving ads in the nav controller
+        // Start CJPAdController serving ads in the tab controller
         [[CJPAdController sharedInstance] startWithViewController:_tabController];
     }
     
@@ -105,22 +90,7 @@
      
      */
     _window.rootViewController = [CJPAdController sharedInstance];
-    
-    
-    // NOTE: IF YOU ARE USING STORYBOARDS, YOUR CODE SHOULD LOOK SIMILAR TO THE FOLLOWING:
-    /*
-     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"StoryboardName" bundle:nil];
-     UINavigationController *navController = (UINavigationController*)[storyboard instantiateInitialViewController];
-     
-     // Start CJPAdController serving ads in the nav controller
-     [[CJPAdController sharedInstance] startWithViewController:_navController];
-     
-     // set the ad controller as the root view controller
-     _window.rootViewController = [CJPAdController sharedInstance]
-     */
-    
-    _window.backgroundColor = [UIColor whiteColor];
-    
+        
     return YES;
 }
 
