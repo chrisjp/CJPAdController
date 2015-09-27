@@ -227,11 +227,6 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
             [adMobRequest setLocationWithLatitude:[[_adMobUserLocation objectForKey:@"latitude"] floatValue] longitude:[[_adMobUserLocation objectForKey:@"longitude"] floatValue] accuracy:[[_adMobUserLocation objectForKey:@"accuracy"] floatValue]];
             CJPLog(@"AdMob targeting: Location has been set to %@", _adMobUserLocation);
         }
-        else if (_adMobLocationDescription != nil) {
-            [adMobRequest setLocationWithDescription:_adMobLocationDescription];
-            CJPLog(@"AdMob targeting: Location has been set to \"%@\"", _adMobLocationDescription);
-        }
-        
         
         // Now we can load the requested ad
         [_adMobView loadRequest:adMobRequest];
@@ -408,7 +403,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     return [[self currentViewController] shouldAutorotate];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return [self currentViewController].supportedInterfaceOrientations;
 }
